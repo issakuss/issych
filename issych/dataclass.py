@@ -18,3 +18,9 @@ class Dictm(Dict):
 
     def __or__(self, other):
         return Dictm(dict(self) | dict(other))
+
+    def flatten(self):
+        flatten = Dictm()
+        for v in self.values():
+            flatten |= v
+        return flatten

@@ -16,4 +16,8 @@ class TestDictm(unittest.TestCase):
         self.assertEqual(dictm.a, 1)
         self.assertEqual(dictm.c, 3)
 
-
+    def test_flatten(self):
+        dictm = Dictm({'a': {'aa': 1, 'ab': 2},
+                       'b': {'ba': 3, 'bb': 4}})
+        flatten = dictm.flatten()
+        self.assertEqual(flatten.aa, 1)

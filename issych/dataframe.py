@@ -1,4 +1,4 @@
-from typing import cast, Optional, List
+from typing import cast, Any, Optional, List
 
 import pandas as pd
 
@@ -24,6 +24,36 @@ def extract_colname_startswith(dataframe: pd.DataFrame, head_colname: str):
     """
     are_target = [col.startswith(head_colname) for col in dataframe.columns]
     return dataframe.loc[:, are_target]
+
+
+def fullform_index(dataframe: pd.DataFrame, abbr: dict,
+                   for_index: bool=True, for_columns: bool=True
+                   ) -> pd.DataFrame:
+
+    def make_lowercase(v: Any) -> Any:
+        if isinstance(v, str):
+            return v.lower()
+        return v
+
+    def eachind(ind: pd.Index, abbr: dict) -> pd.Index:
+        if isinstance(ind, pd.MultiIndex):
+            ind = pd.MultiIndex.from_frame(
+                (ind.to_frame().replace(abbr)))
+            ind.names = (None,) * ind.nlevels  # type: ignore
+            return ind
+        old_ind = ind.to_frame().applymap(make_lowercase)
+        ind = pd.Index(old_ind.replace(abbr)[0])
+        ind.name = None
+        return ind
+        
+    dataframe = dataframe.copy()
+
+    index, columns = [eachind(ind, abbr)
+                      for ind in [dataframe.index, dataframe.columns]]
+    if for_index: dataframe.index = index
+    if for_columns: dataframe.columns = columns
+    
+    return dataframe
 
 
 def pad_zero(cell: float | int | str, sdgt: Optional[int]=None) -> str:

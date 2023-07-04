@@ -1,8 +1,10 @@
-from typing import cast
+from typing import cast, Optional, List
 
 import pandas as pd
 
 from .misc import alphabet_to_num
+from .fileio import load_config
+from .dataclass import Dictm
 
 
 def extract_byalphabet(dataframe: pd.DataFrame, range_min: str, range_max: str
@@ -22,7 +24,51 @@ def extract_colname_startswith(dataframe: pd.DataFrame, head_colname: str):
     """
     are_target = [col.startswith(head_colname) for col in dataframe.columns]
     return dataframe.loc[:, are_target]
-    
+
+
+def pad_zero(cell: float | int | str, sdgt: Optional[int]=None) -> str:
+    if isinstance(cell, int):
+        return str(cell)
+    if pd.isna(cell):
+        return ''
+    sdgt = sdgt or load_config('config/misc.ini').general.sdgt
+    if cell == '-':
+        return str(cell)
+    cell = str(cell)
+    sdgt = sdgt + len('0.')
+    sdgt = sdgt + 1 if cell.startswith('-') else sdgt
+    cell = cell.ljust(sdgt, '0')
+    return cell
+
+
+def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
+             cols_rate: List[str]=[], cols_p: List[str]=[],
+             thr_p: Optional[float]=None) -> pd.DataFrame:
+    """
+    sdgt must include 'main', 'pvalue' keys.
+    """
+    def eachcol(data: pd.Series, sdgts: dict,
+                cols_rate: List[str], cols_p: List[str], thr_p: Optional[float]
+                ) -> pd.Series:
+        sdgts = Dictm(sdgts)
+        if data.name in cols_p:
+            data_ = data.copy().round(sdgts.pvalue)
+            data_ = data_.fillna('').astype(str)
+            if thr_p:
+                data_.loc[data < thr_p] = f'< {str(thr_p).replace("0.", ".")}'
+            return data_.astype(str).apply(lambda x: x.replace('0.', '.'))
+
+        data = data.fillna(float('nan')).round(sdgts.main)
+        data = data.apply(pad_zero, args=(sdgts.main,))
+
+        if data.name in cols_rate:
+            data = data.apply(lambda x: x.replace('0.', '.'))
+
+        return data
+
+    return dataframe.apply(eachcol, args=(sdgts, cols_rate, cols_p, thr_p))
+
+
 
 def flatten_multi_index(dataframe, pad='&emsp;', n_pad=4):
     """

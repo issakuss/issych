@@ -18,11 +18,3 @@ class Dictm(Dict):
 
     def __or__(self, other):
         return Dictm(dict(self) | dict(other))
-
-
-if __name__ == '__main__':
-    dictm = Dictm({'a': 1, 'b': 2})
-    dictm_to_add = Dictm({'c': 3})
-    dictm = dictm | dictm_to_add
-    assert dictm.a == 1 and dictm.b == 2 and dictm.c == 3
-    print('Dictm is OK')

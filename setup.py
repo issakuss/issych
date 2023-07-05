@@ -3,7 +3,9 @@ from setuptools import setup, find_packages
 
 INSTALL_REQUIRES = [
     'numpy>=1.23.5',
-    'pandas>=1.5.3'
+    'pandas>=1.5.3',
+    'matplotlib>=3.7.0',
+    'seaborn>=0.12.2'
 ]
 
 setup(

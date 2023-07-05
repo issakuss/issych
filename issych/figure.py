@@ -1,10 +1,11 @@
-from typing import Optional, Any, Tuple, Literal
+from typing import Optional, Any, Literal, Tuple, List
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.collections import PolyCollection
+from matplotlib.patches import Rectangle
 import seaborn as sns
 
 from .typealias import Pathlike, Figure, Axes
@@ -68,8 +69,11 @@ def prepare_ax(axsizeratio: Tuple=(1., 1.), path_ini: Optional[Pathlike]=None
 def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
                  path_ini: Optional[Pathlike]=None
                  ) -> Tuple[Figure, np.ndarray]:
+    """
+    Tested in test_SigMarker.py
+    """
     set_rcparams(path_ini)
-    figsize = calc_figsize(n_row, n_col, axsizeratio, path_ini)
+    figsize = calc_figsize(n_row, n_col, axsizeratio)
     fig, axes = plt.subplots(n_row, n_col, figsize=figsize)
     if not isinstance(axes, np.ndarray):
         return fig, np.array([axes])
@@ -152,3 +156,76 @@ def plot_raincloud(data: pd.DataFrame, ax: Axes,
             data, ax, xcol, ycol, color=cloudcolor, **cloudkwargs)
 
     return ax
+
+
+def _find_pos_bw_patches(patch_from: Rectangle, patch_to: Rectangle,
+                         xpos: Tuple[Literal['c', 'r', 'l'],
+                                     Literal['c', 'r', 'l']]=('c', 'c')
+                         ) -> Tuple[float, float]:
+    def find_xpos(patch, xpos):
+        match xpos:
+            case 'l':
+                return patch.get_x()
+            case 'r':
+                return patch.get_x() + patch.get_width()
+            case 'c':
+                return patch.get_x() + (patch.get_width() / 2)
+
+    xmin = find_xpos(patch_from, xpos[0])
+    xmax = find_xpos(patch_to, xpos[1])
+
+    return xmin, xmax
+
+
+def _find_pos_bw_xticks(pos_from: int, pos_to: int, ax: Axes
+                        ) -> Tuple[float, float]:
+    xticks = ax.get_xticks()
+    xmin = xticks[pos_from]
+    xmax = xticks[pos_to]
+    return xmin, xmax
+
+
+class SigMarker:
+    """
+    Mark significance between barplots.
+    """
+    def __init__(self, ax: Axes):
+        self.layer: int = 0
+        self.drawn_ranges: List[Tuple[float, float]] = []
+        self.INTERVAL: float = .1
+
+        self.ax = ax
+        self.ymax = ax.get_ylim()[1]
+        containers = [container for container in ax.containers]  # type: ignore
+        self.patches = [
+            [contained] if isinstance(contained, Rectangle) else [*contained]
+            for contained in containers]
+        self.patches = sum([list(p) for p in np.array(self.patches).T], [])
+
+    def judge_conflict(self, x_pos: Tuple[float, float], drawn_ranges) -> bool:
+        for rn in drawn_ranges:
+            if (rn[0] <= x_pos[0] <= rn[1]) or (rn[0] <= x_pos[1] <= rn[1]):
+                return True
+        return False
+
+    def mark(self, between: Literal['patches', 'xticks'],
+             pos_from: int, pos_to: int, comment: str):
+        interval = self.INTERVAL * (self.ymax - self.ax.get_ylim()[0])
+        
+        match between:
+            case 'patches':
+                x_from, x_to = _find_pos_bw_patches(
+                    self.patches[pos_from], self.patches[pos_to],  # type: ignore
+                    xpos=('c', 'c'))
+            case 'xticks':
+                x_from, x_to = _find_pos_bw_xticks(pos_from, pos_to, self.ax)
+                    
+        if self.judge_conflict((x_from, x_to), self.drawn_ranges):
+            self.layer += 1
+            self.drawn_ranges = []
+        self.drawn_ranges.append((x_from, x_to))
+
+        ypos = self.ymax + (interval * self.layer)
+        self.ax.hlines(y=ypos, xmin=x_from, xmax=x_to)
+        self.ax.text((x_from + x_to) / 2, ypos, comment,
+                     horizontalalignment='center')

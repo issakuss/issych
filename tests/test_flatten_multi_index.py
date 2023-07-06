@@ -20,11 +20,11 @@ class TestFMI(unittest.TestCase):
             'tests/testdata/dataframe/resulttable.csv', index_col=[0, 1, 2],
             dtype={'n': 'Int64'})
 
-        sdgts = load_config('tests/testdata/dataframe/config.ini').sdgt
+        sdgts = load_config('tests/testdata/config/dataframe.ini').sdgt
         table = set_sdgt(table, sdgts,
                          cols_rate=['rate'], cols_p=['p', 'padj'], thr_p=0.001)
 
-        abbr = load_config('tests/testdata/dataframe/config.ini').abbr
+        abbr = load_config('tests/testdata/config/dataframe.ini').abbr
         table = fullform_index(table, abbr)
 
         flatten_multi_index(table, pad=' ')

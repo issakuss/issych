@@ -12,6 +12,6 @@ class TestFullformIndex(unittest.TestCase):
         table = pd.read_csv(
             'tests/testdata/dataframe/resulttable.csv', index_col=[0, 1, 2],
             dtype={'n': 'Int64'})
-        abbr = load_config('tests/testdata/dataframe/config.ini').abbr
+        abbr = load_config('tests/testdata/config/dataframe.ini').abbr
         fullform_index(table, abbr, for_index=False, for_columns=False)
         fullform_index(table, abbr)

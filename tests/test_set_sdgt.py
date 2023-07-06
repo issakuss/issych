@@ -12,7 +12,7 @@ class TestSetSDGT(unittest.TestCase):
         table = pd.read_csv(
             'tests/testdata/dataframe/resulttable.csv', index_col=[0, 1, 2],
             dtype={'n': 'Int64'})
-        sdgts = load_config('tests/testdata/dataframe/config.ini').sdgt
+        sdgts = load_config('tests/testdata/config/dataframe.ini').sdgt
         set_sdgt(table, sdgts)
         set_sdgt(table, sdgts, cols_rate=['rate', 'p'])
         set_sdgt(table, sdgts,

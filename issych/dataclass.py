@@ -14,7 +14,7 @@ class Dictm(Dict):
         super().__init__(*args, **kwargs)
         self.__dict__ = self
 
-    def __getattr__(self, name: str) -> Any: ...
+    def __getattr__(self, _: str) -> Any: ...
 
     def __or__(self, other):
         return Dictm(dict(self) | dict(other))
@@ -24,3 +24,9 @@ class Dictm(Dict):
         for v in self.values():
             flatten |= v
         return flatten
+
+    def full(self, key: str) -> str:
+        full = self.get(key)
+        if full is None:
+            return key
+        return full

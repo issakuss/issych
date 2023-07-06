@@ -21,3 +21,8 @@ class TestDictm(unittest.TestCase):
                        'b': {'ba': 3, 'bb': 4}})
         flatten = dictm.flatten()
         self.assertEqual(flatten.aa, 1)
+
+    def test_full(self):
+        dictm = Dictm({'abbr': 'Full'})
+        self.assertEqual(dictm.full('abbr'), 'Full')
+        self.assertEqual(dictm.full('abbr_not_exist'), 'abbr_not_exist')

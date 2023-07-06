@@ -12,7 +12,7 @@ from .typealias import Pathlike, Figure, Axes
 from .fileio import load_config
 
 
-DEFAULT_PATH_RCPARAMS = Path(__file__).parents[2] / 'config/rcparams.ini'
+DEFAULT_PATH_RCPARAMS = 'config/rcparams.ini'
 
 # Settings
 

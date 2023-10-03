@@ -1,7 +1,9 @@
 # How to install
 
 ```
-pip install git+https://github.com/issakuss/issych
+pip install git+https://github.com/issakuss/issych@master  # Newest relesae
+pip install git+https://github.com/issakuss/issych@v0.0.1  # Specified version
+pip install git+https://github.com/issakuss/issych@develop # Develop version
 ```
 
 # Tutorial (WIP)

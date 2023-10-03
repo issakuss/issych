@@ -1,3 +1,7 @@
+from typing import Sequence
+import numpy as np
+
+
 def alphabet_to_num(alphabet: str):
     """
     >> alphabet_to_num('A')
@@ -16,3 +20,16 @@ def alphabet_to_num(alphabet: str):
         order = (ord(item) - ord('A') + 1)
         num += order * pow(N_ALPHABET, len(alphabet) - i - 1)
     return num
+
+
+def vec2sqmatrix(vec: Sequence) -> np.ndarray:
+    """
+    >> vec2sqmatrix([1, 2, 3, 4])
+    np.ndarray([[1, 2],
+                [3, 4])
+    """
+    length = np.sqrt(len(vec))
+    if not length.is_integer():
+        raise ValueError('This length cannot convert to square matrix')
+    length = int(length)
+    return np.array(vec).reshape(length, length)

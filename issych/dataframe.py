@@ -38,11 +38,11 @@ def fullform_index(dataframe: pd.DataFrame, abbr: dict,
     def eachind(ind: pd.Index, abbr: dict) -> pd.Index:
         if isinstance(ind, pd.MultiIndex):
             ind = pd.MultiIndex.from_frame(
-                (ind.to_frame().replace(abbr)))
+                (ind.to_frame(allow_duplicates=True).replace(abbr)))
             ind.names = (None,) * ind.nlevels  # type: ignore
             return ind
         old_ind = ind.to_frame().applymap(make_lowercase)
-        ind = pd.Index(old_ind.replace(abbr)[0])
+        ind = pd.Index(old_ind.replace(abbr).iloc[:, 0])
         ind.name = None
         return ind
         
@@ -65,10 +65,8 @@ def pad_zero(cell: float | int | str, sdgt: Optional[int]=None) -> str:
     if cell == '-':
         return str(cell)
     cell = str(cell)
-    sdgt = sdgt + len('0.')
-    sdgt = sdgt + 1 if cell.startswith('-') else sdgt
-    cell = cell.ljust(sdgt, '0')
-    return cell
+    n_shortage = sdgt - (len(cell) - cell.find('.') - 1)
+    return cell + ('0' * n_shortage)
 
 
 def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
@@ -83,7 +81,7 @@ def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
         sdgts = Dictm(sdgts)
         if data.name in cols_p:
             data_ = data.copy().round(sdgts.pvalue)
-            data_ = data_.fillna('').astype(str)
+            data_ = data_.astype(object).fillna('').astype(str)
             if thr_p:
                 data_.loc[data < thr_p] = f'< {str(thr_p).replace("0.", ".")}'
             return data_.astype(str).apply(lambda x: x.replace('0.', '.'))

@@ -1,13 +1,16 @@
 from typing import Optional, Any, Literal, Tuple, List
+from pathlib import Path
 
 from cycler import cycler
 import numpy as np
 import pandas as pd
+import pingouin as pg
 import matplotlib.pyplot as plt
 from matplotlib.collections import PolyCollection
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Ellipse
 import seaborn as sns
 
+from .dataclass import Dictm
 from .typealias import Pathlike, Figure, Axes
 from .fileio import load_config
 from .stat import Pvalue2SigMark
@@ -263,3 +266,68 @@ class SigMarker:
         if len(mark) > 0:
             self.mark(between, pos_from, pos_to, mark)
 
+
+def plot_corrmat(dataset: pd.DataFrame, method: str='pearson',
+                 path_ini: Optional[Pathlike]=None,
+                 thrs_p: Optional[Tuple[float, float, float]]=None,
+                 rotation: int=30, each_height: float=2.0,
+                 abbr: Optional[Dictm]=None, kwargs_diag: dict={},
+                 kwargs_lower: dict={}, kwargs_upper: dict={}
+                 ) -> sns.axisgrid.PairGrid:
+    # https://stackoverflow.com/questions/48139899/correlation-matrix-plot-with-coefficients-on-one-side-scatterplots-on-another
+    def plot_corr(x: np.ndarray, y: np.ndarray, method: str, color: Dictm,
+                  thrs_p: Optional[Tuple[float, float, float]]=None, **kwargs):
+        FONTSIZE = 32.
+        SDGT = 3
+        if thrs_p is None:
+            thrs_p = (.10, .05, .01)
+        coef, p = pg.corr(x, y, method=method)[['r', 'p-val']].values[0]
+
+        c = color.sub
+        idx_color = 0 if coef >= 0 else 1
+        c = color.cycle[idx_color] if p < thrs_p[0] else c
+        alpha = 0.2
+        alpha = 0.5 if p < thrs_p[-2] else alpha
+        alpha = 1.0 if p < thrs_p[-1] else alpha
+        
+        ax = plt.gca()
+        center_x = np.sum(ax.get_xlim()) / 2.
+        center_y = np.sum(ax.get_ylim()) / 2.
+        width = np.abs(np.diff(ax.get_xlim()) * coef)[0]
+        height = np.abs(np.diff(ax.get_ylim()) * coef)[0]
+
+        coef_text = f'{str(coef.round(3)).replace("0.", ".")}'
+        n_shortage = SDGT - (len(coef_text) - coef_text.find('.') - 1)
+        coef_text = coef_text + ('0' * n_shortage)
+
+        ax.add_patch(Ellipse(
+            xy=(center_x, center_y), width=width, height=height, fc=c,
+            alpha=alpha, linewidth=0.))
+        ax.annotate(coef_text, [.5, .5,],  xycoords="axes fraction",
+                    ha='center', va='center', fontsize=FONTSIZE,
+                    color=color.main)
+        ax.set_axis_off()
+    
+    def plot_dist(data: np.ndarray, color: str, lw: float, **kwargs):
+        if len(data.unique()) <= 2:
+            sns.barplot(data.value_counts(), color=color)
+        else:
+            sns.violinplot(x=data, linewidth=lw, color=color, inner='box')
+
+    path_ini = path_ini if path_ini else DEFAULT_PATH_RCPARAMS
+    abbr = abbr if abbr else load_config('config/abbr.ini').flatten()
+
+    color, *_ = load_rcparams(path_ini)
+    set_rcparams(path_ini)
+
+    dataset = dataset.copy().select_dtypes([int, float])
+    g = sns.PairGrid(dataset, diag_sharey=False, height=each_height)
+    g.map_lower(sns.regplot, color=color.sub, **kwargs_lower)
+    g.map_diag(plot_dist, color=color.sub, **kwargs_diag)
+    g.map_upper(plot_corr, method=method, color=color, thrs_p=thrs_p,
+                **kwargs_upper)
+    for ax in g.axes.flatten():
+        if abbr:
+            ax.set_xlabel(abbr.full(ax.get_xlabel()), rotation=rotation)
+            ax.set_ylabel(abbr.full(ax.get_ylabel()), rotation=0., ha='right')
+    return g

@@ -2,16 +2,16 @@ from setuptools import setup, find_packages
 
 
 INSTALL_REQUIRES = [
-    'cycler>=0.11.0',
-    'numpy>=1.23.5',
-    'pandas>=1.5.3',
-    'matplotlib>=3.7.0',
-    'seaborn>=0.12.2'
+    'cycler>=0.12.1',
+    'pandas>=2.1.4',
+    'pingouin>=0.5.3',
+    'matplotlib>=3.8.2',
+    'seaborn>=0.13.1'
 ]
 
 setup(
     name='issych',
-    version='0.0.2.1',
+    version='0.0.3.0',
     author='Issaku Kawashima',
     author_email='issakuss@gmail.com',
     description='Convenient tools for psychological studies',

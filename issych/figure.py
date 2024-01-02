@@ -138,18 +138,8 @@ def plot_halfviolin(data: pd.DataFrame, ax: Axes,
     ycol = ycol or dummy_axis
 
     frontcolor = color or plt.rcParams['patch.facecolor']
-    backcolor = plt.rcParams['axes.facecolor']
-    palette = {'dummy_a': frontcolor, 'dummy_b': backcolor}
-
-    sns.violinplot(data=data, x=xcol, y=ycol, hue='__dummy_col',
-                   split=True, palette=palette, linewidth=0., ax=ax)
-    ax.get_legend().remove()  # type: ignore
-    if xcol == dummy_axis:
-        ax.set_xlabel('')
-        ax.set_xticklabels('')
-    if ycol == dummy_axis:
-        ax.set_ylabel('')
-        ax.set_yticklabels('')
+    sns.violinplot(data=data, x=xcol, y=ycol, split=True, color=frontcolor,
+                   linewidth=0., ax=ax)
 
     for collection in ax.collections:  # type: ignore
         if not isinstance(collection, PolyCollection):

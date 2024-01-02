@@ -10,6 +10,7 @@ import seaborn as sns
 
 from .typealias import Pathlike, Figure, Axes
 from .fileio import load_config
+from .stat import Pvalue2SigMark
 
 
 DEFAULT_PATH_RCPARAMS = 'config/rcparams.ini'
@@ -254,4 +255,11 @@ class SigMarker:
         self.ax.hlines(y=ypos, xmin=x_from, xmax=x_to)
         self.ax.text((x_from + x_to) / 2, ypos, comment,
                      horizontalalignment='center')
+
+    def sigmark(self, between: Literal['patches', 'xticks'],
+                pos_from: int, pos_to: int, p_value: float,
+                thresholds: Optional[dict]=None, ns_comment: str=''):
+        mark = Pvalue2SigMark(thresholds, ns_comment)(p_value)
+        if len(mark) > 0:
+            self.mark(between, pos_from, pos_to, mark)
 

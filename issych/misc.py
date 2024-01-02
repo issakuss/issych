@@ -1,4 +1,7 @@
 from typing import Sequence
+from functools import wraps
+import time
+
 import numpy as np
 
 
@@ -33,3 +36,14 @@ def vec2sqmatrix(vec: Sequence) -> np.ndarray:
         raise ValueError('This length cannot convert to square matrix')
     length = int(length)
     return np.array(vec).reshape(length, length)
+
+
+def meas_exectime(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        init = time.time()
+        returnval = func(*args, **kwargs)
+        elapsed = time.time() - init
+        print(f'{func.__name__}: {elapsed:.3f} sec.')
+        return returnval
+    return wrapper

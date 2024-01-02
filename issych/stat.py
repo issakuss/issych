@@ -25,6 +25,10 @@ class Pvalue2SigMark:
 
 
 def arcsine_sqrt(r: float) -> float:
+    if np.isnan(r):
+        return np.nan
+    if not (0. <= r <= 1.):
+        raise ValueError()
     return np.arcsin(np.sqrt(r))
 
 

@@ -51,7 +51,31 @@ def set_rcparams(path_ini :Optional[Pathlike]=None):
          'lines.color': color.main,
          'lines.linewidth': size.linewidth,
          'text.color': color.main,
+         'patch.facecolor': color.highlight,
+         'patch.edgecolor': color.subhighlight,
          'grid.color': color.sub})
+
+
+def get_rcparams() -> Tuple[Dictm, Dictm, Dictm]:
+    color = Dictm(
+        main=plt.rcParams['axes.edgecolor'],
+        back=plt.rcParams['figure.facecolor'],
+        sub=plt.rcParams['grid.color'],
+        highlight=plt.rcParams['patch.facecolor'],
+        subhighlight=plt.rcParams['patch.edgecolor'],
+        cycle=list(plt.rcParams['axes.prop_cycle']))
+    
+    size = Dictm(
+        figsize=plt.rcParams['figure.figsize'],
+        fontsize=plt.rcParams['font.size'],
+        linewidth=plt.rcParams['lines.linewidth'],
+        capsize=plt.rcParams['errorbar.capsize'])
+    
+    misc = Dictm(
+        dpi=plt.rcParams['figure.dpi'],
+        format=plt.rcParams['savefig.format'])
+    
+    return color, size, misc
 
 # Figure preparation
 
@@ -88,6 +112,9 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
 
 def draw_line(pos: float, orient: Literal['horz', 'vert', 'h', 'v'],
               ax: Axes, **kwargs):
+    """
+    Use ax.axvline() and ax.axhline() instead. 
+    """
     vert = (orient in ['vert', 'v'])
     lim = ax.get_ylim() if vert else ax.get_xlim()
     func = ax.vlines if vert else ax.hlines
@@ -120,7 +147,7 @@ def mask_area(pos_from: float | pd.Timestamp, pos_to: float | pd.Timestamp,
 
 
 def plot_halfviolin(data: pd.DataFrame, ax: Axes,
-                    xcol: Optional[str]=None, ycol: Optional[str]=None,
+                    x: Optional[str]=None, y: Optional[str]=None,
                     color: Optional[str]=None, xdodge_size: int=200,
                     coef_xlim: float=1/1000) -> Axes:
     """
@@ -134,11 +161,11 @@ def plot_halfviolin(data: pd.DataFrame, ax: Axes,
     # sns.violinplot disables hue when x or y is None
     dummy_axis = 'dummy_axis'
     data[dummy_axis] = 'dummy'
-    xcol = xcol or dummy_axis
-    ycol = ycol or dummy_axis
+    x = x or dummy_axis
+    y = y or dummy_axis
 
     frontcolor = color or plt.rcParams['patch.facecolor']
-    sns.violinplot(data=data, x=xcol, y=ycol, split=True, color=frontcolor,
+    sns.violinplot(data=data, x=x, y=y, split=True, color=frontcolor,
                    linewidth=0., ax=ax)
 
     for collection in ax.collections:  # type: ignore
@@ -153,26 +180,41 @@ def plot_halfviolin(data: pd.DataFrame, ax: Axes,
 
 
 def plot_raincloud(data: pd.DataFrame, ax: Axes,
-                   xcol: Optional[str]=None, ycol: Optional[str]=None,
+                   x: Optional[str]=None, y: Optional[str]=None,
                    strip: bool=True, stripkwargs: dict[str, Any]=dict(),
-                   cloud: bool=True, cloudkwargs: dict[str, Any]=dict()
+                   cloud: bool=True, cloudkwargs: dict[str, Any]=dict(),
+                   box: bool=True, boxkwargs: dict[str, Any]=dict()
                    ) -> Axes:
     """
     Not support hue.
     """
 
-    color_main = plt.rcParams['axes.edgecolor']
-    color_sub = plt.rcParams['grid.color']
+    color, *_ = get_rcparams()
+    kwargs = {'x': x, 'y': y, 'data': data, 'ax': ax}
+
+    ZORDER_LOW = 1
+    ZORDER_HIGH = 2
 
     if strip:
-        stripcolor = stripkwargs.pop('color', None) or color_main
-        ax = sns.stripplot(data, x=xcol, y=ycol, dodge=True,
-                           color=stripcolor, ax=ax, **stripkwargs)
+        stripcolor = stripkwargs.pop('color', color.main)
+        stripzorder = stripkwargs.pop('zorder', ZORDER_LOW)
+        ax = sns.stripplot(dodge=True, color=stripcolor, zorder=stripzorder,
+                           **kwargs, **stripkwargs)
+
+    if box:
+        WIDTH = 0.2
+        fill = boxkwargs.pop('fill', False)
+        boxcolor = boxkwargs.pop('color', color.highlight)
+        flierprops = boxkwargs.pop('flierprops', {'marker': '_'})
+        boxzorder = boxkwargs.pop('zorder', ZORDER_HIGH)
+        width = boxkwargs.pop('width', WIDTH)
+        ax = sns.boxplot(fill=fill, width=width, color=boxcolor,
+                         zorder=boxzorder, flierprops=flierprops, **kwargs,
+                         **boxkwargs)
 
     if cloud:
-        cloudcolor = cloudkwargs.pop('color', None) or color_sub
-        ax = plot_halfviolin(
-            data, ax, xcol, ycol, color=cloudcolor, **cloudkwargs)
+        cloudcolor = cloudkwargs.pop('color', color.sub)
+        ax = plot_halfviolin(color=cloudcolor, **kwargs, **cloudkwargs)
 
     return ax
 

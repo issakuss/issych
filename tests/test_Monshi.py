@@ -11,7 +11,7 @@ class TestMonshi(unittest.TestCase):
     def test(self):
         config = load_config('tests/testdata/config/monshi.ini')
         answer_sheet = pd.read_csv('tests/testdata/monshi/testdata.csv')
-        answer_sheet = answer_sheet.applymap(
+        answer_sheet = answer_sheet.map(
             lambda x: x if pd.isna(x) else x.split('.')[0])
         monshi = Monshi(answer_sheet).label(config.range).score(config)
         scores = monshi.get_scores()

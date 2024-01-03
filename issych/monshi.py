@@ -52,7 +52,7 @@ def score_questionnaire(
     def _preprocess(answer: pd.DataFrame, preprocess: str) -> pd.DataFrame:
         answer = answer.copy()
         try:
-            return answer.applymap(lambda q: eval(preprocess))  # type: ignore
+            return answer.map(lambda q: eval(preprocess))  # type: ignore
         except:
             raise ValueError('Following preprocess code failed: '+ preprocess)
 
@@ -194,7 +194,7 @@ if __name__ == '__main__':
     # config.range.pop('_meta')
     # config.range._meta = ('A', 'A')
     answer_sheet = pd.read_csv('testdata/monshi/testdata.csv')
-    answer_sheet = answer_sheet.applymap(
+    answer_sheet = answer_sheet.map(
         lambda x: x if pd.isna(x) else x.split('.')[0])
     monshi = Monshi(answer_sheet).label(config.range).score(config)
     scores = monshi.get_scores()

@@ -41,7 +41,7 @@ def fullform_index(dataframe: pd.DataFrame, abbr: dict,
                 (ind.to_frame(allow_duplicates=True).replace(abbr)))
             ind.names = (None,) * ind.nlevels  # type: ignore
             return ind
-        old_ind = ind.to_frame().applymap(make_lowercase)
+        old_ind = ind.to_frame().map(make_lowercase)
         ind = pd.Index(old_ind.replace(abbr).iloc[:, 0])
         ind.name = None
         return ind

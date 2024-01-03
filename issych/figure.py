@@ -29,6 +29,7 @@ def load_rcparams(path_ini :Optional[Pathlike]=None):
 
 
 def set_rcparams(path_ini :Optional[Pathlike]=None):
+    color_, size_, misc_ = get_rcparams()
     color, size, misc = load_rcparams(path_ini)
 
     plt.rcParams.update(
@@ -52,7 +53,7 @@ def set_rcparams(path_ini :Optional[Pathlike]=None):
          'lines.linewidth': size.linewidth,
          'text.color': color.main,
          'patch.facecolor': color.highlight,
-         'patch.edgecolor': color.subhighlight,
+         'patch.edgecolor': color.subhighlight or color_.subhighlight,
          'grid.color': color.sub})
 
 

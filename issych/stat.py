@@ -52,3 +52,11 @@ def iqr(vec_origin: Sequence[float] | pd.Series) -> np.ndarray:
 def nanzscore(vec: Sequence[float] | pd.Series) -> np.ndarray:
     vec = np.array(vec)
     return (vec - np.nanmean(vec)) / np.nanstd(vec)
+
+
+def nanzscore2value(zscore: float, vec: Sequence[float] | pd.Series) -> float:
+    """
+    Tested in test_convert_to_iqrs.py
+    """
+    vec = np.array(vec)
+    return (zscore * np.nanstd(vec)) + np.nanmean(vec)

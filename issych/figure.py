@@ -158,9 +158,12 @@ def plot_halfviolin(data: pd.DataFrame | pd.Series, ax: Axes,
 
     WIDTH = 0.5
     DUMMYNAME = '__dodged_x__'
+    data = data.copy()
 
     offset_size = xdodge_size + (WIDTH / 2)
 
+    if isinstance(data, pd.DataFrame) and data.shape[1] == 1:
+        data = data.iloc[:, 0]
     if isinstance(data, pd.Series):
         y = data.name
         x = DUMMYNAME

@@ -39,7 +39,7 @@ def convert_to_iqrs(vec_origin: Sequence[float] | pd.Series) -> np.ndarray:
     >> convert_to_iqrs([1, 2, 3, 4, 100])
     array([-0.5,  0. ,  0. ,  0.5,  24. ])
     """
-    vec_origin = pd.Series(vec_origin)
+    vec_origin = pd.Series(vec_origin).astype(float)
     vec_dropna = pd.Series(vec_origin).dropna()
     vec_to_ret = vec_origin.copy()
     desc = vec_dropna.describe()
@@ -56,11 +56,20 @@ def convert_to_iqrs(vec_origin: Sequence[float] | pd.Series) -> np.ndarray:
     return vec_to_ret.values
 
 
+def _prep_nanz(vec: Sequence[float] | pd.Series) -> np.ndarray:
+    if isinstance(vec, pd.DataFrame):
+        raise ValueError('DataFrame is not supported.')
+    if isinstance(vec, pd.Series):
+        vec = vec.astype(float)
+    vec = np.array(vec)
+    return vec
+    ...
+
 def nanzscore(vec: Sequence[float] | pd.Series) -> np.ndarray:
     """
     Tested in test_convert_to_iqrs.py
     """
-    vec = np.array(vec)
+    vec = _prep_nanz(vec)
     return (vec - np.nanmean(vec)) / np.nanstd(vec)
 
 
@@ -68,5 +77,13 @@ def nanzscore2value(zscore: float, vec: Sequence[float] | pd.Series) -> float:
     """
     Tested in test_convert_to_iqrs.py
     """
-    vec = np.array(vec)
+    vec = _prep_nanz(vec)
     return (zscore * np.nanstd(vec)) + np.nanmean(vec)
+
+
+def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
+    """
+    Tested in test_convert_to_iqrs.py
+    """
+    vec = _prep_nanz(vec)
+    return (value - np.nanmean(vec)) / np.nanstd(vec)

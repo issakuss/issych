@@ -157,7 +157,7 @@ def plot_halfviolin(data: pd.DataFrame | pd.Series, ax: Axes,
     """
 
     WIDTH = 0.5
-    DUMMYNAME = '__dodged_x__'
+    DUMMY = '__dodged_x__'
     data = data.copy()
 
     offset_size = xdodge_size + (WIDTH / 2)
@@ -166,13 +166,13 @@ def plot_halfviolin(data: pd.DataFrame | pd.Series, ax: Axes,
         data = data.iloc[:, 0]
     if isinstance(data, pd.Series):
         y = data.name
-        x = DUMMYNAME
+        x = DUMMY
         data = pd.DataFrame(data)
-        data[DUMMYNAME] = -offset_size
+        data[DUMMY] = -offset_size
     else:
-        data[DUMMYNAME] = data[x].cat.codes - offset_size 
+        data[DUMMY] = data.astype({x: 'category'})[x].cat.codes - offset_size 
     frontcolor = color or plt.rcParams['patch.facecolor']
-    sns.violinplot(data=data, x=DUMMYNAME, y=y, split=True, color=frontcolor,
+    sns.violinplot(data=data, x=DUMMY, y=y, split=True, color=frontcolor,
                    width=WIDTH, linewidth=0., ax=ax, native_scale=True)
     if data.shape[1] == 2:
         ax.set_xlabel(ax.get_ylabel())

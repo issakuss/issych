@@ -51,8 +51,10 @@ def score_questionnaire(
 
     def _preprocess(answer: pd.DataFrame, preprocess: str) -> pd.DataFrame:
         answer = answer.copy()
+        col_pdfloat = answer.select_dtypes('Float64').columns
+        answer[col_pdfloat] = answer[col_pdfloat].astype(float)  # na_action option will not ignore pd.NA
         try:
-            return answer.map(lambda q: eval(preprocess))  # type: ignore
+            return answer.map(lambda q: eval(preprocess), na_action='ignore')  # type: ignore
         except:
             raise ValueError('Following preprocess code failed: '+ preprocess)
 
@@ -69,7 +71,7 @@ def score_questionnaire(
         return answer
 
     def _total(answer: pd.DataFrame, nanpolicy: str, average: bool, name: str):
-        answer = answer.copy()
+        answer = answer.copy().astype('Float64')
         if nanpolicy == 'raise' and answer.isna().any().any():
             raise ValueError('Dataframe includes NaN\n'
                              'You can ignore this by nanpolicy setting')
@@ -79,7 +81,7 @@ def score_questionnaire(
         if average: 
             score = answer.mean(axis=1, skipna=skipna)
         score.name = name
-        return score.astype('Float64')
+        return score
 
     def _total_subscale(answer: pd.DataFrame, questname: str,
                         min_plus_max: Optional[int], nanpolicy: str,

@@ -84,7 +84,8 @@ def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
             data_ = data_.astype(object).fillna('').astype(str)
             if thr_p:
                 data_.loc[data < thr_p] = f'< {str(thr_p).replace("0.", ".")}'
-            return data_.astype(str).apply(lambda x: x.replace('0.', '.'))
+            data_ = data_.astype(str).apply(lambda x: x.replace('0.', '.'))
+            return data_.apply(pad_zero, args=(sdgts.pvalue,))
 
         data = data.fillna(float('nan')).round(sdgts.main)
         data = data.apply(pad_zero, args=(sdgts.main,))

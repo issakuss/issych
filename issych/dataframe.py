@@ -79,7 +79,10 @@ def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
                 cols_rate: List[str], cols_p: List[str], thr_p: Optional[float]
                 ) -> pd.Series:
         sdgts = Dictm(sdgts)
-        if data.name in cols_p:
+        colname = data.name
+        if isinstance(colname, tuple):
+            colname = colname[-1]
+        if colname in cols_p:
             data_ = data.copy().round(sdgts.pvalue)
             data_ = data_.astype(object).fillna('').astype(str)
             if thr_p:
@@ -90,13 +93,12 @@ def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
         data = data.fillna(float('nan')).round(sdgts.main)
         data = data.apply(pad_zero, args=(sdgts.main,))
 
-        if data.name in cols_rate:
+        if colname in cols_rate:
             data = data.apply(lambda x: x.replace('0.', '.'))
 
         return data
 
     return dataframe.apply(eachcol, args=(sdgts, cols_rate, cols_p, thr_p))
-
 
 
 def flatten_multi_index(dataframe, pad='&emsp;', n_pad=4):

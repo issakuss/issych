@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pingouin as pg
 import matplotlib.pyplot as plt
-from matplotlib.collections import PolyCollection
+from matplotlib.collections import PathCollection
 from matplotlib.patches import Rectangle, Ellipse
 import seaborn as sns
 
@@ -147,37 +147,50 @@ def mask_area(pos_from: float | pd.Timestamp, pos_to: float | pd.Timestamp,
     return ax
 
 
-def plot_halfviolin(data: pd.DataFrame, ax: Axes,
+def plot_halfviolin(data: pd.DataFrame | pd.Series, ax: Axes,
                     x: Optional[str]=None, y: Optional[str]=None,
-                    color: Optional[str]=None, xdodge_size: int=200,
-                    coef_xlim: float=1/1000) -> Axes:
+                    xdodge_size: float=0.,
+                    color: Optional[str]=None) -> Axes:
     """
     Plot half-violin without Ptitprince.
     Tested in test_plot_raincloud.py
     """
-    n = len(data)
-    data = pd.concat([data] * 2).reset_index(drop=True)
-    data['__dummy_col'] = (['dummy_a'] * n) + (['dummy_b'] * n)
 
-    # sns.violinplot disables hue when x or y is None
-    dummy_axis = 'dummy_axis'
-    data[dummy_axis] = 'dummy'
-    x = x or dummy_axis
-    y = y or dummy_axis
+    WIDTH = 0.5
+    DUMMY = '__dodged_x__'
+    data = data.copy()
 
+    offset_size = xdodge_size + (WIDTH / 2)
+
+    if isinstance(data, pd.DataFrame) and data.shape[1] == 1:
+        data = data.iloc[:, 0]
+    if isinstance(data, pd.Series):
+        y = data.name
+        x = DUMMY
+        data = pd.DataFrame(data)
+        data[DUMMY] = -offset_size
+    else:
+        data[DUMMY] = data.astype({x: 'category'})[x].cat.codes - offset_size 
     frontcolor = color or plt.rcParams['patch.facecolor']
-    sns.violinplot(data=data, x=x, y=y, split=True, color=frontcolor,
-                   linewidth=0., ax=ax)
-
-    for collection in ax.collections:  # type: ignore
-        if not isinstance(collection, PolyCollection):
-            continue
-        offsets = collection.get_offsets()
-        offsets[:, 0] -= xdodge_size  # type: ignore
-        collection.set_offsets(offsets)
-    ax.set_xlim(ax.get_xlim()[0] - (xdodge_size * coef_xlim), ax.get_xlim()[1])
+    sns.violinplot(data=data, x=DUMMY, y=y, split=True, color=frontcolor,
+                   width=WIDTH, linewidth=0., ax=ax, native_scale=True)
+    if data.shape[1] == 2:
+        ax.set_xlabel(ax.get_ylabel())
+        ax.set_ylabel('')
 
     return ax
+
+
+def calc_jitter_width(ax: Axes):
+    stripset = [child for child in ax.get_children()
+                if isinstance(child, PathCollection)]
+    
+    jitter_width = 0
+    for strips in stripset:
+        x_offsets = strips.get_offsets()[:, 0]
+        jitter_width = max(jitter_width, max(x_offsets) - min(x_offsets))
+    
+    return jitter_width
 
 
 def plot_raincloud(data: pd.DataFrame, ax: Axes,
@@ -196,26 +209,32 @@ def plot_raincloud(data: pd.DataFrame, ax: Axes,
     ZORDER_LOW = 1
     ZORDER_HIGH = 2
 
+    jitter_width = 0
     if strip:
         stripcolor = stripkwargs.pop('color', color.main)
         stripzorder = stripkwargs.pop('zorder', ZORDER_LOW)
         ax = sns.stripplot(dodge=True, color=stripcolor, zorder=stripzorder,
                            **kwargs, **stripkwargs)
+        jitter_width = calc_jitter_width(ax)
 
     if box:
-        WIDTH = 0.2
+        box_width = jitter_width
         fill = boxkwargs.pop('fill', False)
         boxcolor = boxkwargs.pop('color', color.highlight)
         flierprops = boxkwargs.pop('flierprops', {'marker': '_'})
         boxzorder = boxkwargs.pop('zorder', ZORDER_HIGH)
-        width = boxkwargs.pop('width', WIDTH)
+        width = boxkwargs.pop('width', box_width)
         ax = sns.boxplot(fill=fill, width=width, color=boxcolor,
                          zorder=boxzorder, flierprops=flierprops, **kwargs,
                          **boxkwargs)
 
     if cloud:
+        COEF_PAD = 1.05
+        coef_pad = cloudkwargs.pop('coef_pad', COEF_PAD)
         cloudcolor = cloudkwargs.pop('color', color.sub)
-        ax = plot_halfviolin(color=cloudcolor, **kwargs, **cloudkwargs)
+        ax = plot_halfviolin(color=cloudcolor,
+                             xdodge_size=coef_pad * jitter_width,
+                             **kwargs, **cloudkwargs)
 
     return ax
 

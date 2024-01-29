@@ -32,9 +32,16 @@ def arcsine_sqrt(r: float) -> float:
     return np.arcsin(np.sqrt(r))
 
 
-def iqr(vec_origin: Sequence[float] | pd.Series) -> np.ndarray:
+def convert_to_iqrs(vec_origin: Sequence[float] | pd.Series) -> np.ndarray:
+    """
+    Rescale values relative to IQR.
+
+    >> convert_to_iqrs([1, 2, 3, 4, 100])
+    array([-0.5,  0. ,  0. ,  0.5,  24. ])
+    """
+    vec_origin = pd.Series(vec_origin).astype(float)
     vec_dropna = pd.Series(vec_origin).dropna()
-    vec_to_ret = np.array(vec_origin)
+    vec_to_ret = vec_origin.copy()
     desc = vec_dropna.describe()
     low = desc['25%']
     high = desc['75%']
@@ -42,13 +49,41 @@ def iqr(vec_origin: Sequence[float] | pd.Series) -> np.ndarray:
 
     vec_to_ret[(low < vec_origin) & (vec_origin < high)] = 0.
 
-    are_higher = (vec_origin - high) > 0.
-    are_lower = (vec_origin - low) < 0.
+    are_higher = vec_origin >= high
+    are_lower = vec_origin <= low
     vec_to_ret[are_higher] = (vec_origin[are_higher] - high) / iqr
     vec_to_ret[are_lower] = (low - vec_origin[are_lower]) / iqr * -1
-    return vec_to_ret
+    return vec_to_ret.values
 
+
+def _prep_nanz(vec: Sequence[float] | pd.Series) -> np.ndarray:
+    if isinstance(vec, pd.DataFrame):
+        raise ValueError('DataFrame is not supported.')
+    if isinstance(vec, pd.Series):
+        vec = vec.astype(float)
+    vec = np.array(vec)
+    return vec
+    ...
 
 def nanzscore(vec: Sequence[float] | pd.Series) -> np.ndarray:
-    vec = np.array(vec)
+    """
+    Tested in test_convert_to_iqrs.py
+    """
+    vec = _prep_nanz(vec)
     return (vec - np.nanmean(vec)) / np.nanstd(vec)
+
+
+def nanzscore2value(zscore: float, vec: Sequence[float] | pd.Series) -> float:
+    """
+    Tested in test_convert_to_iqrs.py
+    """
+    vec = _prep_nanz(vec)
+    return (zscore * np.nanstd(vec)) + np.nanmean(vec)
+
+
+def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
+    """
+    Tested in test_convert_to_iqrs.py
+    """
+    vec = _prep_nanz(vec)
+    return (value - np.nanmean(vec)) / np.nanstd(vec)

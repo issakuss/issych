@@ -84,7 +84,7 @@ def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
             colname = colname[-1]
         if colname in cols_p:
             data_ = data.copy().round(sdgts.pvalue)
-            data_ = data_.astype(object).fillna('').astype(str)
+            data_ = data_.astype(str).fillna('')
             if thr_p:
                 data_.loc[data < thr_p] = f'< {str(thr_p).replace("0.", ".")}'
             data_ = data_.astype(str).apply(lambda x: x.replace('0.', '.'))

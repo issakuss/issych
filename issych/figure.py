@@ -360,14 +360,14 @@ def plot_corrmat(dataset: pd.DataFrame, method: str='pearson',
                     color=color.main)
         ax.set_axis_off()
     
-    def plot_dist(data: np.ndarray, color: str, lw: float, **kwargs):
+    def plot_dist(data: np.ndarray, color: str, **kwargs):
         if len(data.unique()) <= 2:
             sns.barplot(data.value_counts(), color=color)
         else:
-            sns.violinplot(x=data, linewidth=lw, color=color, inner='box')
+            sns.violinplot(x=data, color=color, inner='box')
 
     path_ini = path_ini if path_ini else DEFAULT_PATH_RCPARAMS
-    abbr = abbr if abbr else load_config('config/abbr.ini').flatten()
+    abbr = abbr if abbr else {}
 
     color, *_ = load_rcparams(path_ini)
     set_rcparams(path_ini)

@@ -1,4 +1,5 @@
 from typing import Optional, Sequence
+from math import floor
 
 import numpy as np
 import pandas as pd
@@ -87,3 +88,8 @@ def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
     """
     vec = _prep_nanz(vec)
     return (value - np.nanmean(vec)) / np.nanstd(vec)
+
+
+def rounddown(value: float, n_digit: int):
+    factor = 10 ** n_digit
+    return floor((value * factor)) / factor

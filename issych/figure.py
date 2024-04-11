@@ -383,3 +383,18 @@ def plot_corrmat(dataset: pd.DataFrame, method: str='pearson',
             ax.set_xlabel(abbr.full(ax.get_xlabel()), rotation=rotation)
             ax.set_ylabel(abbr.full(ax.get_ylabel()), rotation=0., ha='right')
     return g
+
+
+def plot_prepost(dataset: pd.DataFrame, ax: Axes, pre: str, post: str,
+                 ls: str='--',
+                 kwargs_scatter: dict={}, kwargs_diagline: dict={}):
+    color = get_rcparams()[0]
+    sns.scatterplot(data=dataset, x=pre, y=post, ax=ax,
+                    fc=color.main, ec=color.main, **kwargs_scatter)
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    newlim = (min(xlim[0], ylim[0]), max(xlim[1], ylim[1]))
+    ax.plot(newlim, newlim, ls=ls, color=color.sub)
+    ax.set_aspect('equal')
+    ax.set_xlim(newlim)
+    ax.set_ylim(newlim)

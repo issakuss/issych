@@ -25,8 +25,29 @@ class Dictm(Dict):
             flatten |= v
         return flatten
 
-    def full(self, key: str) -> str:
-        full = self.get(key)
-        if full is None:
+    def may(self, key: str) -> str:
+        """
+        辞書に該当するキーがあれば対応する要素を返します。
+        該当するキーがなければ、キーをそのまま返します。
+        >> foo = Dictm({'a': 1, 'b': 2})
+        >> foo.may('a')
+        1
+        >> foo.may('c')
+        'c'
+        """
+        val = self.get(key)
+        if val is None:
             return key
-        return full
+        return val
+
+    def full(self, *args) -> str:
+        """
+        Dictm.may()と同じ機能を持ちます。
+        主に、単語の省略形を完全形に直すために用います。
+        >> foo = Dictm({'bdi2': 'BDI-II'})
+        >> foo.full('bdi2')
+        'BDI-II'
+        >> foo.full('cesd')
+        'cesd'
+        """
+        return self.may(*args)

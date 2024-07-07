@@ -3,12 +3,15 @@ from typing import Any, Dict
 
 class Dictm(Dict):
     """
-    Dictm is almost equal to the built-in dict.
-    However, it allows for calling contents using dot notation.
+    組み込みの辞書型と同じ機能を持っています。
+    組み込みの辞書型にはない、いくつかのメソッドを持っています。
+    加えて、以下の例のように、ドットを使って要素を呼び出すことができます
+    （プログラムをより簡易に書くための機能です）。
 
     >> foo = Dictm({'a': 1, 'b': 2})
     >> foo.a
     1
+
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -20,6 +23,12 @@ class Dictm(Dict):
         return Dictm(dict(self) | dict(other))
 
     def flatten(self):
+        """
+        ネストされた辞書を開きます。
+        >> foo = Dictm({'A': {'a': 1, 'b': 2}, 'B': {'c': 3, 'd': 4}}) 
+        >> foo.flatten()
+        {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+        """
         flatten = Dictm()
         for v in self.values():
             flatten |= v

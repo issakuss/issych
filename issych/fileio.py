@@ -8,8 +8,8 @@ from .dataclass import Dictm
 
 def load_config(ini_path: Pathlike) -> Dictm:
     """
-    Load INI file.
-    Loaded values are converted using eval()
+    INIファイルを`issych.dataclass.Dictm`型として読み込みます。
+    読み込まれた値は、`eval()`を使って処理されます。
     """
 
     def except_values(val):
@@ -34,7 +34,7 @@ def load_config(ini_path: Pathlike) -> Dictm:
 
 def save_ini(data: Dict[str, Dict], ini_path: Pathlike):
     """
-    Save ini file.
+    INIファイルを保存します。
     """
 
     config = configparser.ConfigParser()

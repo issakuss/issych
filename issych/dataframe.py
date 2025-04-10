@@ -1,143 +1,73 @@
-from typing import cast, Any, Optional, List
+from typing import Sequence
 
+import numpy as np
 import pandas as pd
 
-from .misc import alphabet_to_num
-from .fileio import load_config
-from .dataclass import Dictm
+from .misc import alphabet2num
 
 
-def extract_byalphabet(dataframe: pd.DataFrame, range_min: str, range_max: str
-    ) -> pd.DataFrame:
+def loc_byalphabet(dataframe: pd.DataFrame, locs: Sequence[str]
+                   ) -> pd.DataFrame:
     """
-    extract_byalphabet(dataframe, 'A', 'C)
-    is equall to dataframe.iloc[:, 0:3]
+    pd.DataFrameから、アルファベットで指定した列を抽出します。
+    MS Excelにおける列表示をそのまま利用しつつ列を指定できます。
+    ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
+    その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
+
+    >> loc_byalphabet(dataframe, ['A', 'C'])
+    は、
+    >> dataframe.iloc[:, [0, 2]]
+    と同等になります。
+
+    Tested with: monshi.Monshi().label()
     """
-    mini = alphabet_to_num(range_min) - 1
-    maxi = alphabet_to_num(range_max)
+    index = [alphabet2num(loc) - 1 for loc in locs]
+    return dataframe.iloc[:, index]
+
+
+def loc_range_byalphabet(dataframe: pd.DataFrame, range_min: str,
+                         range_max: str) -> pd.DataFrame:
+    """
+    pd.DataFrameから、アルファベットで指定した列範囲を抽出します。
+    抽出される列には、range_min, range_maxに指定された列も含まれます
+    （つまり、pd.DataFrame().loc[]による指定方法とは動作が異なります）。
+    MS Excelにおける列表示をそのまま利用しつつ列範囲を指定できます。
+    ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
+    その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
+
+    >> loc_range_byalphabet(dataframe, 'A', 'C')
+    は、
+    >> dataframe.iloc[:, 0:3]
+    と同等になります。
+
+    Tested with: monshi.Monshi().label()
+    """
+    mini = alphabet2num(range_min) - 1
+    maxi = alphabet2num(range_max)
     return dataframe.iloc[:, mini:maxi]
 
 
-def extract_colname_startswith(dataframe: pd.DataFrame, head_colname: str):
+def loc_cols_name_startswith(dataframe: pd.DataFrame, head_colname: str
+                             ) -> pd.DataFrame:
     """
-    Extract columns whose name starts with head_colname.
+    head_colnameから始まる列名の列を抽出します。
+
+    Tested with: monshi.Monshi().label()
     """
     are_target = [col.startswith(head_colname) for col in dataframe.columns]
     return dataframe.loc[:, are_target]
 
 
-def fullform_index(dataframe: pd.DataFrame, abbr: dict,
-                   for_index: bool=True, for_columns: bool=True
-                   ) -> pd.DataFrame:
-
-    def make_lowercase(v: Any) -> Any:
-        if isinstance(v, str):
-            return v.lower()
-        return v
-
-    def eachind(ind: pd.Index, abbr: dict) -> pd.Index:
-        if isinstance(ind, pd.MultiIndex):
-            ind = pd.MultiIndex.from_frame(
-                (ind.to_frame(allow_duplicates=True).replace(abbr)))
-            ind.names = (None,) * ind.nlevels  # type: ignore
-            return ind
-        old_ind = ind.to_frame().map(make_lowercase)
-        ind = pd.Index(old_ind.replace(abbr).iloc[:, 0])
-        ind.name = None
-        return ind
-        
-    dataframe = dataframe.copy()
-
-    index, columns = [eachind(ind, abbr)
-                      for ind in [dataframe.index, dataframe.columns]]
-    if for_index: dataframe.index = index
-    if for_columns: dataframe.columns = columns
-    
-    return dataframe
-
-
-def pad_zero(cell: float | int | str, sdgt: Optional[int]=None) -> str:
-    if isinstance(cell, int):
-        return str(cell)
-    if pd.isna(cell):
-        return ''
-    sdgt = sdgt or load_config('config/misc.ini').general.sdgt
-    if cell == '-':
-        return str(cell)
-    cell = str(cell)
-    n_shortage = sdgt - (len(cell) - cell.find('.') - 1)
-    return cell + ('0' * n_shortage)
-
-
-def set_sdgt(dataframe: pd.DataFrame, sdgts: dict,
-             cols_rate: List[str]=[], cols_p: List[str]=[],
-             thr_p: Optional[float]=None) -> pd.DataFrame:
+def vec2sqmatrix(vec: Sequence) -> np.ndarray:
     """
-    sdgt must include 'main', 'pvalue' keys.
+    ベクトルを正方行列のnp.ndarrayに変換します。
+    >> vec2sqmatrix([1, 2, 3, 4])
+    np.ndarray([[1, 2],
+                [3, 4])
     """
-    def eachcol(data: pd.Series, sdgts: dict,
-                cols_rate: List[str], cols_p: List[str], thr_p: Optional[float]
-                ) -> pd.Series:
-        sdgts = Dictm(sdgts)
-        colname = data.name
-        if isinstance(colname, tuple):
-            colname = colname[-1]
-        if colname in cols_p:
-            data_ = data.copy().round(sdgts.pvalue)
-            data_ = data_.astype(str).fillna('')
-            if thr_p:
-                data_.loc[data < thr_p] = f'< {str(thr_p).replace("0.", ".")}'
-            data_ = data_.astype(str).apply(lambda x: x.replace('0.', '.'))
-            return data_.apply(pad_zero, args=(sdgts.pvalue,))
-
-        data = data.fillna(float('nan')).round(sdgts.main)
-        data = data.apply(pad_zero, args=(sdgts.main,))
-
-        if colname in cols_rate:
-            data = data.apply(lambda x: x.replace('0.', '.'))
-
-        return data
-
-    return dataframe.apply(eachcol, args=(sdgts, cols_rate, cols_p, thr_p))
-
-
-def flatten_multi_index(dataframe, pad='&emsp;', n_pad=4):
-    """
-    space code = '&emsp;'
-    """
-    def insert_pad_to_index(dataframe, pad, n_pad):
-        if not isinstance(dataframe.index, pd.MultiIndex):
-            dataframe.index = [(pad * n_pad) + index
-                                for index in dataframe.index]
-            return
-        newindex = []
-        for row in dataframe.index:
-            row = cast(pd.Series, row)
-            newindex.append(tuple((pad * n_pad) + row[i]
-                                    for i, _ in enumerate(row)))
-        dataframe.index = pd.MultiIndex.from_frame(pd.DataFrame(newindex))
-        dataframe.index.names = [None] * len(dataframe.index.names)  # type: ignore
-
-    def insert_empty_row(dataframe, name):
-        dataframe_ = dataframe.T
-        dataframe_.insert(0, name, pd.NA)
-        return dataframe_.T
-
-    def eachindex(dataframe, index, pad, n_pad):
-        dataframe = dataframe.loc[index, :]
-        if (len(dataframe.index) == 1) and pd.isna(dataframe.index.name):
-            dataframe.index = pd.Index([index])
-            return dataframe
-
-        dataframe = flatten_multi_index(dataframe, pad, n_pad)
-        dataframe.index = dataframe.index.fillna('')
-        insert_pad_to_index(dataframe, pad, n_pad)
-        dataframe = insert_empty_row(dataframe, index)
-        return dataframe
-
-    if not isinstance(dataframe.index, pd.MultiIndex):
-        return dataframe
-    higher_index = list(dataframe.index.get_level_values(0))
-    dfs = [eachindex(dataframe, index, pad, n_pad)
-           for index in sorted(set(higher_index), key=higher_index.index)]
-    return pd.concat(dfs)
+    length = np.sqrt(len(vec))
+    if not length.is_integer():
+        raise RuntimeError(
+            f'ベクトルの長さが{length}のため、正方行列に変換できません。')
+    length = int(length)
+    return np.array(vec).reshape(length, length)

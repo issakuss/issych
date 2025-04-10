@@ -1,0 +1,10 @@
+[level1]
+key1 = 'value1'
+key2 = ['value2', 'value3']
+key3 = 3
+
+[level1.level2]
+key11 = 'valuelevel2'
+
+[level1.level2.level3]
+key111 = 'valuelevel3'

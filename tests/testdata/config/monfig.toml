@@ -1,0 +1,27 @@
+[_cols_item]
+    # 回答を集めたデータフレームのうち、どの列までがどの質問紙に対応しているかを示す
+    info = [0, 1]
+    scale1 = ['C', 'D', 'E', 'G', 'H']
+    scale2 = 'scale2_'
+    scale3 = 'S:U'
+
+[info]
+    idx_reverse = []
+
+[scale1]
+    idx_reverse = [1, 2]
+    min_plus_max = 6
+    na_policy = 'ignore'
+    average = true
+    
+[scale2]
+    preprocess = 'q > 3'
+    idx_reverse = [1, 3, 4]
+    min_plus_max = 1
+    [scale2.subscale]
+        a = [-1, 3, 5, 7, 9]
+        b = [2, 4, 6, 8, 10]
+        total = 'all'
+
+[scale3]
+    idx_reverse = []

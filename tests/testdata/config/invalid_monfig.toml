@@ -1,0 +1,6 @@
+[dummy_scale1]
+    idx_reverse = [1, 2]
+    
+[dummy_scale2]
+    [dummy_scale2.subscale]
+        a = [-1, 2]

@@ -1,4 +1,8 @@
 from typing import Any, Dict
+from pathlib import Path
+
+from dynaconf.base import LazySettings
+from dynaconf import Dynaconf
 
 
 class Dictm(Dict):
@@ -12,9 +16,35 @@ class Dictm(Dict):
     >> foo.a
     1
 
+    ４パターンの作り方があります。
+    1. 辞書を引数に取る方法
+    >> foo = Dictm({'a': 1, 'b': 2})
+    2. キーワードと引数を取る方法
+    >> foo = Dictm(a=1, b=2)
+    3. DynaconfのLazySettingsを引数に取る方法
+    >> foo = Dictm(Dynaconf(settings_files='settings.toml'))
+    4. Dynaconfに対応した設定ファイルのパスを引数に取る方法
+    >> foo = Dictm('settings.toml')
     """
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        def _dictmize_nested(mydict: dict):
+            return {k: Dictm(v) if isinstance(v, dict) else v
+                    for k, v in mydict.items()}
+
+        if len(args) == 1:
+            match args[0]:
+                case dict():
+                    mydict = args[0]
+                case LazySettings():
+                    mydict = args[0].as_dict()
+                    mydict = {k.lower(): v if isinstance(v, dict) else v
+                              for k, v in mydict.items()}
+                    args = (mydict,)
+                case str() | Path() as mypath:
+                    mydict = Dictm(Dynaconf(settings_files=mypath))
+        else:
+            mydict = dict(*args, **kwargs)
+        super().__init__(_dictmize_nested(mydict))
         self.__dict__ = self
 
     def __getattr__(self, _: str) -> Any: ...
@@ -48,15 +78,3 @@ class Dictm(Dict):
         if val is None:
             return key
         return val
-
-    def full(self, *args) -> str:
-        """
-        Dictm.may()と同じ機能を持ちます。
-        主に、単語の省略形を完全形に直すために用います。
-        >> foo = Dictm({'bdi2': 'BDI-II'})
-        >> foo.full('bdi2')
-        'BDI-II'
-        >> foo.full('cesd')
-        'cesd'
-        """
-        return self.may(*args)

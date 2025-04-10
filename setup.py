@@ -7,12 +7,14 @@ INSTALL_REQUIRES = [
     'pyarrow>=15.0.0',  # To suppress pandas future warning
     'pingouin>=0.5.3',
     'matplotlib>=3.8.2',
-    'seaborn>=0.13.1'
+    'seaborn>=0.13.1',
+    'tqdm>=4.65.0',
+    'dynaconf>=3.2.10',
 ]
 
 setup(
     name='issych',
-    version='0.0.5.0',
+    version='0.1.0.0',
     author='Issaku Kawashima',
     author_email='issakuss@gmail.com',
     description='Convenient tools for psychological studies',

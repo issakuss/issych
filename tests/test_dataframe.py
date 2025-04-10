@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from issych.misc import vec2sqmatrix
+from issych.dataframe import vec2sqmatrix
 
 
 class TestVec2Sqmatrix(unittest.TestCase):
@@ -14,5 +14,5 @@ class TestVec2Sqmatrix(unittest.TestCase):
         seq3 = [1, 2, 3, 4, 5]
         self.assertTrue(np.array_equal(vec2sqmatrix(seq1), np.array(mat1)))
         self.assertTrue(np.array_equal(vec2sqmatrix(seq2), np.array(mat2)))
-        with self.assertRaises(ValueError):
+        with self.assertRaises(RuntimeError):
             vec2sqmatrix(seq3)

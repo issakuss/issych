@@ -2,7 +2,8 @@ import unittest
 
 import pandas as pd
 from issych.stat import (
-    convert_to_iqrs, nanzscore, nanzscore2value, value2nanzscore)
+    convert_to_iqrs, nanzscore, nanzscore2value, value2nanzscore,
+    arcsine_sqrt, fisher_z)
 
 
 class TestIQR(unittest.TestCase):
@@ -36,3 +37,29 @@ class TestIQR(unittest.TestCase):
         # Case including pd.NA
         SEQ = pd.Series(SEQ).astype('Float64')
         self.check_with_nan(SEQ, IQRS_Z, NANZ)
+
+
+class TestArcSineSqrt(unittest.TestCase):
+    def test(self):
+        # Calculated with R
+        self.assertEqual(arcsine_sqrt(0), 0)
+        self.assertAlmostEqual(arcsine_sqrt(1), 1.570796, places=6)
+        self.assertAlmostEqual(arcsine_sqrt(0.5), 0.7853982, places=6)
+        with self.assertRaises(ValueError):
+            arcsine_sqrt(-0.1)
+        with self.assertRaises(ValueError):
+            arcsine_sqrt(1.1)
+
+
+class TestFisherZ(unittest.TestCase):
+    def test(self):
+        # Calculated with R psych::fisherz()
+        self.assertEqual(fisher_z(0.), 0.)
+        self.assertAlmostEqual(fisher_z(0.5), 0.5493061, places=6)
+        self.assertAlmostEqual(fisher_z(-0.5), -0.5493061, places=6)
+        self.assertEqual(fisher_z(1), float('inf'))
+        self.assertEqual(fisher_z(-1), float('-inf'))
+        with self.assertRaises(ValueError):
+            fisher_z(2)
+        with self.assertRaises(ValueError):
+            fisher_z(-2)

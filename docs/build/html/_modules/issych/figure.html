@@ -1,0 +1,1137 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>issych.figure &#8212; issych 0.1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=c78dba08"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/issych/figure';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">issych 0.1.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    Functions
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial（まだ）
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../glossery.html">
+    Glossery
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    Functions
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial（まだ）
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../glossery.html">
+    Glossery
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">issych.figure</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for issych.figure</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">cycler</span> <span class="kn">import</span> <span class="n">cycler</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pingouin</span> <span class="k">as</span> <span class="nn">pg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="kn">import</span> <span class="n">PathCollection</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span><span class="p">,</span> <span class="n">Ellipse</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">dynaconf</span> <span class="kn">import</span> <span class="n">Dynaconf</span>
+
+<span class="kn">from</span> <span class="nn">.dataclass</span> <span class="kn">import</span> <span class="n">Dictm</span>
+<span class="kn">from</span> <span class="nn">.typealias</span> <span class="kn">import</span> <span class="n">Pathlike</span><span class="p">,</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">,</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">.stat</span> <span class="kn">import</span> <span class="n">Pvalue2SigMark</span>
+
+<span class="c1"># Settings</span>
+
+<div class="viewcode-block" id="set_rcparams">
+<a class="viewcode-back" href="../../api/generated/issych.figure.set_rcparams.html#issych.figure.set_rcparams">[docs]</a>
+<span class="k">def</span> <span class="nf">set_rcparams</span><span class="p">(</span><span class="n">in_path_toml</span><span class="p">:</span> <span class="n">Pathlike</span><span class="o">=</span><span class="s1">&#39;config/rcparams.toml&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ``in_path_toml`` に指定されたファイルにある設定を反映させます。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_path_toml: :py:data:`issych.typealias.Pathlike`</span>
+<span class="sd">        ここに指定されたパスにあるファイルを :py:func:`Dynaconf.dynaconf` で読み取ります。</span>
+<span class="sd">        読み取った設定を、 :py:data:`matplotlib.rcParams` に反映させます。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    ``toml`` ファイルには、 :ref:`issych-figure-setting-format` で記入されている必要があります。</span>
+
+<span class="sd">    Tested with: prepare_ax(), prepare_axes()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">Dynaconf</span><span class="p">(</span><span class="n">settings_files</span><span class="o">=</span><span class="n">in_path_toml</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span><span class="s1">&#39;axes.spines.right&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+         <span class="s1">&#39;axes.spines.top&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+         <span class="s1">&#39;errorbar.capsize&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">capsize</span><span class="p">,</span>
+         <span class="s1">&#39;figure.dpi&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">dpi</span><span class="p">,</span>
+         <span class="s1">&#39;figure.figsize&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">figsize</span><span class="p">,</span>
+         <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">fontsize</span><span class="p">,</span>
+         <span class="s1">&#39;savefig.format&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
+         <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">back</span><span class="p">,</span>
+         <span class="s1">&#39;axes.labelcolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">:</span> <span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">cycle</span><span class="p">),</span>
+         <span class="s1">&#39;figure.edgecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;figure.facecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">back</span><span class="p">,</span>
+         <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;savefig.facecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">back</span><span class="p">,</span>
+         <span class="s1">&#39;lines.color&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;lines.linewidth&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">linewidth</span><span class="p">,</span>
+         <span class="s1">&#39;text.color&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">,</span>
+         <span class="s1">&#39;patch.facecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">highlight</span><span class="p">,</span>
+         <span class="s1">&#39;patch.edgecolor&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">subhighlight</span><span class="p">,</span>
+         <span class="s1">&#39;grid.color&#39;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">sub</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="get_current_rcparams">
+<a class="viewcode-back" href="../../api/generated/issych.figure.get_current_rcparams.html#issych.figure.get_current_rcparams">[docs]</a>
+<span class="k">def</span> <span class="nf">get_current_rcparams</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dictm</span><span class="p">,</span> <span class="n">Dictm</span><span class="p">,</span> <span class="n">Dictm</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    現在の ``rcparams`` を、 :ref:`issych-figure-setting-format` で取得します。</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    color: :class:`issych.dataclass.Dictm`</span>
+<span class="sd">        色に関する情報です。</span>
+<span class="sd">    size: :class:`issych.dataclass.Dictm`</span>
+<span class="sd">        図やオブジェクトのサイズに関する情報です。</span>
+<span class="sd">    misc: :class:`issych.dataclass.Dictm`</span>
+<span class="sd">        図の解像度と、図のファイル拡張子についてです。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Tested with: :py:func:`plot_prepost` , :py:func:`plot_raincloud`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">Dictm</span><span class="p">(</span>
+        <span class="n">main</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">],</span>
+        <span class="n">back</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.facecolor&#39;</span><span class="p">],</span>
+        <span class="n">sub</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;grid.color&#39;</span><span class="p">],</span>
+        <span class="n">highlight</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;patch.facecolor&#39;</span><span class="p">],</span>
+        <span class="n">subhighlight</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;patch.edgecolor&#39;</span><span class="p">],</span>
+        <span class="n">cycle</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]))</span>
+
+    <span class="n">size</span> <span class="o">=</span> <span class="n">Dictm</span><span class="p">(</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">],</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">],</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;lines.linewidth&#39;</span><span class="p">],</span>
+        <span class="n">capsize</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;errorbar.capsize&#39;</span><span class="p">])</span>
+
+    <span class="n">misc</span> <span class="o">=</span> <span class="n">Dictm</span><span class="p">(</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">],</span>
+        <span class="nb">format</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;savefig.format&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">Dictm</span><span class="p">({</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span> <span class="s1">&#39;misc&#39;</span><span class="p">:</span> <span class="n">misc</span><span class="p">})</span></div>
+
+
+<span class="c1"># Figure preparation</span>
+
+<div class="viewcode-block" id="calc_figsize">
+<a class="viewcode-back" href="../../api/generated/issych.figure.calc_figsize.html#issych.figure.calc_figsize">[docs]</a>
+<span class="k">def</span> <span class="nf">calc_figsize</span><span class="p">(</span><span class="n">n_row</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_col</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">axsizeratio</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :py:data:`issych.typealias.Figure` に含まれる :py:data:`issych.typealias.Axes` の行数・列数に応じて、適切な :py:data:`issych.typealias.Figure` のサイズを計算します。</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_row: int</span>
+<span class="sd">        ``Axes`` の行数です。</span>
+<span class="sd">        一つの図において、縦に何個のプロットが並んでいるかです。</span>
+<span class="sd">    n_col: int</span>
+<span class="sd">        ``Axes`` の列数です。</span>
+<span class="sd">        一つの図において、横に何個のプロットが並んでいるかです。</span>
+<span class="sd">    axsizeratio: tuple</span>
+<span class="sd">        X方向（横）の長さとY方向（縦）の長さの比率を指定してください。</span>
+<span class="sd">        ``rcParams`` に設定している縦横比に、``Axes`` の行列数と ``axsizeratio``をかけたものが、返り値になります。</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        &gt;&gt;&gt; axsizeratio=(2., 0.5)</span>
+<span class="sd">        最終的に返される縦横の長さについて、横に2倍、縦に0.5倍されます。</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ratio: tuple</span>
+<span class="sd">        適切なX方向（横）の長さとY方向（縦）の長さです。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Tested with: :py:func:`prepare_axes`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">])</span>
+    <span class="n">figsize</span> <span class="o">*=</span> <span class="p">(</span><span class="n">n_col</span><span class="p">,</span> <span class="n">n_row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">figsize</span> <span class="o">*</span> <span class="n">axsizeratio</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="prepare_ax">
+<a class="viewcode-back" href="../../api/generated/issych.figure.prepare_ax.html#issych.figure.prepare_ax">[docs]</a>
+<span class="k">def</span> <span class="nf">prepare_ax</span><span class="p">(</span><span class="n">axsizeratio</span><span class="p">:</span> <span class="n">Tuple</span><span class="o">=</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span>
+               <span class="n">in_path_toml</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Pathlike</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    一つの :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    axsizeratio: tuple</span>
+<span class="sd">        X方向（横）の長さとY方向（縦）の長さの比率を指定してください。</span>
+<span class="sd">        ``rcParams`` に設定している縦横比にこの値をかけたサイズの ``Axes`` が生成されます。</span>
+<span class="sd">    in_path_toml: </span>
+<span class="sd">        ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。</span>
+<span class="sd">        ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    :py:func:`matplotlib.pyplot.subplot` とほぼ同一です。</span>
+<span class="sd">    ただし、 :py:func:`set_rcparams` が事前に実行されます。</span>
+
+<span class="sd">    Tested with: TestMaskArea(), TestPlotPrePost()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">set_rcparams</span><span class="p">(</span><span class="n">in_path_toml</span><span class="p">)</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="n">calc_figsize</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axsizeratio</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="prepare_axes">
+<a class="viewcode-back" href="../../api/generated/issych.figure.prepare_axes.html#issych.figure.prepare_axes">[docs]</a>
+<span class="k">def</span> <span class="nf">prepare_axes</span><span class="p">(</span><span class="n">n_row</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_col</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axsizeratio</span><span class="p">:</span> <span class="n">Tuple</span><span class="o">=</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span>
+                 <span class="n">in_path_toml</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Pathlike</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Figure</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    指定した行数・列数の :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_row: int</span>
+<span class="sd">        ``Axes`` の行数です。</span>
+<span class="sd">        一つの図において、縦に何個のプロットが並んでいるかです。</span>
+<span class="sd">    n_col: int</span>
+<span class="sd">        ``Axes`` の列数です。</span>
+<span class="sd">        一つの図において、横に何個のプロットが並んでいるかです。</span>
+<span class="sd">    axsizeratio: tuple</span>
+<span class="sd">        X方向（横）の長さとY方向（縦）の長さの比率を指定してください。</span>
+<span class="sd">        ``rcParams`` に設定している縦横比にこの値をかけたサイズの ``Axes`` が生成されます。</span>
+<span class="sd">    in_path_toml: </span>
+<span class="sd">        ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。</span>
+<span class="sd">        ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。 </span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    :py:func:`matplotlib.pyplot.subplots` とほぼ同一ですが、 :py:func:`set_rcparams` が事前に実行されます。</span>
+<span class="sd">    また、 ``n_row`` =1, ``n_col`` =1の場合でも、 ``Axes`` は :py:class:`numpy.ndarray` として返されます。</span>
+
+<span class="sd">    Tested with: TestPlotRainCloud()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">set_rcparams</span><span class="p">(</span><span class="n">in_path_toml</span><span class="p">)</span>
+    <span class="n">figsize</span> <span class="o">=</span> <span class="n">calc_figsize</span><span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_col</span><span class="p">,</span> <span class="n">axsizeratio</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_col</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">axes</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+
+<span class="c1"># Low-level plotting</span>
+
+<div class="viewcode-block" id="draw_diag">
+<a class="viewcode-back" href="../../api/generated/issych.figure.draw_diag.html#issych.figure.draw_diag">[docs]</a>
+<span class="k">def</span> <span class="nf">draw_diag</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    図の対角線上に線が引かれます。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    ``kwargs`` には、:py:func:matplotlib.pyplot.plot` に渡す引数を指定できます。</span>
+
+<span class="sd">    Tested with: plot_prepost()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xlim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+    <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+
+<div class="viewcode-block" id="mask_area">
+<a class="viewcode-back" href="../../api/generated/issych.figure.mask_area.html#issych.figure.mask_area">[docs]</a>
+<span class="k">def</span> <span class="nf">mask_area</span><span class="p">(</span><span class="n">pos_from</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span> <span class="n">pos_to</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
+              <span class="n">orient</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;horz&#39;</span><span class="p">,</span> <span class="s1">&#39;vert&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+              <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    指定した範囲を塗りつぶします。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos_from: float or :py:data:`pandas.Timestamp`</span>
+<span class="sd">        この位置以降の範囲を塗りつぶします。</span>
+<span class="sd">    pos_to: float or :py:data:`pandas.Timestamp`</span>
+<span class="sd">        この位置以前の範囲を塗りつぶします。</span>
+<span class="sd">    orient: {&#39;horz&#39;, &#39;vert&#39;, &#39;h&#39;, &#39;v&#39;}</span>
+<span class="sd">        &#39;horz&#39;または&#39;h&#39;を指定すると、指定されたX軸範囲を塗りつぶします。</span>
+<span class="sd">        &#39;vert&#39;または&#39;v&#39;を指定すると、指定されたY軸範囲を塗りつぶします。</span>
+<span class="sd">    ax: :py:data:`issych.typealias.Axes`</span>
+<span class="sd">    color: str, optional</span>
+<span class="sd">        塗りつぶすのに用いる色です。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    ``kwargs`` には、:py:func:`matplotlib.pyplot.add_patch` に渡す引数を指定できます。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_horz</span> <span class="o">=</span> <span class="n">orient</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+    <span class="n">lim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_horz</span> <span class="k">else</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos_from</span><span class="p">,</span> <span class="n">lim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">is_horz</span> <span class="k">else</span> <span class="p">(</span><span class="n">lim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos_from</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">pos_to</span> <span class="o">-</span> <span class="n">pos_from</span>
+    <span class="n">fulllength</span> <span class="o">=</span> <span class="n">lim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">lim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">size</span> <span class="k">if</span> <span class="n">is_horz</span> <span class="k">else</span> <span class="n">fulllength</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">fulllength</span> <span class="k">if</span> <span class="n">is_horz</span> <span class="k">else</span> <span class="n">size</span>
+
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<span class="c1"># High-level plotting</span>
+
+<div class="viewcode-block" id="plot_within">
+<a class="viewcode-back" href="../../api/generated/issych.figure.plot_within.html#issych.figure.plot_within">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_within</span><span class="p">(</span><span class="n">dataset</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+                <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">y</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">ls</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+                <span class="n">kwargs_scatter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">kwargs_diagline</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    いわゆる横持ち（Wide format）のデータフレームから、Within plot を描画します。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset: :py:class:`pandas.DataFrame`</span>
+<span class="sd">        図に用いるデータフレームです。</span>
+<span class="sd">    x: str</span>
+<span class="sd">        X軸に用いる列名です。</span>
+<span class="sd">    y: str</span>
+<span class="sd">        Y軸に用いる列名です。</span>
+<span class="sd">    ls: str</span>
+<span class="sd">        対角線上に引く線のラインスタイルです。</span>
+<span class="sd">        :py:func:`matplotlib.pyplot.plot` に渡します。</span>
+<span class="sd">    kwargs_scatter: dict, optional</span>
+<span class="sd">        :py:func:`seaborn.scatterplot` に渡される引数です。</span>
+<span class="sd">    kwargs_diagline: dict, optional</span>
+<span class="sd">        :py:func:`matplotlib.pyplot.plot` に渡される引数です。</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Within plot とは、対応のあるデータを正方形の散布図に描画し、対角線を引いただけのものです。</span>
+<span class="sd">    たとえば、pre-post のデータを描画するのに便利です。</span>
+<span class="sd">    ``x`` に pre、``y`` に post のデータを指定します。</span>
+<span class="sd">    すると、対角線の上側にあるポイントは Post で値が増えていることになります。</span>
+<span class="sd">    このように、各サンプルの変化を一目で確認できます。</span>
+
+<span class="sd">    .. tip::</span>
+<span class="sd">        Within plot という名前は Issych 作者が勝手につけたものです。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs_scatter</span> <span class="o">=</span> <span class="n">kwargs_scatter</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">kwargs_diagline</span> <span class="o">=</span> <span class="n">kwargs_diagline</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">get_current_rcparams</span><span class="p">()</span><span class="o">.</span><span class="n">color</span>
+
+    <span class="n">fc</span> <span class="o">=</span> <span class="n">kwargs_scatter</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fc&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+    <span class="n">ec</span> <span class="o">=</span> <span class="n">kwargs_scatter</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ec&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+    <span class="n">color_line</span> <span class="o">=</span> <span class="n">kwargs_diagline</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">sub</span><span class="p">)</span>
+
+    <span class="n">color</span> <span class="o">=</span> <span class="n">get_current_rcparams</span><span class="p">()</span><span class="o">.</span><span class="n">color</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                    <span class="n">fc</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">ec</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_scatter</span><span class="p">)</span>
+    <span class="n">xlim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+    <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="n">newlim</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">newlim</span><span class="p">,</span> <span class="n">newlim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_diagline</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color_line</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">newlim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">newlim</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="plot_raincloud">
+<a class="viewcode-back" href="../../api/generated/issych.figure.plot_raincloud.html#issych.figure.plot_raincloud">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_raincloud</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">Vector</span><span class="p">,</span>
+                   <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+                   <span class="n">x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Vector</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Vector</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">orient</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">,</span>
+                   <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cloud</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">kwargs_strip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">kwargs_box</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">kwargs_cloud</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RainCloud プロットを描画します。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: str</span>
+<span class="sd">        X軸に用いる列名です。</span>
+<span class="sd">    y: str</span>
+<span class="sd">        Y軸に用いる列名です。</span>
+<span class="sd">    orient: {&#39;h&#39;, &#39;v&#39;}, default &#39;v&#39;</span>
+<span class="sd">        RainCloud プロットの方向です。</span>
+<span class="sd">        `&#39;h&#39;` の場合は横方向、 `&#39;v&#39;` の場合は縦方向のプロットになります。</span>
+<span class="sd">    strip: bool, default True</span>
+<span class="sd">        Strip plot を描画するかどうかです。</span>
+<span class="sd">    box: bool, default True</span>
+<span class="sd">        箱ひげ図を描画するかどうかです。</span>
+<span class="sd">    cloud: bool, default True</span>
+<span class="sd">        半バイオリンプロットを描画するかどうかです。</span>
+<span class="sd">    kwargs_strip: dict, optional</span>
+<span class="sd">        :py:func:`seaborn.stripplot` に渡すキーワード引数です。</span>
+<span class="sd">    kwargs_box: dict, optional</span>
+<span class="sd">        :py:func:`seaborn.boxplot` に渡すキーワード引数です。</span>
+<span class="sd">    kwargs_cloud: dict, optional</span>
+<span class="sd">        :py:func:`seaborn.violinplot` に渡すキーワード引数です。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    RainCloud プロットをサポートするパッケージとして、 ``PtitPrince`` が有名です。</span>
+<span class="sd">    しかし ``PtitPrince`` は（2025年4月14日現在）しばらく更新が止まっています。</span>
+<span class="sd">    ``PtitPrince`` を使うには、 :py:module:`pandas` をインストールする必要があります。</span>
+<span class="sd">    本関数は ``PtitPrince`` ほど多様な機能はありませんが、最新の ``pandas`` をサポートします。</span>
+
+<span class="sd">    Reference</span>
+<span class="sd">    ---------</span>
+<span class="sd">    PtitPrince: https://github.com/pog87/PtitPrince/tags</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">calc_jitter_width</span><span class="p">(</span><span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">):</span>
+        <span class="n">stripset</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_children</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">PathCollection</span><span class="p">)]</span>
+
+        <span class="n">jitter_width</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">strips</span> <span class="ow">in</span> <span class="n">stripset</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">orient</span> <span class="o">==</span><span class="s1">&#39;v&#39;</span><span class="p">:</span>
+                <span class="n">offsets</span> <span class="o">=</span> <span class="n">strips</span><span class="o">.</span><span class="n">get_offsets</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">offsets</span> <span class="o">=</span> <span class="n">strips</span><span class="o">.</span><span class="n">get_offsets</span><span class="p">()[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">jitter_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">jitter_width</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">offsets</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">jitter_width</span>
+
+    <span class="k">def</span> <span class="nf">move_violin</span><span class="p">(</span><span class="n">violin</span><span class="p">:</span> <span class="n">PathCollection</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="n">pollypaths</span> <span class="o">=</span> <span class="n">violin</span><span class="o">.</span><span class="n">get_paths</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">pollypaths</span><span class="p">:</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">offset</span>
+
+    <span class="n">ZORDER_LOW</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ZORDER_HIGH</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">jitter_width</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">get_current_rcparams</span><span class="p">()</span><span class="o">.</span><span class="n">color</span>
+    <span class="n">common_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">:</span> <span class="n">ax</span><span class="p">}</span>
+
+    <span class="n">kwargs_strip</span> <span class="o">=</span> <span class="n">kwargs_strip</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">kwargs_box</span> <span class="o">=</span> <span class="n">kwargs_box</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">kwargs_cloud</span> <span class="o">=</span> <span class="n">kwargs_cloud</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">strip</span><span class="p">:</span>
+        <span class="n">stripcolor</span> <span class="o">=</span> <span class="n">kwargs_strip</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+        <span class="n">stripzorder</span> <span class="o">=</span> <span class="n">kwargs_strip</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;zorder&#39;</span><span class="p">,</span> <span class="n">ZORDER_LOW</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span>
+                           <span class="n">dodge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                           <span class="n">color</span><span class="o">=</span><span class="n">stripcolor</span><span class="p">,</span>
+                           <span class="n">zorder</span><span class="o">=</span><span class="n">stripzorder</span><span class="p">,</span>
+                           <span class="o">**</span><span class="n">common_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_strip</span><span class="p">)</span>
+        <span class="n">jitter_width</span> <span class="o">=</span> <span class="n">calc_jitter_width</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">box</span><span class="p">:</span>
+        <span class="n">DEFAULT_WIDTH</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="n">box_width</span> <span class="o">=</span> <span class="n">jitter_width</span> <span class="k">if</span> <span class="n">strip</span> <span class="k">else</span> <span class="n">DEFAULT_WIDTH</span>
+        <span class="n">fill</span> <span class="o">=</span> <span class="n">kwargs_box</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">boxcolor</span> <span class="o">=</span> <span class="n">kwargs_box</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">highlight</span><span class="p">)</span>
+        <span class="n">flierprops</span> <span class="o">=</span> <span class="n">kwargs_box</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;flierprops&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;_&#39;</span><span class="p">})</span>
+        <span class="n">boxzorder</span> <span class="o">=</span> <span class="n">kwargs_box</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;zorder&#39;</span><span class="p">,</span> <span class="n">ZORDER_HIGH</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">kwargs_box</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">box_width</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span>
+                         <span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">,</span>
+                         <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                         <span class="n">color</span><span class="o">=</span><span class="n">boxcolor</span><span class="p">,</span>
+                         <span class="n">zorder</span><span class="o">=</span><span class="n">boxzorder</span><span class="p">,</span>
+                         <span class="n">flierprops</span><span class="o">=</span><span class="n">flierprops</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">common_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_box</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cloud</span><span class="p">:</span>
+        <span class="n">DEFAULT_COEF_PADDING</span> <span class="o">=</span> <span class="mf">1.8</span>
+        <span class="n">DEFAULT_WIDTH</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="n">coef_padding</span> <span class="o">=</span> <span class="n">kwargs_cloud</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;coef_pad&#39;</span><span class="p">,</span> <span class="n">DEFAULT_COEF_PADDING</span><span class="p">)</span>
+        <span class="n">offset_size</span> <span class="o">=</span> <span class="n">coef_padding</span> <span class="o">*</span> <span class="n">jitter_width</span>
+        <span class="n">cloudcolor</span> <span class="o">=</span> <span class="n">kwargs_cloud</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">sub</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">kwargs_cloud</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">DEFAULT_WIDTH</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span>
+                            <span class="n">hue_order</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+                            <span class="n">split</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">color</span><span class="o">=</span><span class="n">cloudcolor</span><span class="p">,</span>
+                            <span class="n">inner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                            <span class="o">**</span><span class="n">common_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_cloud</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">halfviolin</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
+            <span class="n">move_violin</span><span class="p">(</span><span class="n">halfviolin</span><span class="p">,</span> <span class="n">offset_size</span><span class="p">)</span>
+
+        <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_min</span> <span class="o">-</span> <span class="n">offset_size</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+
+<span class="k">class</span> <span class="nc">SigMarker</span><span class="p">:</span>
+<div class="viewcode-block" id="SigMarker.__init__">
+<a class="viewcode-back" href="../../api/generated/issych.figure.SigMarker.__init__.html#issych.figure.SigMarker.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span><span class="p">,</span>
+                 <span class="n">coef_interval_btw_layer</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>
+                 <span class="n">coef_space_to_line</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        棒グラフにマーカーを追加するためのクラスです。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coef_interval_btw_layer: float, default .1</span>
+<span class="sd">            マーカー間の縦方向の距離です。</span>
+<span class="sd">        coef_space_to_line: float, default .1</span>
+<span class="sd">            マーカーとそれに対応するラインとの間の距離です。</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        .. info::</span>
+<span class="sd">            棒グラフは縦方向に伸びたものである必要があります。</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawn_ranges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_interval</span> <span class="o">=</span> <span class="n">coef_interval_btw_layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_space_to_line</span> <span class="o">=</span> <span class="n">coef_space_to_line</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">containers</span> <span class="o">=</span> <span class="p">[</span><span class="n">container</span> <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">containers</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patches</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="n">contained</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contained</span><span class="p">,</span> <span class="n">Rectangle</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="o">*</span><span class="n">contained</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">contained</span> <span class="ow">in</span> <span class="n">containers</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patches</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patches</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="p">[])</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_judge_conflict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_pos</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">drawn_ranges</span>
+                        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">rn</span> <span class="ow">in</span> <span class="n">drawn_ranges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">rn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">x_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">rn</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">rn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">x_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">rn</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="SigMarker.mark">
+<a class="viewcode-back" href="../../api/generated/issych.figure.SigMarker.mark.html#issych.figure.SigMarker.mark">[docs]</a>
+    <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">between</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;patches&#39;</span><span class="p">,</span> <span class="s1">&#39;xticks&#39;</span><span class="p">],</span>
+             <span class="n">pos_from</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pos_to</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :py:class:`matplotlib.patches.Patch` （棒グラフの棒）または X軸目盛りの間にマーカーを描画します。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        between: {&#39;patches&#39;, &#39;xticks&#39;}</span>
+<span class="sd">            ``patches`` を指定した場合、あるバーの中心から別バーの中心の間に描画されます。</span>
+<span class="sd">            ``xticks`` を指定した場合、X軸目盛りの間に描画されます。</span>
+<span class="sd">        pos_from: int</span>
+<span class="sd">            左から何番目（0始まり）の ``patch`` またはX軸目盛りからマーカー表示を始めるかです。</span>
+<span class="sd">        pos_to: int</span>
+<span class="sd">            左から何番目（0始まり）の ``patch`` またはX軸目盛りにまでマーカーを表示させるかです。</span>
+<span class="sd">        comment: str</span>
+<span class="sd">            表示させるマーカーの内容です。</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :py:meth:`sigmark`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">find_pos_bw_patches</span><span class="p">(</span><span class="n">patch_from</span><span class="p">:</span> <span class="n">Rectangle</span><span class="p">,</span> <span class="n">patch_to</span><span class="p">:</span> <span class="n">Rectangle</span><span class="p">,</span>
+                                <span class="n">xpos</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">],</span>
+                                            <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">]]</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+                                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="k">def</span> <span class="nf">find_xpos</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">xpos</span><span class="p">):</span>
+                <span class="k">match</span> <span class="n">xpos</span><span class="p">:</span>
+                    <span class="k">case</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">patch</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span>
+                    <span class="k">case</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">patch</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">patch</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+                    <span class="k">case</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">patch</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+            <span class="n">xmin</span> <span class="o">=</span> <span class="n">find_xpos</span><span class="p">(</span><span class="n">patch_from</span><span class="p">,</span> <span class="n">xpos</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">xmax</span> <span class="o">=</span> <span class="n">find_xpos</span><span class="p">(</span><span class="n">patch_to</span><span class="p">,</span> <span class="n">xpos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span>
+
+        <span class="k">def</span> <span class="nf">find_pos_bw_xticks</span><span class="p">(</span><span class="n">pos_from</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pos_to</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">Axes</span>
+                               <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="n">xticks</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()</span>
+            <span class="n">xmin</span> <span class="o">=</span> <span class="n">xticks</span><span class="p">[</span><span class="n">pos_from</span><span class="p">]</span>
+            <span class="n">xmax</span> <span class="o">=</span> <span class="n">xticks</span><span class="p">[</span><span class="n">pos_to</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span>
+
+        <span class="n">interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_interval</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">match</span> <span class="n">between</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s1">&#39;patches&#39;</span><span class="p">:</span>
+                <span class="n">x_from</span><span class="p">,</span> <span class="n">x_to</span> <span class="o">=</span> <span class="n">find_pos_bw_patches</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">patches</span><span class="p">[</span><span class="n">pos_from</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">patches</span><span class="p">[</span><span class="n">pos_to</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">xpos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">))</span>
+            <span class="k">case</span> <span class="s1">&#39;xticks&#39;</span><span class="p">:</span>
+                <span class="n">x_from</span><span class="p">,</span> <span class="n">x_to</span> <span class="o">=</span> <span class="n">find_pos_bw_xticks</span><span class="p">(</span><span class="n">pos_from</span><span class="p">,</span> <span class="n">pos_to</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_judge_conflict</span><span class="p">((</span><span class="n">x_from</span><span class="p">,</span> <span class="n">x_to</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawn_ranges</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drawn_ranges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drawn_ranges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x_from</span><span class="p">,</span> <span class="n">x_to</span><span class="p">))</span>
+
+        <span class="n">ypos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ymax</span> <span class="o">+</span> <span class="p">(</span><span class="n">interval</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">ypos</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="n">x_from</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">x_to</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x_from</span> <span class="o">+</span> <span class="n">x_to</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                     <span class="n">ypos</span> <span class="o">+</span> <span class="p">(</span><span class="n">interval</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_space_to_line</span><span class="p">),</span>
+                     <span class="n">comment</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SigMarker.sigmark">
+<a class="viewcode-back" href="../../api/generated/issych.figure.SigMarker.sigmark.html#issych.figure.SigMarker.sigmark">[docs]</a>
+    <span class="k">def</span> <span class="nf">sigmark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">between</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;patches&#39;</span><span class="p">,</span> <span class="s1">&#39;xticks&#39;</span><span class="p">],</span>
+                <span class="n">pos_from</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pos_to</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">p_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="n">thresholds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :py:meth:`SigMarker.mark` とほぼ同じですが、p値から自動的にマークを決定します。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        thresholds: dict, optional</span>
+<span class="sd">            p値の閾値と、その閾値を下回った際に表示すべき文字列を示す辞書です。</span>
+<span class="sd">            デフォルトは、</span>
+
+<span class="sd">            &gt;&gt;&gt; {0.01: &#39;**&#39;, 0.05: &#39;*&#39;, 0.10: &#39;†&#39;}</span>
+
+<span class="sd">            いずれの閾値も下回らない場合のマークを指定したい場合は、</span>
+
+<span class="sd">            &gt;&gt;&gt; {0.05: &#39;*&#39;, 1.1: &#39;n.s.&#39;}</span>
+
+<span class="sd">            としてください。</span>
+<span class="sd">            そういった指定がない場合は、&#39;&#39;が返ります。</span>
+<span class="sd">        </span>
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :py:meth:`mark`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mark</span> <span class="o">=</span> <span class="n">Pvalue2SigMark</span><span class="p">(</span><span class="n">thresholds</span><span class="p">)(</span><span class="n">p_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mark</span><span class="p">(</span><span class="n">between</span><span class="p">,</span> <span class="n">pos_from</span><span class="p">,</span> <span class="n">pos_to</span><span class="p">,</span> <span class="n">mark</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="plot_corrmat">
+<a class="viewcode-back" href="../../api/generated/issych.figure.plot_corrmat.html#issych.figure.plot_corrmat">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_corrmat</span><span class="p">(</span><span class="n">dataset</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                 <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;pearson&#39;</span><span class="p">,</span>
+                 <span class="n">in_path_toml</span><span class="p">:</span> <span class="n">Pathlike</span><span class="o">=</span><span class="s1">&#39;config/rcparams.toml&#39;</span><span class="p">,</span>
+                 <span class="n">thrs_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">sdgt</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">rotation</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                 <span class="n">each_height</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+                 <span class="n">abbr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dictm</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">color_positive</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">color_negative</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">kwargs_violin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">kwargs_bar</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">kwargs_regplot</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">kwargs_circle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sns</span><span class="o">.</span><span class="n">axisgrid</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    データフレームの各列間の相関関係を一目で確認するプロットを描画します。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset: :py:class:pandas.DataFrame</span>
+<span class="sd">        プロットに用いるデータフレームです。</span>
+<span class="sd">    method: {&#39;pearson&#39;, &#39;spearman&#39;}</span>
+<span class="sd">        相関係数の算出に用いる手法です。</span>
+<span class="sd">        :py:func:`pingouin.corr` に渡されますので、詳細はこちらを確認してください。</span>
+<span class="sd">    in_path_toml: </span>
+<span class="sd">        ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。</span>
+<span class="sd">        ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。</span>
+<span class="sd">    thrs_p: tuple, optional</span>
+<span class="sd">        ``thrs_p[0]`` を下回る場合は薄い色の円が、``thrs_p[1]`` を下回る場合は濃い色の円が表示されます。</span>
+<span class="sd">        デフォルトは、(.10, .05) です。</span>
+<span class="sd">    sdgt: int, default 3</span>
+<span class="sd">        表示する相関係数の、小数点以下桁数です。</span>
+<span class="sd">    rotation: int, default 30</span>
+<span class="sd">        ラベルの回転角度です。</span>
+<span class="sd">    each_height: float, default 2.0</span>
+<span class="sd">        図の大きさです。</span>
+<span class="sd">    abbr: dict, optional</span>
+<span class="sd">        略語をキー、正式語を値としたキーです。</span>
+<span class="sd">        図に表示される変数名が、正式語に変換されます。</span>
+<span class="sd">    color_positive: str, optional</span>
+<span class="sd">        相関係数が正かつ、それに対応するp値が ``thrs_p`` で指定した値未満のときに用いる色です。</span>
+<span class="sd">        デフォルトは、issych-figure-setting-format/color/highlight です。</span>
+<span class="sd">    color_negative: str, optional</span>
+<span class="sd">        相関係数が負かつ、それに対応するp値が ``thrs_p`` で指定した値未満のときに用いる色です。</span>
+<span class="sd">        デフォルトは、issych-figure-setting-format/color/subhighlight です。</span>
+<span class="sd">    kwargs_violin: dict, optional</span>
+<span class="sd">        :py:`func:seaborn.violinplot` に渡す引数です。</span>
+<span class="sd">    kwargs_bar: dict, optional</span>
+<span class="sd">        :py:`func:seaborn.barplot` に渡す引数です。</span>
+<span class="sd">    kwargs_regplot: dict, optional</span>
+<span class="sd">        :py:`func:seaborn.regplot` に渡す引数です。</span>
+<span class="sd">    kwargs_circle: dict, optional</span>
+<span class="sd">        :py:`func:matplotlib.pyplot.Ellipse` に渡す引数です。</span>
+<span class="sd">        相関係数の絶対値の大きさを示す円を表示するためのものです。</span>
+
+<span class="sd">    Reference</span>
+<span class="sd">    ---------</span>
+<span class="sd">    https://stackoverflow.com/questions/48139899/correlation-matrix-plot-with-coefficients-on-one-side-scatterplots-on-another</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">plot_corr</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">colors</span><span class="p">:</span> <span class="n">Dictm</span><span class="p">,</span>
+                  <span class="n">color_posi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">color_nega</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                  <span class="n">thrs_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+                  <span class="n">sdgt</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">select_circle_color</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">thrs_p</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+                                <span class="n">coef</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">color_posi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                                <span class="n">color_nega</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+                                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;=</span> <span class="n">thrs_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="mf">0.2</span>
+            <span class="n">color_posi</span> <span class="o">=</span> <span class="n">color_posi</span> <span class="ow">or</span> <span class="n">colors</span><span class="o">.</span><span class="n">highlight</span>
+            <span class="n">color_nega</span> <span class="o">=</span> <span class="n">color_nega</span> <span class="ow">or</span> <span class="n">colors</span><span class="o">.</span><span class="n">subhighlight</span>
+            <span class="n">color_circle</span> <span class="o">=</span> <span class="n">color_posi</span> <span class="k">if</span> <span class="n">coef</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">color_nega</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;=</span> <span class="n">thrs_p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mf">1.0</span>
+            <span class="k">return</span> <span class="n">color_circle</span><span class="p">,</span> <span class="n">alpha</span>
+
+        <span class="k">if</span> <span class="n">thrs_p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">thrs_p</span> <span class="o">=</span> <span class="p">(</span><span class="mf">.10</span><span class="p">,</span> <span class="mf">.05</span><span class="p">)</span>
+        <span class="n">coef</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)[[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;p-val&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">circle_color</span><span class="p">,</span> <span class="n">circle_alpha</span> <span class="o">=</span> <span class="n">select_circle_color</span><span class="p">(</span>
+            <span class="n">p</span><span class="p">,</span> <span class="n">thrs_p</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">color_posi</span><span class="p">,</span> <span class="n">color_nega</span><span class="p">)</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">center_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())</span> <span class="o">/</span> <span class="mf">2.</span>
+        <span class="n">center_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">/</span> <span class="mf">2.</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())</span> <span class="o">*</span> <span class="n">coef</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">coef</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">coef_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">coef</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">sdgt</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;0.&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">n_shortage</span> <span class="o">=</span> <span class="n">sdgt</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coef_text</span><span class="p">)</span> <span class="o">-</span> <span class="n">coef_text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">coef_text</span> <span class="o">=</span> <span class="n">coef_text</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;0&#39;</span> <span class="o">*</span> <span class="n">n_shortage</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Ellipse</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">center_x</span><span class="p">,</span> <span class="n">center_y</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                             <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">circle_color</span><span class="p">,</span>
+                             <span class="n">alpha</span><span class="o">=</span><span class="n">circle_alpha</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">coef_text</span><span class="p">,</span> <span class="p">[</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,],</span>  <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span><span class="p">,</span>
+                    <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">plot_dist</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">kwargs_violin</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">kwargs_bar</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">_</span><span class="p">):</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">get_current_rcparams</span><span class="p">()</span><span class="o">.</span><span class="n">color</span>
+        <span class="n">color_violin</span> <span class="o">=</span> <span class="n">kwargs_violin</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+        <span class="n">lw_violin</span> <span class="o">=</span> <span class="n">kwargs_violin</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;lw&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">color_bar</span> <span class="o">=</span> <span class="n">kwargs_bar</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">color_bar</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_bar</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color_violin</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw_violin</span><span class="p">,</span>
+                           <span class="o">**</span><span class="n">kwargs_violin</span><span class="p">)</span>
+
+    <span class="n">set_rcparams</span><span class="p">(</span><span class="n">in_path_toml</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">get_current_rcparams</span><span class="p">()</span><span class="o">.</span><span class="n">color</span>
+
+    <span class="n">kwargs_regplot</span> <span class="o">=</span> <span class="n">kwargs_regplot</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">(</span><span class="n">scatter_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">())</span>
+    <span class="n">color_regplot</span> <span class="o">=</span> <span class="n">kwargs_regplot</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+    <span class="n">ec_scatter</span> <span class="o">=</span> <span class="n">kwargs_regplot</span><span class="p">[</span><span class="s1">&#39;scatter_kws&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
+    <span class="n">kwargs_regplot</span><span class="p">[</span><span class="s1">&#39;scatter_kws&#39;</span><span class="p">][</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ec_scatter</span>
+
+    <span class="n">kwargs_violin</span> <span class="o">=</span> <span class="n">kwargs_violin</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">kwargs_bar</span> <span class="o">=</span> <span class="n">kwargs_bar</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="n">kwargs_circle</span> <span class="o">=</span> <span class="n">kwargs_circle</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">([</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">diag_sharey</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">each_height</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">map_lower</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color_regplot</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_regplot</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">map_diag</span><span class="p">(</span><span class="n">plot_dist</span><span class="p">,</span> <span class="n">kwargs_violin</span><span class="o">=</span><span class="n">kwargs_violin</span><span class="p">,</span> <span class="n">kwargs_bar</span><span class="o">=</span><span class="n">kwargs_bar</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">map_upper</span><span class="p">(</span><span class="n">plot_corr</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+                <span class="n">color_posi</span><span class="o">=</span><span class="n">color_positive</span><span class="p">,</span> <span class="n">color_nega</span><span class="o">=</span><span class="n">color_negative</span><span class="p">,</span>
+                <span class="n">thrs_p</span><span class="o">=</span><span class="n">thrs_p</span><span class="p">,</span> <span class="n">sdgt</span><span class="o">=</span><span class="n">sdgt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_circle</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">abbr</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">():</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">abbr</span><span class="o">.</span><span class="n">may</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlabel</span><span class="p">()),</span> <span class="n">rotation</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">abbr</span><span class="o">.</span><span class="n">may</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylabel</span><span class="p">()),</span> <span class="n">rotation</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Issaku Kawashima.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

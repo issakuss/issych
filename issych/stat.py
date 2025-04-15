@@ -9,17 +9,24 @@ from .typealias import Number, Vector
 
 class Pvalue2SigMark:
     """
-    与えられたp値に基づいて、有意性の程度を表すマークを返します。
-
     Tested with: figure.SigMarker()
     """
     def __init__(self, thresholds: Optional[Dict[float, str]]=None):  # Default {} is dangerous
         """
-        thresholds: dict
-            p値の閾値と、その閾値を下回った際に返すべき文字列を示す辞書。
-            >> {0.01: '**', 0.05: '*', 0.10: '†'}
+        与えられたp値に基づいて、有意性の程度を表すマークを返します。
+
+        Parameters
+        ----------
+        thresholds: dict, optional
+            p値の閾値と、その閾値を下回った際に返すべき文字列を示す辞書です。
+            
+            **Example**
+
+            >>> {0.01: '**', 0.05: '*', 0.10: '†'}
+
             いずれの閾値も下回らない場合のマークを指定したい場合は、
-            >> {0.05: '*', 1.1: 'n.s.'}
+
+            >>> {0.05: '*', 1.1: 'n.s.'}
             としてください。
             そういった指定がない場合は、''が返ります。
         """
@@ -37,7 +44,10 @@ class Pvalue2SigMark:
 def arcsine_sqrt(value: Number) -> float:
     """
     アークサイン平方根変換を行います。
-    0〜1をとる比率データの分散に対して、正規性を向上させる可能性があります。
+
+    Notes
+    -----
+    一般に、0〜1をとる比率データの分散に対して、正規性を向上させる目的で使用されます。
 
     Tested with: test_calculation.py
     """
@@ -51,7 +61,10 @@ def arcsine_sqrt(value: Number) -> float:
 def fisher_z(r: Number) -> float:
     """
     FisherのZ変換を行います。
-    相関係数など、-1〜1の範囲にあるデータに対して、正規性を向上させる可能性があります。
+
+    Notes
+    -----
+    一般に、相関係数など、-1〜1の範囲にあるデータに対して、正規性を向上させる目的で使用されます。
     """
     if r  == 1:
         return float('inf')
@@ -64,11 +77,15 @@ def fisher_z(r: Number) -> float:
 
 def convert_to_iqrs(vec_origin: Vector) -> np.ndarray:
     """
-    数値のベクトルをIQRに基づいてスケーリングします。
+    数値のベクトルを IQR に基づいてスケーリングします。
 
-    >> convert_to_iqrs([1, 2, 3, 4, 100])
+    Examples
+    --------
+    >>> convert_to_iqrs([1, 2, 3, 4, 100])
     array([-0.5,  0. ,  0. ,  0.5,  24. ])
 
+    Notes
+    -----
     Tested with: test_iqr.py
     """
     vec_origin = pd.Series(vec_origin).astype(float)
@@ -100,8 +117,10 @@ def _prep_nanz(vec: Vector) -> np.ndarray:
 
 def nanzscore(vec: Vector) -> np.ndarray:
     """
-    NaNを含むベクトルに対して、NaNを無視してZスコア変換を行います。
+    NaN を含むベクトルに対して、NaN を無視してZスコア変換を行います。
 
+    Notes
+    -----
     Tested with: test_convert_to_iqrs.py
     """
     vec = _prep_nanz(vec)
@@ -111,7 +130,11 @@ def nanzscore(vec: Vector) -> np.ndarray:
 def nanzscore2value(zscore: Number, vec: Vector) -> float:
     """
     指定したZスコアを、指定したベクトルにおける元の値に変換します。
-    ベクトルにおいてNaNは無視されます。
+
+    Notes
+    -----
+    .. info::
+        ベクトルにおいて NaN は無視されます。
 
     >>> vec = np.array([1, 2, 3, 4, 5, np.nan])
     >>> zscore = 0.5
@@ -127,7 +150,11 @@ def nanzscore2value(zscore: Number, vec: Vector) -> float:
 def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
     """
     指定したベクトルにおける、指定した値のZスコアを計算します。
-    ベクトルにおいてNaNは無視されます。
+
+    Notes
+    -----
+    .. info::
+        ベクトルにおいてNaNは無視されます。
 
     >>> vec = np.array([1, 2, 3, 4, 5, np.nan])
     >>> value = 3

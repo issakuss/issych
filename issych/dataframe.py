@@ -6,20 +6,42 @@ import pandas as pd
 from .misc import alphabet2num
 
 
-def loc_byalphabet(dataframe: pd.DataFrame, locs: Sequence[str]
+def loc_byalphabet(dataframe: pd.DataFrame, locs: str | Sequence[str]
                    ) -> pd.DataFrame:
     """
-    pd.DataFrameから、アルファベットで指定した列を抽出します。
+    :py:class:`pandas.DataFrame` から、アルファベットで指定した列を抽出します。
+
+    Parameters
+    ----------
+    dataframe: :py:class:`pandas.DataFrame`
+        このデータフレームから列を抽出します。
+    locs: Sequence
+        タプルやリストなどでアルファベットを指定します。
+
+        Examples:
+
+        >>> loc_byalphabet(df, ['A'])
+        >>> loc_byalphabet(df, ['A', 'AC'])
+
+    Notes
+    -----
     MS Excelにおける列表示をそのまま利用しつつ列を指定できます。
     ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
     その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
+    27列目を指定する際には、MS Excelと同様 'AA' を使います。
 
-    >> loc_byalphabet(dataframe, ['A', 'C'])
-    は、
-    >> dataframe.iloc[:, [0, 2]]
-    と同等になります。
+    Tested with: :py:func:`monshi.Monshi.label`
 
-    Tested with: monshi.Monshi().label()
+    Examples
+    --------
+    >>> loc_byalphabet(dataframe, ['A', 'C'])
+    >>> dataframe.iloc[:, [0, 2]]
+
+    これらは同じ意味になります。
+
+    See also
+    --------
+    loc_range_byalphabet: 範囲で指定するならこっち
     """
     index = [alphabet2num(loc) - 1 for loc in locs]
     return dataframe.iloc[:, index]
@@ -28,19 +50,43 @@ def loc_byalphabet(dataframe: pd.DataFrame, locs: Sequence[str]
 def loc_range_byalphabet(dataframe: pd.DataFrame, range_min: str,
                          range_max: str) -> pd.DataFrame:
     """
-    pd.DataFrameから、アルファベットで指定した列範囲を抽出します。
-    抽出される列には、range_min, range_maxに指定された列も含まれます
-    （つまり、pd.DataFrame().loc[]による指定方法とは動作が異なります）。
+    :py:class:`pandas.DataFrame` から、アルファベットで指定した列範囲を抽出します。
+
+    Parameters
+    ----------
+    dataframe: :py:class:`pandas.DataFrame`
+        このデータフレームから列を抽出します。
+    range_min: str
+        ここで指定したアルファベット以降の列を抽出します。
+    range_max: str
+        ここで指定したアルファベット以前の列を抽出します。
+
+        .. warning::
+
+            抽出される列には、 `range_max` に指定された列も含まれます
+            つまり、 `pandas.DataFrame().loc[]` による指定方法とは動作が異なります。
+
+    Notes
+    -----
     MS Excelにおける列表示をそのまま利用しつつ列範囲を指定できます。
-    ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
-    その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
 
-    >> loc_range_byalphabet(dataframe, 'A', 'C')
-    は、
-    >> dataframe.iloc[:, 0:3]
-    と同等になります。
+    .. warning::
 
-    Tested with: monshi.Monshi().label()
+        ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
+        その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
+
+    Tested with: :py:meth:`monshi.Monshi.label`
+
+    Examples
+    --------
+    >>> loc_range_byalphabet(dataframe, 'A', 'C')
+    >>> dataframe.iloc[:, 0:3]
+
+    これらは同じ意味になります。
+
+    See also
+    --------
+    loc_byalphabet: 列を一つずつ指定するならこっち
     """
     mini = alphabet2num(range_min) - 1
     maxi = alphabet2num(range_max)
@@ -50,9 +96,18 @@ def loc_range_byalphabet(dataframe: pd.DataFrame, range_min: str,
 def loc_cols_name_startswith(dataframe: pd.DataFrame, head_colname: str
                              ) -> pd.DataFrame:
     """
-    head_colnameから始まる列名の列を抽出します。
+    ``head_colname`` から始まる列名の列を抽出します。
 
-    Tested with: monshi.Monshi().label()
+    Parameters
+    ----------
+    dataframe: :py:class:`pandas.DataFrame`
+        このデータフレームから列を抽出します。
+    head_colname: str
+        ここで指定した文字列から始まる列名のを抽出します。
+
+    Notes
+    -----
+    Tested with: :py:meth:`monshi.Monshi.label`
     """
     are_target = [col.startswith(head_colname) for col in dataframe.columns]
     return dataframe.loc[:, are_target]
@@ -60,8 +115,13 @@ def loc_cols_name_startswith(dataframe: pd.DataFrame, head_colname: str
 
 def vec2sqmatrix(vec: Sequence) -> np.ndarray:
     """
-    ベクトルを正方行列のnp.ndarrayに変換します。
-    >> vec2sqmatrix([1, 2, 3, 4])
+    Notes
+    -----
+    ベクトルを正方行列の :py:class:`numpy.ndarray` に変換します。
+
+    Examples
+    --------
+    >>> vec2sqmatrix([1, 2, 3, 4])
     np.ndarray([[1, 2],
                 [3, 4])
     """

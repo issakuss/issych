@@ -6,7 +6,14 @@ from .typealias import Pathlike
 
 def save_ini(data: Dict[str, Dict], out_path_ini: Pathlike):
     """
-    辞書をvalueに持つ、ネストされた辞書をINIファイルに保存します。
+    辞書を値に持つ、ネストされた辞書をINIファイルに保存します。
+
+    Parameters
+    ----------
+    data: dict
+        INIファイルに保存する辞書です。
+    out_path_ini: :py:data:`issych.typealias.Pathlike`
+        INIファイルの保存先となるパスです。
     """
 
     config = configparser.ConfigParser()

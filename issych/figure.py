@@ -18,35 +18,17 @@ from .stat import Pvalue2SigMark
 
 def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
     """
-    in_path_tomlに指定されたtomlファイルにある設定を反映させます。
-    tomlファイルには、issych-figure-setting-formatで記入されている必要があります。
-    issych-figure-setting-formatの例は以下の通りです。
+    ``in_path_toml`` に指定されたファイルにある設定を反映させます。
 
-    [color]
-    main = '#EAE6E5'          # 主に用いられる色；黒など
-    back = '#011627'          # 背景色；白など
-    sub = '#3C4A57'           # mainで指定した色とは別の色；灰色など
-    highlight = '#8FCB9B'     # 強調するための色；赤など
-    subhighlight = '#EF6F6C'  # highlightで指定した色とは別の強調色；青など
-    cycle = [                 # 複数の色が用いられる場合のパターン
-    '#E69F00',                # 一つ目の色） 
-    '#56B4E9',                # 二つ目の色）
-    '#009E73',                # …色数は自由）
-    '#F0E442',
-    '#0072B2',
-    '#D55E00',
-    '#CC79A7'
-    ]
+    Parameters
+    ----------
+    in_path_toml: :py:data:`issych.typealias.Pathlike`
+        ここに指定されたパスにあるファイルを :py:func:`Dynaconf.dynaconf` で読み取ります。
+        読み取った設定を、 :py:data:`matplotlib.rcParams` に反映させます。
 
-    [size]
-    figsize = [8.0, 4.0]      # [横幅, 縦幅] を表す数値
-    fontsize = 16.0           # フォントサイズを表す数値
-    linewidth = 1.0           # 線の太さを表す数値
-    capsize = 1.0             # エラーバーのキャップの長さを表す数値
-
-    [misc]
-    dpi = 256.0               # 解像度を表す数値
-    format = 'eps'            # 保存する際のフォーマットを表す文字列；pngなど
+    Notes
+    -----
+    ``toml`` ファイルには、 :ref:`issych-figure-setting-format` で記入されている必要があります。
 
     Tested with: prepare_ax(), prepare_axes()
     """
@@ -79,9 +61,20 @@ def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
 
 def get_current_rcparams() -> Tuple[Dictm, Dictm, Dictm]:
     """
-    現在のrcparamsを、issych-figure-setting-formatで取得します。
+    現在の ``rcparams`` を、 :ref:`issych-figure-setting-format` で取得します。
 
-    Tested with: plot_prepost(), plot_raincloud()
+    Returns
+    -------
+    color: :class:`issych.dataclass.Dictm`
+        色に関する情報です。
+    size: :class:`issych.dataclass.Dictm`
+        図やオブジェクトのサイズに関する情報です。
+    misc: :class:`issych.dataclass.Dictm`
+        図の解像度と、図のファイル拡張子についてです。
+
+    Notes
+    -----
+    Tested with: :py:func:`plot_prepost` , :py:func:`plot_raincloud`
     """
     color = Dictm(
         main=plt.rcParams['axes.edgecolor'],
@@ -105,11 +98,37 @@ def get_current_rcparams() -> Tuple[Dictm, Dictm, Dictm]:
 
 # Figure preparation
 
-def calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple) -> Tuple[float]:
+def calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple[float, float]
+                 ) -> Tuple[float]:
     """
-    Figureに含まれるAxesの行数・列数に応じて、適切なFigureのサイズを計算します。
+    :py:data:`issych.typealias.Figure` に含まれる :py:data:`issych.typealias.Axes` の行数・列数に応じて、適切な :py:data:`issych.typealias.Figure` のサイズを計算します。
 
-    Tested with: prepare_axes()
+
+    Parameters
+    ----------
+    n_row: int
+        ``Axes`` の行数です。
+        一つの図において、縦に何個のプロットが並んでいるかです。
+    n_col: int
+        ``Axes`` の列数です。
+        一つの図において、横に何個のプロットが並んでいるかです。
+    axsizeratio: tuple
+        X方向（横）の長さとY方向（縦）の長さの比率を指定してください。
+        ``rcParams`` に設定している縦横比に、``Axes`` の行列数と ``axsizeratio``をかけたものが、返り値になります。
+
+        **Examples**
+
+        >>> axsizeratio=(2., 0.5)
+        最終的に返される縦横の長さについて、横に2倍、縦に0.5倍されます。
+
+    Returns
+    -------
+    ratio: tuple
+        適切なX方向（横）の長さとY方向（縦）の長さです。
+
+    Notes
+    -----
+    Tested with: :py:func:`prepare_axes`
     """
     figsize = np.array(plt.rcParams['figure.figsize'])
     figsize *= (n_col, n_row)
@@ -119,8 +138,21 @@ def calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple) -> Tuple[float]:
 def prepare_ax(axsizeratio: Tuple=(1., 1.),
                in_path_toml: Optional[Pathlike]=None) -> Tuple[Figure, Axes]:
     """
-    ひとつのAxesを含むFigureを生成します。
-    plt.subplot()とほぼ同一ですが、set_rcparams()が事前に実行されます。
+    一つの :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
+
+    Parameters
+    ----------
+    axsizeratio: tuple
+        X方向（横）の長さとY方向（縦）の長さの比率を指定してください。
+        ``rcParams`` に設定している縦横比にこの値をかけたサイズの ``Axes`` が生成されます。
+    in_path_toml: 
+        ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。
+        ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。
+
+    Notes
+    -----
+    :py:func:`matplotlib.pyplot.subplot` とほぼ同一です。
+    ただし、 :py:func:`set_rcparams` が事前に実行されます。
 
     Tested with: TestMaskArea(), TestPlotPrePost()
     """
@@ -133,9 +165,28 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
                  in_path_toml: Optional[Pathlike]=None
                  ) -> Tuple[Figure, np.ndarray]:
     """
-    指定した行数・列数のAxesを含むFigureを生成します。
-    plt.subplots()とほぼ同一ですが、set_rcparams()が事前に実行されます。
-    また、n_row=1, n_col=1の場合でも、Axesはnp.ndarrayとして返されます。
+    指定した行数・列数の :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
+
+
+    Parameters
+    ----------
+    n_row: int
+        ``Axes`` の行数です。
+        一つの図において、縦に何個のプロットが並んでいるかです。
+    n_col: int
+        ``Axes`` の列数です。
+        一つの図において、横に何個のプロットが並んでいるかです。
+    axsizeratio: tuple
+        X方向（横）の長さとY方向（縦）の長さの比率を指定してください。
+        ``rcParams`` に設定している縦横比にこの値をかけたサイズの ``Axes`` が生成されます。
+    in_path_toml: 
+        ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。
+        ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。 
+
+    Notes
+    -----
+    :py:func:`matplotlib.pyplot.subplots` とほぼ同一ですが、 :py:func:`set_rcparams` が事前に実行されます。
+    また、 ``n_row`` =1, ``n_col`` =1の場合でも、 ``Axes`` は :py:class:`numpy.ndarray` として返されます。
 
     Tested with: TestPlotRainCloud()
     """
@@ -150,8 +201,11 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
 
 def draw_diag(ax, **kwargs) -> Axes:
     """
-    対角線上に線が引かれます。
-    kwargsには、ax.plot()に渡す引数を指定できます。
+    図の対角線上に線が引かれます。
+
+    Notes
+    -----
+    ``kwargs`` には、:py:func:matplotlib.pyplot.plot` に渡す引数を指定できます。
 
     Tested with: plot_prepost()
     """
@@ -167,10 +221,24 @@ def mask_area(pos_from: float | pd.Timestamp, pos_to: float | pd.Timestamp,
               orient: Literal['horz', 'vert', 'h', 'v'], ax: Axes,
               color: Optional[str]=None, **kwargs) -> Axes:
     """
-    pos_fromからpos_toまでの範囲を塗りつぶします。
-    orientに'horz'または'h'を指定すると、指定されたX軸範囲を塗りつぶします。
-    'vert'または'v'を指定すると、指定されたY軸範囲を塗りつぶします。
-    kwargsには、ax.add_patch()に渡す引数を指定できます。
+    指定した範囲を塗りつぶします。
+
+    Parameters
+    ----------
+    pos_from: float or :py:data:`pandas.Timestamp`
+        この位置以降の範囲を塗りつぶします。
+    pos_to: float or :py:data:`pandas.Timestamp`
+        この位置以前の範囲を塗りつぶします。
+    orient: {'horz', 'vert', 'h', 'v'}
+        'horz'または'h'を指定すると、指定されたX軸範囲を塗りつぶします。
+        'vert'または'v'を指定すると、指定されたY軸範囲を塗りつぶします。
+    ax: :py:data:`issych.typealias.Axes`
+    color: str, optional
+        塗りつぶすのに用いる色です。
+
+    Notes
+    -----
+    ``kwargs`` には、:py:func:`matplotlib.pyplot.add_patch` に渡す引数を指定できます。
     """
     is_horz = orient.startswith('h')
     lim = ax.get_ylim() if is_horz else ax.get_xlim()
@@ -194,13 +262,34 @@ def plot_within(dataset: pd.DataFrame,
                 kwargs_scatter: Optional[dict]=None,
                 kwargs_diagline: Optional[dict]=None) -> Axes:
     """
-    Wide-formatのdataから、Within plotを描画します。
-    Within plotは、対応のあるデータを正方形の散布図に描画し、対角線を引いただけのものです
-    （名前はissych作者が勝手につけました）。
-    たとえば、pre-postのデータを描画するのに便利です。
-    xにpre、yにpostのデータを指定します。
-    すると、対角線の上側にあるポイントはPostで値が増えていることになります。
-    各サンプルの変化を一目で確認できます。
+    いわゆる横持ち（Wide format）のデータフレームから、Within plot を描画します。
+
+    Parameters
+    ----------
+    dataset: :py:class:`pandas.DataFrame`
+        図に用いるデータフレームです。
+    x: str
+        X軸に用いる列名です。
+    y: str
+        Y軸に用いる列名です。
+    ls: str
+        対角線上に引く線のラインスタイルです。
+        :py:func:`matplotlib.pyplot.plot` に渡します。
+    kwargs_scatter: dict, optional
+        :py:func:`seaborn.scatterplot` に渡される引数です。
+    kwargs_diagline: dict, optional
+        :py:func:`matplotlib.pyplot.plot` に渡される引数です。
+    
+    Notes
+    -----
+    Within plot とは、対応のあるデータを正方形の散布図に描画し、対角線を引いただけのものです。
+    たとえば、pre-post のデータを描画するのに便利です。
+    ``x`` に pre、``y`` に post のデータを指定します。
+    すると、対角線の上側にあるポイントは Post で値が増えていることになります。
+    このように、各サンプルの変化を一目で確認できます。
+
+    .. tip::
+        Within plot という名前は Issych 作者が勝手につけたものです。
     """
     kwargs_scatter = kwargs_scatter or dict()
     kwargs_diagline = kwargs_diagline or dict()
@@ -233,7 +322,40 @@ def plot_raincloud(data: pd.DataFrame | Vector,
                    kwargs_box: Optional[dict[str, Any]]=None,
                    kwargs_cloud: Optional[dict[str, Any]]=None) -> Axes:
     """
-    RainCloudプロットを描画します。
+    RainCloud プロットを描画します。
+
+    Parameters
+    ----------
+    x: str
+        X軸に用いる列名です。
+    y: str
+        Y軸に用いる列名です。
+    orient: {'h', 'v'}, default 'v'
+        RainCloud プロットの方向です。
+        `'h'` の場合は横方向、 `'v'` の場合は縦方向のプロットになります。
+    strip: bool, default True
+        Strip plot を描画するかどうかです。
+    box: bool, default True
+        箱ひげ図を描画するかどうかです。
+    cloud: bool, default True
+        半バイオリンプロットを描画するかどうかです。
+    kwargs_strip: dict, optional
+        :py:func:`seaborn.stripplot` に渡すキーワード引数です。
+    kwargs_box: dict, optional
+        :py:func:`seaborn.boxplot` に渡すキーワード引数です。
+    kwargs_cloud: dict, optional
+        :py:func:`seaborn.violinplot` に渡すキーワード引数です。
+
+    Notes
+    -----
+    RainCloud プロットをサポートするパッケージとして、 ``PtitPrince`` が有名です。
+    しかし ``PtitPrince`` は（2025年4月14日現在）しばらく更新が止まっています。
+    ``PtitPrince`` を使うには、 :py:module:`pandas` をインストールする必要があります。
+    本関数は ``PtitPrince`` ほど多様な機能はありませんが、最新の ``pandas`` をサポートします。
+
+    Reference
+    ---------
+    PtitPrince: https://github.com/pog87/PtitPrince/tags
     """
     def calc_jitter_width(ax: Axes):
         stripset = [child for child in ax.get_children()
@@ -315,12 +437,25 @@ def plot_raincloud(data: pd.DataFrame | Vector,
 
 
 class SigMarker:
-    """
-    棒グラフにマーカーを追加するためのクラスです。
-    """
     def __init__(self, ax: Axes,
                  coef_interval_btw_layer: float=.1,
                  coef_space_to_line: float=.1):
+        """
+        棒グラフにマーカーを追加するためのクラスです。
+
+        Parameters
+        ----------
+        coef_interval_btw_layer: float, default .1
+            マーカー間の縦方向の距離です。
+        coef_space_to_line: float, default .1
+            マーカーとそれに対応するラインとの間の距離です。
+
+        Notes
+        -----
+        .. info::
+            棒グラフは縦方向に伸びたものである必要があります。
+
+        """
         self.layer: int = 0
         self.drawn_ranges: List[Tuple[float, float]] = []
         self.coef_interval = coef_interval_btw_layer
@@ -344,10 +479,23 @@ class SigMarker:
     def mark(self, between: Literal['patches', 'xticks'],
              pos_from: int, pos_to: int, comment: str):
         """
-        Patchまたはxticksの間にマーカーを描画します。
-        betweenにpatchesを指定した場合、あるバーの中心から別バーの中心の間に描画されます。
-        xticksを指定した場合、xticksの間に描画されます。
-        pos_fromとpos_toには、左から何番目（0始まり）のpatchまたはxticksかを指定します。
+        :py:class:`matplotlib.patches.Patch` （棒グラフの棒）または X軸目盛りの間にマーカーを描画します。
+
+        Parameters
+        ----------
+        between: {'patches', 'xticks'}
+            ``patches`` を指定した場合、あるバーの中心から別バーの中心の間に描画されます。
+            ``xticks`` を指定した場合、X軸目盛りの間に描画されます。
+        pos_from: int
+            左から何番目（0始まり）の ``patch`` またはX軸目盛りからマーカー表示を始めるかです。
+        pos_to: int
+            左から何番目（0始まり）の ``patch`` またはX軸目盛りにまでマーカーを表示させるかです。
+        comment: str
+            表示させるマーカーの内容です。
+
+        See also
+        --------
+        :py:meth:`sigmark`
         """
         def find_pos_bw_patches(patch_from: Rectangle, patch_to: Rectangle,
                                 xpos: Tuple[Literal['c', 'r', 'l'],
@@ -399,15 +547,26 @@ class SigMarker:
                 pos_from: int, pos_to: int, p_value: float,
                 thresholds: Optional[dict]=None):
         """
-        mark()とほぼ同じですが、p値から自動的にマークを決定します。
-        thresholds: dict
-            p値の閾値と、その閾値を下回った際に表示すべき文字列を示す辞書。
+        :py:meth:`SigMarker.mark` とほぼ同じですが、p値から自動的にマークを決定します。
+
+        Parameters
+        ----------
+        thresholds: dict, optional
+            p値の閾値と、その閾値を下回った際に表示すべき文字列を示す辞書です。
             デフォルトは、
-            >> {0.01: '**', 0.05: '*', 0.10: '†'}
+
+            >>> {0.01: '**', 0.05: '*', 0.10: '†'}
+
             いずれの閾値も下回らない場合のマークを指定したい場合は、
-            >> {0.05: '*', 1.1: 'n.s.'}
+
+            >>> {0.05: '*', 1.1: 'n.s.'}
+
             としてください。
             そういった指定がない場合は、''が返ります。
+        
+        See also
+        --------
+        :py:meth:`mark`
         """
         mark = Pvalue2SigMark(thresholds)(p_value)
         if len(mark) > 0:
@@ -429,9 +588,48 @@ def plot_corrmat(dataset: pd.DataFrame,
                  kwargs_regplot: Optional[dict]=None,
                  kwargs_circle: Optional[dict]=None) -> sns.axisgrid.PairGrid:
     """
-    datasetの各列間の相関関係を一目で確認するプロットを描画します。
-    thrs_p[0]を下回る場合は薄い色の円が、thrs_p[1]を下回る場合は濃い色の円が表示されます。
-    参考：
+    データフレームの各列間の相関関係を一目で確認するプロットを描画します。
+
+    Parameters
+    ----------
+    dataset: :py:class:pandas.DataFrame
+        プロットに用いるデータフレームです。
+    method: {'pearson', 'spearman'}
+        相関係数の算出に用いる手法です。
+        :py:func:`pingouin.corr` に渡されますので、詳細はこちらを確認してください。
+    in_path_toml: 
+        ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。
+        ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。
+    thrs_p: tuple, optional
+        ``thrs_p[0]`` を下回る場合は薄い色の円が、``thrs_p[1]`` を下回る場合は濃い色の円が表示されます。
+        デフォルトは、(.10, .05) です。
+    sdgt: int, default 3
+        表示する相関係数の、小数点以下桁数です。
+    rotation: int, default 30
+        ラベルの回転角度です。
+    each_height: float, default 2.0
+        図の大きさです。
+    abbr: dict, optional
+        略語をキー、正式語を値としたキーです。
+        図に表示される変数名が、正式語に変換されます。
+    color_positive: str, optional
+        相関係数が正かつ、それに対応するp値が ``thrs_p`` で指定した値未満のときに用いる色です。
+        デフォルトは、issych-figure-setting-format/color/highlight です。
+    color_negative: str, optional
+        相関係数が負かつ、それに対応するp値が ``thrs_p`` で指定した値未満のときに用いる色です。
+        デフォルトは、issych-figure-setting-format/color/subhighlight です。
+    kwargs_violin: dict, optional
+        :py:`func:seaborn.violinplot` に渡す引数です。
+    kwargs_bar: dict, optional
+        :py:`func:seaborn.barplot` に渡す引数です。
+    kwargs_regplot: dict, optional
+        :py:`func:seaborn.regplot` に渡す引数です。
+    kwargs_circle: dict, optional
+        :py:`func:matplotlib.pyplot.Ellipse` に渡す引数です。
+        相関係数の絶対値の大きさを示す円を表示するためのものです。
+
+    Reference
+    ---------
     https://stackoverflow.com/questions/48139899/correlation-matrix-plot-with-coefficients-on-one-side-scatterplots-on-another
     """
     def plot_corr(x: np.ndarray, y: np.ndarray, method: str, colors: Dictm,

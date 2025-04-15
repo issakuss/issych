@@ -1,0 +1,831 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>issych.monshi &#8212; issych 0.1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=c78dba08"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/issych/monshi';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">issych 0.1.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    Functions
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial（まだ）
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../glossery.html">
+    Glossery
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    Functions
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../tutorial.html">
+    Tutorial（まだ）
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../glossery.html">
+    Glossery
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">issych.monshi</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for issych.monshi</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">.typealias</span> <span class="kn">import</span> <span class="n">Pathlike</span>
+<span class="kn">from</span> <span class="nn">.dataclass</span> <span class="kn">import</span> <span class="n">Dictm</span>
+<span class="kn">from</span> <span class="nn">.dataframe</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">loc_byalphabet</span><span class="p">,</span> <span class="n">loc_range_byalphabet</span><span class="p">,</span> <span class="n">loc_cols_name_startswith</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CantReverseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="s1">&#39;min_plus_maxが指定されていないため、逆転項目の処理ができません&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="score_questionnaire">
+<a class="viewcode-back" href="../../api/generated/issych.monshi.score_questionnaire.html#issych.monshi.score_questionnaire">[docs]</a>
+<span class="k">def</span> <span class="nf">score_questionnaire</span><span class="p">(</span>
+    <span class="n">answer</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">questname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">preprocess</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">idx_reverse</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">min_plus_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">na_policy</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="s1">&#39;raise&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span>
+    <span class="n">subscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]]]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">average</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    一つの質問紙回答データを集計します。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    answer : :py:class:`pandas.DataFrame`</span>
+<span class="sd">        ある一つの質問紙への回答データです。</span>
+<span class="sd">        shape=(質問紙への回答数, 質問紙の項目数) となります。</span>
+<span class="sd">        ``np.nan`` , ``float(&#39;nan&#39;)`` , ``None`` , ``&#39;&#39;`` （空白の文字列）は、 ``pd.NA`` に変換されます。</span>
+<span class="sd">        数値に変換できないデータが入っていると、一切処理されずに ``answer`` のまま返されます。</span>
+<span class="sd">        </span>
+<span class="sd">        .. warning::</span>
+<span class="sd">            回答者IDやタイムスタンプなど、質問紙への回答以外の列は含めないでください。</span>
+<span class="sd">            後述の引数で指定する項目番号などにズレが生じる危険があります。</span>
+<span class="sd">            そういった列は事前に除いてください。</span>
+<span class="sd">            または、:meth:`pandas.DataFrame.set_index()` で ``index`` に指定してください。</span>
+
+<span class="sd">    questname : str</span>
+<span class="sd">        質問紙の名前です。</span>
+<span class="sd">        返り値における列名に用いられます。</span>
+<span class="sd">        わかりやすい名前を自由につけてください。</span>
+
+<span class="sd">    preprocess : str, default &#39;&#39;</span>
+<span class="sd">        質問紙への回答データについて、事前の処理が必要な場合はそのコードを記述してください。</span>
+<span class="sd">        記述されたコードが、回答データの各要素において実行されます。</span>
+<span class="sd">        その際、回答データの各要素は ``q`` という変数で扱われます。</span>
+<span class="sd">        ``pd.isna(q)`` の場合（要素が無回答の場合）、ここに指定された処理は行われません。</span>
+<span class="sd">        ``preprocess`` に空白の文字列（ ``&#39;&#39;`` ）が指定された場合、事前の処理は行われません。</span>
+
+<span class="sd">        **Examples**</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; preprocess=&#39;{1: True, 2: False, 3: False}[q]&#39;</span>
+
+<span class="sd">        1という回答はTrue, 2または3という回答はFalseになるよう変換する例です。</span>
+<span class="sd">        性別（is_male）についての回答などに使えます。</span>
+
+<span class="sd">        &gt;&gt;&gt; preprocess=&#39;int(q &gt; 2)&#39;</span>
+
+<span class="sd">        3より大きい数値が回答されていた場合は1、それ以外は0に変換する例です。</span>
+<span class="sd">        Autism-Spectrum Quotient の回答などに使えます。</span>
+
+<span class="sd">        &gt;&gt;&gt; preprocess=&#39;int(q == 2)&#39;</span>
+
+<span class="sd">        2という回答の場合は1、それ以外は0に変換する例です。</span>
+
+<span class="sd">        &gt;&gt;&gt; preprocess=&#39;7 - q&#39;</span>
+
+<span class="sd">        1〜6点の6件法による質問への回答を、すべて逆転させる例です。</span>
+<span class="sd">        逆転項目の処理は後述の ``idx_reverse`` で行います。</span>
+<span class="sd">        逆転項目が通常項目より多い場合には、まずこの処理ですべての項目を逆転させ、</span>
+<span class="sd">        通常項目を ``idx_reverse`` に指定すると便利です。</span>
+
+<span class="sd">        &gt;&gt;&gt; preprocess=&#39;1&#39;</span>
+
+<span class="sd">        回答内容に関わらず、すべての項目が1に変換されます。</span>
+
+<span class="sd">    idx_reverse : list, default []</span>
+<span class="sd">        逆転項目を（0ではなく）1始まりの数字で指定してください。</span>
+<span class="sd">        1始まりなので、論文等で報告される逆転項目番号がそのまま使用できます。</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            ``answer`` に質問紙の項目以外の項目が混じっている場合、ズレが生じます。</span>
+<span class="sd">            たとえば一列目に回答者ID、二列目以降に質問紙への回答がある場合などです。</span>
+
+<span class="sd">    min_plus_max : int, default None</span>
+<span class="sd">        回答が取りうる最小値と最大値の合計値を指定してください。</span>
+<span class="sd">        逆転項目として指定された項目の得点を逆転させる際、計算に用います。</span>
+<span class="sd">        たとえば1〜6点までの6件法の場合は（1+6により）7を指定してください。</span>
+<span class="sd">        1〜4点までの4件法で回答を求め、回答を0〜1に変換してから集計する場合（AQなど）は、</span>
+<span class="sd">        ``preprocess`` 引数に必要な変換コードを書いたうえで（0+1により）1を指定してください。</span>
+
+<span class="sd">    na_policy : {&#39;na&#39;, &#39;ignore&#39;, &#39;raise&#39;}, default &#39;na&#39;</span>
+<span class="sd">        ``answer`` に無回答（ ``np.nan`` or ``float(&#39;na&#39;)`` or ``None`` or ``pd.NA`` ）があった場合の挙動です。</span>
+
+<span class="sd">        - &#39;na&#39;: その回答を含む尺度得点・下位尺度得点が ``pd.NA`` になります</span>
+<span class="sd">        - &#39;ignore&#39;: その回答を除いて合計点または平均点が算出されます</span>
+<span class="sd">        - &#39;raise&#39;: エラーが返されます</span>
+
+<span class="sd">    subscale : dict, default {}</span>
+<span class="sd">        下位尺度を辞書で指定してください。</span>
+<span class="sd">        ``None`` の場合は、質問紙の合計得点（または平均）のみが算出されます。</span>
+<span class="sd">        辞書のキーにはその下位尺度の名前を指定してください。</span>
+<span class="sd">        値には、その下位尺度が含む項目番号を（0ではなく）1始まりで指定してください。</span>
+<span class="sd">        1始まりなので、論文等で報告される項目番号がそのまま使用できます。</span>
+
+<span class="sd">        または、値に ``&#39;all&#39;`` を指定することもできます。</span>
+<span class="sd">        その場合は、すべての項目がその下位尺度の得点算出に使われます。</span>
+
+<span class="sd">        項目番号にマイナスをつけると（-1 など）、その番号の得点を逆転させたうえで算出します。</span>
+<span class="sd">        ``idx_reverse`` に指定した項目にマイナスをつけると、逆転の逆転で順項目となります。</span>
+<span class="sd">        たとえばある項目について、合計得点では逆転項目として扱い、</span>
+<span class="sd">        下位尺度得点では順項目として扱う場合などに便利です。</span>
+
+<span class="sd">        **Examples**</span>
+
+<span class="sd">        &gt;&gt;&gt; {&#39;sample&#39;: {subscale = {&#39;syakudo_a&#39;: [-1, 2, 3, 4],</span>
+<span class="sd">                                    &#39;syakudo_b&#39;: [5, 6, 7, 8],</span>
+<span class="sd">                                    &#39;goukei&#39;: &#39;all&#39;}}</span>
+
+<span class="sd">        &#39;syakudo_a&#39;、&#39;syakudo_b&#39;、&#39;goukei&#39; という下位尺度得点を算出します。</span>
+<span class="sd">        算出されるデータフレームは、以下のようになります。</span>
+
+<span class="sd">        - &#39;sample__syakudo_a&#39; 列: ``answer.iloc[[0, 1, 2, 3]]`` の合計点</span>
+<span class="sd">        - &#39;sample__syakudo_b&#39; 列: ``answer.iloc[[4, 5, 6, 7]]`` の合計点</span>
+<span class="sd">        - &#39;sample__syakudo_total&#39; 列: ``answer`` の合計点。</span>
+
+<span class="sd">        &#39;sample__syakudo_total&#39; を算出するときにはすべての得点をそのまま使います。</span>
+<span class="sd">        &#39;sample__syakudo_a&#39; を算出するときには項目1の得点が逆転されます。</span>
+
+<span class="sd">    average: bool, default False</span>
+<span class="sd">        ``True`` が指定されると、合計得点の代わりに平均点が算出されます。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    はじめに ``preprocess`` 引数に記述された処理がなされ、</span>
+<span class="sd">    次に ``idx_reverse`` 引数で指定された項目が逆転項目として処理されます。</span>
+<span class="sd">    続いて、そのほかの引数に指定された内容に従って、合計または平均得点が算出されます。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="n">answer</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">idx_reverse</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">min_plus_max</span><span class="p">:</span> <span class="nb">int</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">min_plus_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CantReverseError</span>
+
+        <span class="n">idx_reverse_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idx_reverse</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">reversed_answer</span> <span class="o">=</span> <span class="n">min_plus_max</span> <span class="o">-</span> <span class="n">answer</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">idx_reverse_</span><span class="p">]</span>
+        <span class="n">answer</span><span class="p">[</span><span class="n">answer</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">idx_reverse_</span><span class="p">]]</span> <span class="o">=</span> <span class="n">reversed_answer</span>
+        <span class="k">return</span> <span class="n">answer</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;Float64&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="n">answer</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">na_policy</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">na_policy</span> <span class="o">==</span> <span class="s1">&#39;raise&#39;</span> <span class="ow">and</span> <span class="n">answer</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;データにNAが含まれています。</span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;na_policyの設定によって無視することもできます。&#39;</span><span class="p">)</span>
+        <span class="n">skipna</span> <span class="o">=</span> <span class="n">na_policy</span> <span class="o">==</span> <span class="s1">&#39;ignore&#39;</span>
+
+        <span class="n">score</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="n">skipna</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">average</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="n">skipna</span><span class="p">)</span>
+        <span class="n">score</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="n">score</span>
+
+    <span class="k">def</span> <span class="nf">total_subscale</span><span class="p">(</span><span class="n">answer</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">questname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                       <span class="n">min_plus_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">na_policy</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                       <span class="n">subscale</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">_additional_reverse</span><span class="p">(</span>
+            <span class="n">answer</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">idx_include</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">min_plus_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+
+            <span class="n">answer_</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">idx_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idx_include</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">idx_rev</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">idx_</span><span class="p">[</span><span class="n">idx_</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_rev</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">answer</span><span class="p">,</span> <span class="n">idx_</span>
+            <span class="k">if</span> <span class="n">min_plus_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CantReverseError</span>
+            <span class="n">reversed_answer</span> <span class="o">=</span> <span class="n">min_plus_max</span> <span class="o">-</span> <span class="n">answer</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">idx_rev</span><span class="p">]</span>
+            <span class="n">answer_</span><span class="p">[</span><span class="n">answer</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">idx_rev</span><span class="p">]]</span> <span class="o">=</span> <span class="n">reversed_answer</span>
+            <span class="k">return</span> <span class="n">answer_</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">idx_</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_eachsubscale</span><span class="p">(</span><span class="n">answer</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">questname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                          <span class="n">min_plus_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">na_policy</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">average</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                          <span class="n">subscalename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                          <span class="n">idx_include</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]]</span>
+                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">idx_include</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">idx_include</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">answer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">answer_</span><span class="p">,</span> <span class="n">idx_include_</span> <span class="o">=</span> <span class="n">_additional_reverse</span><span class="p">(</span>
+                <span class="n">answer</span><span class="p">,</span> <span class="n">idx_include</span><span class="p">,</span> <span class="n">min_plus_max</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">questname</span> <span class="o">+</span> <span class="s1">&#39;__&#39;</span> <span class="o">+</span> <span class="n">subscalename</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">total</span><span class="p">(</span><span class="n">answer_</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">idx_include_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">na_policy</span><span class="p">,</span>
+                             <span class="n">average</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> の設定が不正です。&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">_eachsubscale</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">questname</span><span class="p">,</span> <span class="n">min_plus_max</span><span class="p">,</span>
+                                        <span class="n">na_policy</span><span class="p">,</span> <span class="n">average</span><span class="p">,</span> <span class="o">*</span><span class="n">subscale_</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">subscale_</span> <span class="ow">in</span> <span class="n">subscale</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">idx_reverse</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">idx_reverse</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;Float64&#39;</span><span class="p">)</span>
+        <span class="n">answer</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">answer</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">answer</span>
+
+    <span class="k">if</span> <span class="n">preprocess</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">are_na</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="p">(</span><span class="n">answer</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="nb">eval</span><span class="p">(</span><span class="n">preprocess</span><span class="p">),</span> <span class="n">na_action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;Float64&#39;</span><span class="p">))</span>
+        <span class="n">answer</span><span class="p">[</span><span class="n">are_na</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span>  <span class="c1"># .map() sometimes convert pd.NA to np.nan</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx_reverse</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">min_plus_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CantReverseError</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">idx_reverse</span><span class="p">,</span> <span class="n">min_plus_max</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subscale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">total</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">na_policy</span><span class="p">,</span> <span class="n">average</span><span class="p">,</span> <span class="n">questname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">total_subscale</span><span class="p">(</span>
+        <span class="n">answer</span><span class="p">,</span> <span class="n">questname</span><span class="p">,</span> <span class="n">min_plus_max</span><span class="p">,</span> <span class="n">na_policy</span><span class="p">,</span> <span class="n">subscale</span><span class="p">,</span> <span class="n">average</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Monshi">
+<a class="viewcode-back" href="../../api/generated/issych.monshi.Monshi.html#issych.monshi.Monshi">[docs]</a>
+<span class="k">class</span> <span class="nc">Monshi</span><span class="p">:</span>
+<div class="viewcode-block" id="Monshi.__init__">
+<a class="viewcode-back" href="../../api/generated/issych.monshi.Monshi.__init__.html#issych.monshi.Monshi.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">answer_sheet</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Googleフォームなどで収集した、心理学的な質問紙への回答を集計するためのクラスです。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        answer_sheet : :py:class:`pandas.DataFrame`</span>
+<span class="sd">            集計対象となる全回答者の全回答を含んだデータフレームです。</span>
+<span class="sd">            合計や平均などの集計対象となる列は、すべて数字のみから成る必要があります。</span>
+<span class="sd">            文字列などから成る列は、集計されずにそのまま返されます。</span>
+<span class="sd">            </span>
+<span class="sd">            .. hint:: Q. 数字にしたはずなのに集計されない</span>
+
+<span class="sd">                A. 数字が文字型として列に含まれている可能性があります。</span>
+<span class="sd">                該当する列をfloat型に変換してから試してください。</span>
+
+<span class="sd">                &gt;&gt;&gt; answer_sheet.astype({&#39;syukei_sarenai_retsu&#39;: float})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">answer_sheet</span> <span class="o">=</span> <span class="n">answer_sheet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Monshi.separate">
+<a class="viewcode-back" href="../../api/generated/issych.monshi.Monshi.separate.html#issych.monshi.Monshi.separate">[docs]</a>
+    <span class="k">def</span> <span class="nf">separate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cols_item</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        回答を集めたデータフレームを、 ``cols_item`` に従って分割します。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cols_item : dict</span>
+<span class="sd">            辞書のキーには質問紙の名前を指定してください。</span>
+<span class="sd">            ここで指定した質問紙名が、集計されたデータフレームで用いられます。</span>
+
+<span class="sd">            .. hint:: 集計後のデータに回答者IDやタイムスタンプなどを含む列を残したい場合</span>
+
+<span class="sd">                &#39;info&#39;や&#39;meta&#39;など、それとわかる名前を指定しましょう。</span>
+
+<span class="sd">            値には、その質問紙に該当する列を指定します。</span>
+<span class="sd">            ４通りの指定方法があります。</span>
+
+<span class="sd">            - 1. 列を0始まりの数字で指定する（非推奨）</span>
+
+<span class="sd">            &gt;&gt;&gt; [2, 3, 4, 5, 6]</span>
+
+<span class="sd">            または</span>
+
+<span class="sd">            &gt;&gt;&gt; [list(range(2, 7))]</span>
+<span class="sd">            などとすると、3列目から7列目までが指定されます。</span>
+<span class="sd">            数字は0から始まるので、2列目から6列までではありません。</span>
+
+<span class="sd">            .. caution::</span>
+<span class="sd">                この方法は非推奨としています。</span>
+<span class="sd">                ``.score()`` メソッドでは1始まりの数字を指定する箇所もありややこしいためです。</span>
+
+<span class="sd">            - 2. 列をアルファベットで指定する</span>
+
+<span class="sd">            &gt;&gt;&gt; [&#39;H&#39;, &#39;J&#39;]</span>
+
+<span class="sd">            とすると、7列目と9列目が指定されます</span>
+
+<span class="sd">            - 3. 列範囲をアルファベットで指定する</span>
+
+<span class="sd">            &gt;&gt;&gt; &#39;H:J&#39;</span>
+
+<span class="sd">            とすると、7, 8, 9列目が指定されます。</span>
+
+<span class="sd">            - 4. 列名の冒頭文字列で指定する</span>
+
+<span class="sd">            &gt;&gt;&gt; &#39;scale2_&#39;</span>
+
+<span class="sd">            とすると、データフレーム列名が &#39;scale2\_&#39; から始まる列が指定されます。</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        ``.separate()`` を実行すると、質問紙ごとの回答を取得できるようになります。</span>
+<span class="sd">        指定した質問紙名がそのための attribute となります。</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; cols_item = dict(</span>
+<span class="sd">        &gt;&gt;&gt;     info=[0, 1]</span>
+<span class="sd">        &gt;&gt;&gt;     scale1=[&#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;G&#39;, &#39;H&#39;]</span>
+<span class="sd">        &gt;&gt;&gt;     scale2=&#39;scale2_&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; monshi = Monshi(answer_sheet)</span>
+<span class="sd">        &gt;&gt;&gt; monshi.separate(cols_item)</span>
+<span class="sd">        &gt;&gt;&gt; monshi.shape</span>
+<span class="sd">        (5, 21)</span>
+<span class="sd">        &gt;&gt;&gt; monshi.info.shape</span>
+<span class="sd">        (5, 2)</span>
+<span class="sd">        &gt;&gt;&gt; monshi.scale1.shape</span>
+<span class="sd">        (5, 5)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cols_item</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">cols_item</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="n">cols_item</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">cols_item</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">val_is_all_int</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">val_is_all_str</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">match</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">case</span> <span class="nb">list</span><span class="p">()</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">()</span> <span class="k">if</span> <span class="n">val_is_all_int</span><span class="p">:</span>
+                <span class="c1"># Example: [2, 3, 4, 5, 6]</span>
+                    <span class="n">separated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">answer_sheet</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">value</span><span class="p">]</span>
+                <span class="k">case</span> <span class="nb">list</span><span class="p">()</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">()</span> <span class="k">if</span> <span class="n">val_is_all_str</span><span class="p">:</span>
+                <span class="c1"># Example: [&#39;H&#39;, &#39;J&#39;]</span>
+                    <span class="n">separated</span> <span class="o">=</span> <span class="n">loc_byalphabet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">answer_sheet</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="nb">str</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="c1"># Example &#39;H:J&#39;</span>
+                    <span class="n">separated</span> <span class="o">=</span> <span class="n">loc_range_byalphabet</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">answer_sheet</span><span class="p">,</span> <span class="o">*</span><span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">))</span>
+                <span class="k">case</span> <span class="nb">str</span><span class="p">():</span>
+                <span class="c1"># Example &#39;scale2_&#39;</span>
+                    <span class="n">separated</span> <span class="o">=</span> <span class="n">loc_cols_name_startswith</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">answer_sheet</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;範囲の指定方法が不正です&#39;</span><span class="p">)</span>
+
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">separated</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="Monshi.score">
+<a class="viewcode-back" href="../../api/generated/issych.monshi.Monshi.score.html#issych.monshi.Monshi.score">[docs]</a>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">monfig</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :py:meth:`Monshi.separate` メソッドで分割された質問紙ごとに集計を行います。</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        monfig: dict</span>
+<span class="sd">            この引数で、集計方法を質問紙ごとに指定してください。</span>
+<span class="sd">            ``monfig`` のキーには :py:meth:`Monshi.separate` で指定した質問紙名を記入してください。</span>
+<span class="sd">            指定されていない質問紙名のキーに対応する値は無視されます。</span>
+<span class="sd">            ``monfig`` の値は、キーワード引数として :py:func:`score_questionnaire` に与えられます。</span>
+<span class="sd">            詳細は :py:func:`score_questionnaire` を確認してください。</span>
+
+<span class="sd">            .. tip:: Monshiのconfigなので、monfigです</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;.separate()が先に実行されていません。&#39;</span><span class="p">)</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">monfig</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">についての設定がmonfigにありません。&#39;</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">monfig</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score_questionnaire</span><span class="p">(</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">),</span> <span class="n">label</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scores</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="score_as_monfig">
+<a class="viewcode-back" href="../../api/generated/issych.monshi.score_as_monfig.html#issych.monshi.score_as_monfig">[docs]</a>
+<span class="k">def</span> <span class="nf">score_as_monfig</span><span class="p">(</span><span class="n">answer_sheet</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+                    <span class="n">monfig</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Pathlike</span><span class="p">]</span>
+                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Googleフォームなどで収集した、心理学的な質問紙への回答を集計する関数です。</span>
+<span class="sd">    :class:`Monshi` を使うより手っ取り早いです。</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        このコードが正しく動作することを、作者は保証しません。</span>
+<span class="sd">        このコードを用いて集計する際は、必ず別の方法による集計結果と比較してください。</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    answer_sheet : :py:class:`pandas.DataFrame`</span>
+<span class="sd">        集計対象となる全回答者の全回答を含んだデータフレームです。 </span>
+<span class="sd">        詳細は、 :meth:`Monshi.__init__` のドキュメントを参照してください。</span>
+<span class="sd">    monfig : dict or :py:data:`issych.typealias.Pathlike`</span>
+<span class="sd">        集計方法を示した、 ``.toml`` ファイルへのパスまたは辞書です。</span>
+<span class="sd">        ``monfig`` には、 ``_cols_item`` というキーが含まれている必要があります。</span>
+<span class="sd">        ``_cols_item`` は、質問紙名とその質問紙への回答を含む列の指定から成る辞書です。</span>
+<span class="sd">        詳細は :meth:`Monshi.separate` ドキュメントの、 ``cols_item`` を参照してください。</span>
+<span class="sd">        また ``monfig`` は、 ``_cols_item`` で指定したすべての質問紙名をキーとして含む必要があります。</span>
+<span class="sd">        詳細は :func:`score_questionnaire` のドキュメントを参照してください。</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    score : :py:class:`pandas.DataFrame`</span>
+<span class="sd">        集計された得点のデータフレームです。</span>
+<span class="sd">        詳細は、 :meth:`Monshi.score` のドキュメントを参照してください。</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    この関数は...</span>
+
+<span class="sd">    &gt;&gt;&gt; Monshi(answer_sheet).separate(monfig[&#39;_cols_item&#39;]).score(monfig)</span>
+
+<span class="sd">    ...のショートカットです。</span>
+<span class="sd">    詳細はそれぞれのメソッドにおけるドキュメントを参照してください。</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    Monshi: このショートカット関数が使用しているクラス</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">monfig</span><span class="p">,</span> <span class="n">Pathlike</span><span class="p">):</span>
+        <span class="n">monfig</span> <span class="o">=</span> <span class="n">Dictm</span><span class="p">(</span><span class="n">monfig</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Monshi</span><span class="p">(</span><span class="n">answer_sheet</span><span class="p">)</span><span class="o">.</span><span class="n">separate</span><span class="p">(</span><span class="n">monfig</span><span class="p">[</span><span class="s1">&#39;_cols_item&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">monfig</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Issaku Kawashima.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

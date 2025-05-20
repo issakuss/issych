@@ -1,5 +1,6 @@
 import unittest
 
+from dynaconf.vendor.tomllib import TOMLDecodeError
 from dynaconf import Dynaconf
 
 from issych.dataclass import Dictm
@@ -36,7 +37,7 @@ class TestDictm(unittest.TestCase):
         self.assertEqual(dictm.may('abbr'), 'Full')
         self.assertEqual(dictm.may('abbr_not_exist'), 'abbr_not_exist')
 
-    def test_dynacof(self):
+    def test_dynaconf(self):
         dictm = Dictm(Dynaconf(
             settings_files='tests/testdata/config/dataclass.toml'))
         self.assertEqual(dictm.level1.key1, 'value1')
@@ -52,3 +53,8 @@ class TestDictm(unittest.TestCase):
         self.assertEqual(dictm.level1.key3, 3)
         self.assertEqual(dictm.level1.level2.key11, 'valuelevel2')
         self.assertEqual(dictm.level1.level2.level3.key111, 'valuelevel3')
+
+        with self.assertRaises(FileNotFoundError):
+            Dictm('path_not_exists.toml')
+        with self.assertRaises(TOMLDecodeError):
+            Dictm('tests/testdata/config/corrupted_toml.toml')

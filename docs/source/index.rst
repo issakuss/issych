@@ -16,4 +16,4 @@ issychのドキュメントだよ。
 .. code-block:: bash
 
    pip install git+https://github.com/issakuss/issych
-   pip install git+https://github.com/issakuss/issych@v0.0.6.0  # ←バージョン指定する場合はこれ
+   pip install git+https://github.com/issakuss/issych@v0.0.6.1  # ←バージョン指定する場合はこれ

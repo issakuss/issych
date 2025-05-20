@@ -1,0 +1,3 @@
+[test]
+hogehoge = 'hoge'
+is_corrupted = True

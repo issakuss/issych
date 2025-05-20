@@ -51,7 +51,14 @@ class Dictm(Dict):
                               for k, v in mydict.items()}
                     args = (mydict,)
                 case str() | Path() as mypath:
-                    mydict = Dictm(Dynaconf(settings_files=mypath))
+                    mypath = Path(mypath)
+                    if not mypath.exists():
+                        raise FileNotFoundError(
+                            '以下のパスが指定されましたが、ファイルが存在しません:'
+                            f'{mypath.resolve()}')
+                    loaded_dynaconf = Dynaconf(settings_files=mypath)
+                    print(loaded_dynaconf)  # to except TOMLDecodeError
+                    mydict = Dictm(loaded_dynaconf)
         else:
             mydict = dict(*args, **kwargs)
         super().__init__(_dictmize_nested(mydict))

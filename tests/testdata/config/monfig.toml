@@ -24,4 +24,5 @@
         total = 'all'
 
 [scale3]
-    idx_reverse = []
+    na_policy = 'ignore'
+    average = false

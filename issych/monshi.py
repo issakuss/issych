@@ -100,7 +100,7 @@ def score_questionnaire(
         ``answer`` に無回答（ ``np.nan`` or ``float('na')`` or ``None`` or ``pd.NA`` ）があった場合の挙動です。
 
         - 'na': その回答を含む尺度得点・下位尺度得点が ``pd.NA`` になります
-        - 'ignore': その回答を除いて合計点または平均点が算出されます
+        - 'ignore': その回答を除いて合計点または平均点が算出されます。すべての回答が無回答の場合は ``pd.NA`` になります
         - 'raise': エラーが返されます
 
     subscale : dict, default {}
@@ -159,7 +159,7 @@ def score_questionnaire(
                              'na_policyの設定によって無視することもできます。')
         skipna = na_policy == 'ignore'
 
-        score = answer.sum(axis=1, skipna=skipna)
+        score = answer.sum(axis=1, skipna=skipna, min_count=1)
         if average:
             score = answer.mean(axis=1, skipna=skipna)
         score.name = name

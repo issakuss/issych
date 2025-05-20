@@ -1,6 +1,6 @@
 [_cols_item]
     # 回答を集めたデータフレームのうち、どの列までがどの質問紙に対応しているかを示す
-    info = [0, 1]
+    info = [1, 2]
     scale1 = ['C', 'D', 'E', 'G', 'H']
     scale2 = 'scale2_'
     scale3 = 'S:U'

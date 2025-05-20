@@ -42,13 +42,13 @@ class TestMonshi(unittest.TestCase):
 
         invalid_monfig = Dictm('tests/testdata/config/invalid_monfig.toml')
         with self.assertRaises(CantReverseError):  # idx_reverse without min_plus_max
-            self.monshi.separate({'dummy_scale1': [2, 3]})
+            self.monshi.separate({'dummy_scale1': [3, 4]})
             self.monshi.score({'dummy_scale1': invalid_monfig['dummy_scale1']})
         with self.assertRaises(CantReverseError):  # Negative subscale value without min_plus_max
-            self.monshi.separate({'dummy_scale2': [2, 3]})
+            self.monshi.separate({'dummy_scale2': [3, 4]})
             self.monshi.score({'dummy_scale2': invalid_monfig['dummy_scale2']})
         with self.assertRaises(RuntimeError):  # Without necessary questionnaire setting
-            self.monshi.separate({'dummy_scale3': [2, 3]})
+            self.monshi.separate({'dummy_scale3': [3, 4]})
             self.monshi.score({'dummy_scale1': invalid_monfig['dummy_scale1']})
 
         self.monshi.separate(self.monfig._cols_item)

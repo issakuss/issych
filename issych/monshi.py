@@ -270,19 +270,13 @@ class Monshi:
             値には、その質問紙に該当する列を指定します。
             ４通りの指定方法があります。
 
-            - 1. 列を0始まりの数字で指定する（非推奨）
+            - 1. 列を1始まりの数字で指定する
 
-            >>> [2, 3, 4, 5, 6]
+            >>> [3, 4, 5, 6, 7]
 
-            または
-
-            >>> [list(range(2, 7))]
-            などとすると、3列目から7列目までが指定されます。
-            数字は0から始まるので、2列目から6列までではありません。
-
-            .. caution::
-                この方法は非推奨としています。
-                ``.score()`` メソッドでは1始まりの数字を指定する箇所もありややこしいためです。
+            数字が1から始まることに注意してください。
+            一番左の列は0ではなく1です。
+            :meth:`pandas.DataFrame.iloc` などで指定する際と異なります。
 
             - 2. 列をアルファベットで指定する
 
@@ -331,8 +325,9 @@ class Monshi:
             val_is_all_str = all(isinstance(x, str) for x in value)
             match value:
                 case list() | tuple() if val_is_all_int:
-                # Example: [2, 3, 4, 5, 6]
-                    separated = self.answer_sheet.iloc[:, value]
+                # Example: [1, 2, 3, 4, 5]
+                    value_ = [v - 1 for v in value]
+                    separated = self.answer_sheet.iloc[:, value_]
                 case list() | tuple() if val_is_all_str:
                 # Example: ['H', 'J']
                     separated = loc_byalphabet(self.answer_sheet, value)

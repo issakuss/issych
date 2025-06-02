@@ -1,4 +1,5 @@
 from typing import Any, Dict
+import string
 from pathlib import Path
 
 from dynaconf.base import LazySettings
@@ -105,3 +106,60 @@ class Dictm(Dict):
         if val is None:
             return key
         return val
+
+
+class Pathm:
+    def __init__(self, template: str='.'):
+        """
+        Parameters
+        ----------
+        template : str
+            パスのテンプレートとなる文字列。
+            {key} 形式で変数を指定します。
+            例：'{parent}/interim/{sub_id}/data.csv'
+
+        Notes
+        -----
+        組み込みのpathlib.Pathと同じ機能を持っています。
+        ただし、テンプレートを用いた流動的なパスの指定機能が加わっています。
+
+        Examples
+        --------
+        >>> foo = Pathm('{parent}/interim/{sub_id}/data.csv')
+        >>> foo(parent='data', sub_id='s001')
+        PosixPath('data/interim/s001/data.csv')
+        >>> foo(parent='data', sub_id'='s002')
+        PosixPath('data/interim/s002/data.csv')
+
+        >>> bar = Pathm('settings.toml')
+        >>> bar.exists()
+        True
+        """
+        self.template = template
+        self._last_path = None if self._has_var(template) else Path(template)
+
+    def __call__(self, **kwargs):
+        formatted = self.template.format(**kwargs)
+        self._last_path = Path(formatted)
+        return self._last_path
+
+    def __getattr__(self, attr):
+        if self._last_path is None:
+            raise AttributeError('パスの変数に指定がありません')
+        return getattr(self._last_path, attr)
+
+    def __str__(self):
+        return self.template
+
+    def __truediv__(self, other):
+        new_template = f'{self.template.rstrip("/")}/{str(other).lstrip("/")}'
+        return Pathm(new_template)
+
+    def __fspath__(self):
+        if self._last_path is None:
+            return self.template
+        return str(self._last_path)
+
+    def _has_var(self, template):
+        return any(field_name for _, field_name, _, _
+                   in string.Formatter().parse(template) if field_name)

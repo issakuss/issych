@@ -1,9 +1,11 @@
 import unittest
+from pathlib import Path
 
 from dynaconf.vendor.tomllib import TOMLDecodeError
 from dynaconf import Dynaconf
+import pandas as pd
 
-from issych.dataclass import Dictm
+from issych.dataclass import Dictm, Pathm
 
 
 class TestDictm(unittest.TestCase):
@@ -58,3 +60,23 @@ class TestDictm(unittest.TestCase):
             Dictm('path_not_exists.toml')
         with self.assertRaises(TOMLDecodeError):
             Dictm('tests/testdata/config/corrupted_toml.toml')
+
+class TestPathm(unittest.TestCase):
+    def test_misc(self):
+        pd.read_csv(Pathm('tests/testdata/pathm/pathm1/file.csv'))
+        pd.read_csv(Pathm('tests/testdata/pathm/{dr}/file.csv')(dr='pathm1'))
+
+    def test_truediv(self):
+        self.assertTrue((Pathm() / 'issych').exists())
+        self.assertTrue((Pathm() / Path('issych')).exists())
+        self.assertTrue((Pathm() / Pathm('issych')).exists())
+
+    def test_path_method(self):
+        self.assertTrue(Pathm().resolve().exists())
+        self.assertTrue((Pathm() / 'issych').resolve().exists())
+
+    def test_template(self):
+        mypath = Pathm('tests/{foo}/pathm/{bar}/file')
+        self.assertTrue(mypath(foo='testdata', bar='pathm1').exists())
+        self.assertTrue(mypath(foo='testdata', bar='pathm2').exists())
+        self.assertFalse(mypath(foo='testdata', bar='pathm3').exists())

@@ -156,7 +156,10 @@ def prepare_ax(axsizeratio: Tuple=(1., 1.),
 
     Tested with: TestMaskArea(), TestPlotPrePost()
     """
-    set_rcparams(in_path_toml)
+    if in_path_toml is None:
+        set_rcparams()
+    else:
+        set_rcparams(in_path_toml)
     figsize = calc_figsize(1, 1, axsizeratio)
     return plt.subplots(figsize=figsize)
 
@@ -190,7 +193,10 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
 
     Tested with: TestPlotRainCloud()
     """
-    set_rcparams(in_path_toml)
+    if in_path_toml is None:
+        set_rcparams()
+    else:
+        set_rcparams(in_path_toml)
     figsize = calc_figsize(n_row, n_col, axsizeratio)
     fig, axes = plt.subplots(n_row, n_col, figsize=figsize)
     if not isinstance(axes, np.ndarray):

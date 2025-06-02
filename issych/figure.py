@@ -59,7 +59,7 @@ def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
          'grid.color': params.color.sub})
 
 
-def get_current_rcparams() -> Tuple[Dictm, Dictm, Dictm]:
+def get_current_rcparams() -> Dictm:
     """
     現在の ``rcparams`` を、 :ref:`issych-figure-setting-format` で取得します。
 

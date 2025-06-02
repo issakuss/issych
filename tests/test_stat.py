@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 from issych.stat import (
-    convert_to_iqrs, nanzscore, nanzscore2value, value2nanzscore,
+    convert_to_iqrs, nanzscore, nanzscore2value, iqr2value, value2nanzscore,
     arcsine_sqrt, fisher_z)
 
 
@@ -24,6 +24,12 @@ class TestIQR(unittest.TestCase):
 
         SEQ = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.assertEqual(list(convert_to_iqrs(SEQ)), IQRS)
+        for iqr, v in zip(IQRS, SEQ):
+            if iqr == 0:
+                self.assertEqual(iqr2value(iqr, SEQ), 5.)
+                continue
+            self.assertEqual(iqr2value(iqr, SEQ), v)
+        self.assertEqual(iqr2value(-0.5, SEQ), 1.)
         self.assertEqual(nanzscore2value(0, SEQ), 5.)
         self.assertAlmostEqual((nanzscore(SEQ) - pd.Series(Z)).sum(), 0)
         self.assertEqual(value2nanzscore(5, SEQ), 0.)

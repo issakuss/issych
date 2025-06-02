@@ -48,8 +48,6 @@ def arcsine_sqrt(value: Number) -> float:
     Notes
     -----
     一般に、0〜1をとる比率データの分散に対して、正規性を向上させる目的で使用されます。
-
-    Tested with: test_calculation.py
     """
     if np.isnan(value):
         return np.nan
@@ -83,10 +81,6 @@ def convert_to_iqrs(vec_origin: Vector) -> np.ndarray:
     --------
     >>> convert_to_iqrs([1, 2, 3, 4, 100])
     array([-0.5,  0. ,  0. ,  0.5,  24. ])
-
-    Notes
-    -----
-    Tested with: test_iqr.py
     """
     vec_origin = pd.Series(vec_origin).astype(float)
     vec_dropna = pd.Series(vec_origin).dropna()
@@ -136,15 +130,37 @@ def nanzscore2value(zscore: Number, vec: Vector) -> float:
     .. info::
         ベクトルにおいて NaN は無視されます。
 
+    Examples
+    --------
     >>> vec = np.array([1, 2, 3, 4, 5, np.nan])
     >>> zscore = 0.5
     >>> nanzscore2value(zscore, vec)
     3.0
-
-    Tested in test_convert_to_iqrs.py
     """
     vec = _prep_nanz(vec)
     return (zscore * np.nanstd(vec)) + np.nanmean(vec)
+
+
+def iqr2value(iqr: Number, vec: Vector) -> np.ndarray:
+    """
+    指定したIQRを、指定したベクトルにおける元の値に変換します。
+
+    Examples
+    --------
+    >>> vec = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    >>> iqr2value(-0.5, vec)
+    1.0
+    >>> iqr2value(0.25, vec)
+    8.0
+    >>> iqr2value(1.5, vec)
+    13.0
+    """
+    low, mid, high = pd.Series(vec).dropna().describe()[['25%', '50%', '75%']]
+    if iqr > 0.:
+        return high + ((high - low) * iqr)
+    if iqr < 0.:
+        return low + ((high -low) * iqr)
+    return mid
 
 
 def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
@@ -156,12 +172,12 @@ def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
     .. info::
         ベクトルにおいてNaNは無視されます。
 
+    Examples
+    --------
     >>> vec = np.array([1, 2, 3, 4, 5, np.nan])
     >>> value = 3
     >>> value2nanzscore(value, vec)
     0.0
-
-    Tested in test_convert_to_iqrs.py
     """
     vec = _prep_nanz(vec)
     return (value - np.nanmean(vec)) / np.nanstd(vec)

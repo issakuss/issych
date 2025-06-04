@@ -131,3 +131,86 @@ def vec2sqmatrix(vec: Sequence) -> np.ndarray:
             f'ベクトルの長さが{length}のため、正方行列に変換できません。')
     length = int(length)
     return np.array(vec).reshape(length, length)
+
+
+def cast_to_nullable(dataframe: pd.DataFrame,
+                     cast_object: bool=False) -> pd.DataFrame:
+    """
+    Notes
+    -----
+    :py:class:`pandas.DataFrame` の列の型を、以下の対応表に沿って `pandas` 拡張型 (nullable dtype) に変換します。
+
+    +-------------------+---------+
+    | Before            | After   |
+    +===================+=========+
+    | int64             | Int64   |
+    | int32             | Int32   |
+    | int16             | Int16   |
+    | int8              | Int8    |
+    | uint64            | UInt64  |
+    | uint32            | UInt32  |
+    | uint16            | UInt16  |
+    | uint8             | UInt8   |
+    | float64           | Float64 |
+    | bool              | boolean |
+    | object (optional) | string  |
+    +----------------+------------+
+
+    `object` 型は文字列列とみなされ、`string` 型に変換されます。
+    ただし `cast_object` 引数が `True` のときのみです。
+    変換により、 `pd.NA` による欠損表現が可能になります。
+
+    Parameters
+    ----------
+    dataframe : pandas.DataFrame
+        このデータフレームを変換します。
+    cast_object : bool, default False
+        True のとき、`object` 型の列を `string` 型 (nullable) に変換します。
+
+    Returns
+    -------
+    pandas.DataFrame
+        列型をnullable型に変換した新しいデータフレーム。
+
+    Examples
+    --------
+    >>> df = pd.DataFrame({
+    ...     'a': [1, 2, 3],
+    ...     'b': [1.1, 2.2, np.nan],
+    ...     'c': ['x', 'y', None]
+    ... })
+    >>> df2 = cast_to_nullable(df, cast_object=True)
+    >>> df2.dtypes
+    a      Int64
+    b    Float64
+    c     string
+    dtype: object
+    """
+    dataframe_ = dataframe.copy()
+
+    TYPEMAP = {
+        'int64': 'Int64',
+        'int32': 'Int32',
+        'int16': 'Int16',
+        'int8': 'Int8',
+        'uint64': 'UInt64',
+        'uint32': 'UInt32',
+        'uint16': 'UInt16',
+        'uint8': 'UInt8',
+        'float64': 'Float64',
+        'bool': 'boolean',
+    }
+
+    dtypes_in_df = dataframe_.dtypes.unique()
+
+    for dtype in dtypes_in_df:
+        dtype_str = str(dtype)
+        if dtype_str in TYPEMAP:
+            cols = dataframe_.select_dtypes(include=[dtype_str]).columns
+            dataframe_[cols] = dataframe_[cols].astype(TYPEMAP[dtype_str])
+
+    if cast_object and 'object' in map(str, dtypes_in_df):
+        object_cols = dataframe_.select_dtypes(include=['object']).columns
+        dataframe_[object_cols] = dataframe_[object_cols].astype('string')
+
+    return dataframe_

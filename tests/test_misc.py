@@ -9,8 +9,7 @@ import seaborn as sns
 from tqdm import tqdm
 from joblib import Parallel, delayed
 
-from issych.misc import (
-    alphabet2num, meas_exectime, tqdm_joblib, group_by_feature_balance)
+from issych.misc import alphabet2num, meas_exectime, tqdm_joblib
 
 
 class TestAlphabet2Num(unittest.TestCase):

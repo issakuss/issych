@@ -1,6 +1,8 @@
 import unittest
 
+import numpy as np
 import pandas as pd
+
 from issych.stat import (
     convert_to_iqrs, nanzscore, nanzscore2value, iqr2value, value2nanzscore,
     arcsine_sqrt, fisher_z)
@@ -69,3 +71,23 @@ class TestFisherZ(unittest.TestCase):
             fisher_z(2)
         with self.assertRaises(ValueError):
             fisher_z(-2)
+
+
+class TestNanzscore(unittest.TestCase):
+    def test_ok(self):
+        seq_with_nan = [1, 2, 3, 4, 5, float('nan'), 6, 7, 8, 9, pd.NA, None]
+        expected = np.array([  # Calculated with scipy.stats.zscore
+            -1.54919334, -1.161895, -0.77459667, -0.38729833, 0., np.nan,
+            0.38729833, 0.77459667, 1.161895, 1.54919334, np.nan, np.nan])
+        self.assertTrue(np.allclose(nanzscore(seq_with_nan),
+                                    expected, equal_nan=True))
+        self.assertTrue(np.allclose(nanzscore(np.array(seq_with_nan)),
+                                    expected, equal_nan=True))
+        self.assertTrue(np.allclose(nanzscore(pd.Series(seq_with_nan)),
+                                    expected, equal_nan=True))
+
+    def test_nan(self):
+        seq_zero_std = [1, 1, 1, 1, 1, float('nan')]
+        result = nanzscore(seq_zero_std)
+        self.assertTrue(len(result) == len(seq_zero_std))
+        self.assertTrue(np.all(np.isnan(result)))

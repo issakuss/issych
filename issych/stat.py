@@ -104,21 +104,19 @@ def _prep_nanz(vec: Vector) -> np.ndarray:
     if isinstance(vec, pd.DataFrame):
         raise ValueError('pd.DataFrameはサポートされていません。')
     if isinstance(vec, pd.Series):
-        vec = vec.astype(float)
-    vec = np.array(vec)
+        vec = vec.values
+    vec = pd.Series(vec).astype('Float64').astype('float')  # None or pd.NA->np.nan
     return vec
 
 
 def nanzscore(vec: Vector) -> np.ndarray:
     """
     NaN を含むベクトルに対して、NaN を無視してZスコア変換を行います。
-
-    Notes
-    -----
-    Tested with: test_convert_to_iqrs.py
     """
     vec = _prep_nanz(vec)
-    return (vec - np.nanmean(vec)) / np.nanstd(vec)
+    if (nanstd:=np.nanstd(vec)) == 0.:
+        return np.full(vec.shape, np.nan)
+    return ((vec - np.nanmean(vec)) / nanstd).values
 
 
 def nanzscore2value(zscore: Number, vec: Vector) -> float:

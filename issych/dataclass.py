@@ -9,8 +9,6 @@ from dynaconf import Dynaconf
 class Dictm(Dict):
     def __init__(self, *args, **kwargs):
         """
-        Notes
-        -----
         組み込みの辞書型と同じ機能を持っています。
         組み込みの辞書型にはない、いくつかのメソッドを持っています。
         加えて、以下の例のように、ドットを使って要素を呼び出すことができます
@@ -72,8 +70,6 @@ class Dictm(Dict):
 
     def flatten(self):
         """
-        Notes
-        -----
         ネストされた辞書を開きます。
 
         Examples
@@ -89,8 +85,6 @@ class Dictm(Dict):
 
     def may(self, key: str) -> str:
         """
-        Notes
-        -----
         辞書に該当するキーがあれば対応する要素を返します。
         該当するキーがなければ、キーをそのまま返します。
 
@@ -111,17 +105,15 @@ class Dictm(Dict):
 class Pathm:
     def __init__(self, template: str='.'):
         """
+        組み込みのpathlib.Pathとほぼ同じ機能を持っています。
+        ただし、テンプレートを用いた流動的なパスの指定機能が加わっています。
+
         Parameters
         ----------
         template : str
             パスのテンプレートとなる文字列。
             {key} 形式で変数を指定します。
             例：'{parent}/interim/{sub_id}/data.csv'
-
-        Notes
-        -----
-        組み込みのpathlib.Pathと同じ機能を持っています。
-        ただし、テンプレートを用いた流動的なパスの指定機能が加わっています。
 
         Examples
         --------

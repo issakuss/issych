@@ -256,6 +256,8 @@ class Monshi:
     def separate(self, cols_item: Dict[str, Tuple[str, str]]):
         """
         回答を集めたデータフレームを、 ``cols_item`` に従って分割します。
+        このメソッドを実行すると、質問紙ごとの回答を取得できるようになります。
+        指定した質問紙名がそのための attribute となります。
 
         Parameters
         ----------
@@ -295,11 +297,6 @@ class Monshi:
             >>> 'scale2_'
 
             とすると、データフレーム列名が 'scale2\_' から始まる列が指定されます。
-
-        Notes
-        -----
-        ``.separate()`` を実行すると、質問紙ごとの回答を取得できるようになります。
-        指定した質問紙名がそのための attribute となります。
 
         Examples
         --------

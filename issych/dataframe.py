@@ -10,6 +10,13 @@ def loc_byalphabet(dataframe: pd.DataFrame, locs: str | Sequence[str]
                    ) -> pd.DataFrame:
     """
     :py:class:`pandas.DataFrame` から、アルファベットで指定した列を抽出します。
+    MS Excelにおける列表示をそのまま利用しつつ列を指定できます。
+    27列目を指定する際には、MS Excelと同様 'AA' を使います。
+
+    .. warning::
+
+        Pythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
+        その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
 
     Parameters
     ----------
@@ -18,24 +25,10 @@ def loc_byalphabet(dataframe: pd.DataFrame, locs: str | Sequence[str]
     locs: Sequence
         タプルやリストなどでアルファベットを指定します。
 
-        Examples:
-
-        >>> loc_byalphabet(df, ['A'])
-        >>> loc_byalphabet(df, ['A', 'AC'])
-
-    Notes
-    -----
-    MS Excelにおける列表示をそのまま利用しつつ列を指定できます。
-    ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
-    その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
-    27列目を指定する際には、MS Excelと同様 'AA' を使います。
-
-    Tested with: :py:func:`monshi.Monshi.label`
-
     Examples
     --------
-    >>> loc_byalphabet(dataframe, ['A', 'C'])
-    >>> dataframe.iloc[:, [0, 2]]
+    >>> loc_byalphabet(dataframe, ['A', 'C', 'AC'])
+    >>> dataframe.iloc[:, [0, 2, 29]]
 
     これらは同じ意味になります。
 
@@ -51,6 +44,12 @@ def loc_range_byalphabet(dataframe: pd.DataFrame, range_min: str,
                          range_max: str) -> pd.DataFrame:
     """
     :py:class:`pandas.DataFrame` から、アルファベットで指定した列範囲を抽出します。
+    MS Excelにおける列表示をそのまま利用しつつ列範囲を指定できます。
+
+    .. warning::
+
+        ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
+        その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
 
     Parameters
     ----------
@@ -66,16 +65,6 @@ def loc_range_byalphabet(dataframe: pd.DataFrame, range_min: str,
             抽出される列には、 `range_max` に指定された列も含まれます
             つまり、 `pandas.DataFrame().loc[]` による指定方法とは動作が異なります。
 
-    Notes
-    -----
-    MS Excelにおける列表示をそのまま利用しつつ列範囲を指定できます。
-
-    .. warning::
-
-        ただしPythonに読み込んだ際、一部列をIndexに指定するなどした際は注意してください。
-        その場合、MS Excelに表示されたアルファベットが示す列と、抽出される列がズレます。
-
-    Tested with: :py:meth:`monshi.Monshi.label`
 
     Examples
     --------
@@ -103,11 +92,7 @@ def loc_cols_name_startswith(dataframe: pd.DataFrame, head_colname: str
     dataframe: :py:class:`pandas.DataFrame`
         このデータフレームから列を抽出します。
     head_colname: str
-        ここで指定した文字列から始まる列名のを抽出します。
-
-    Notes
-    -----
-    Tested with: :py:meth:`monshi.Monshi.label`
+        ここで指定した文字列から始まる列名の列を抽出します。
     """
     are_target = [col.startswith(head_colname) for col in dataframe.columns]
     return dataframe.loc[:, are_target]
@@ -115,8 +100,6 @@ def loc_cols_name_startswith(dataframe: pd.DataFrame, head_colname: str
 
 def vec2sqmatrix(vec: Sequence) -> np.ndarray:
     """
-    Notes
-    -----
     ベクトルを正方行列の :py:class:`numpy.ndarray` に変換します。
 
     Examples
@@ -136,28 +119,7 @@ def vec2sqmatrix(vec: Sequence) -> np.ndarray:
 def cast_to_nullable(dataframe: pd.DataFrame,
                      cast_object: bool=False) -> pd.DataFrame:
     """
-    Notes
-    -----
-    :py:class:`pandas.DataFrame` の列の型を、以下の対応表に沿って `pandas` 拡張型 (nullable dtype) に変換します。
-
-    +-------------------+---------+
-    | Before            | After   |
-    +===================+=========+
-    | int64             | Int64   |
-    | int32             | Int32   |
-    | int16             | Int16   |
-    | int8              | Int8    |
-    | uint64            | UInt64  |
-    | uint32            | UInt32  |
-    | uint16            | UInt16  |
-    | uint8             | UInt8   |
-    | float64           | Float64 |
-    | bool              | boolean |
-    | object (optional) | string  |
-    +----------------+------------+
-
-    `object` 型は文字列列とみなされ、`string` 型に変換されます。
-    ただし `cast_object` 引数が `True` のときのみです。
+    :py:class:`pandas.DataFrame` の列の型を `pandas` 拡張型 (nullable dtype) に変換します。
     変換により、 `pd.NA` による欠損表現が可能になります。
 
     Parameters
@@ -185,6 +147,41 @@ def cast_to_nullable(dataframe: pd.DataFrame,
     b    Float64
     c     string
     dtype: object
+
+    Notes
+    -----
+    対応表は以下の通りです。
+
+    .. list-table:: 型変換一覧
+       :header-rows: 1
+
+       * - Before
+         - After
+       * - int64
+         - Int64
+       * - int32
+         - Int32
+       * - int16
+         - Int16
+       * - int8
+         - Int8
+       * - uint64
+         - UInt64
+       * - uint32
+         - UInt32
+       * - uint16
+         - UInt16
+       * - uint8
+         - UInt8
+       * - float64
+         - Float64
+       * - bool
+         - boolean
+       * - object (optional)
+         - string
+    
+    `object` 型は文字列列とみなされ、`string` 型に変換されます。
+    ただし `cast_object` 引数が `True` のときのみです。
     """
     dataframe_ = dataframe.copy()
 

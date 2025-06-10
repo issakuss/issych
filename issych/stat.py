@@ -122,11 +122,7 @@ def nanzscore(vec: Vector) -> np.ndarray:
 def nanzscore2value(zscore: Number, vec: Vector) -> float:
     """
     指定したZスコアを、指定したベクトルにおける元の値に変換します。
-
-    Notes
-    -----
-    .. info::
-        ベクトルにおいて NaN は無視されます。
+    ベクトルにおいて NaN は無視されます。
 
     Examples
     --------
@@ -164,11 +160,7 @@ def iqr2value(iqr: Number, vec: Vector) -> np.ndarray:
 def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
     """
     指定したベクトルにおける、指定した値のZスコアを計算します。
-
-    Notes
-    -----
-    .. info::
-        ベクトルにおいてNaNは無視されます。
+    ベクトルにおいてNaNは無視されます。
 
     Examples
     --------

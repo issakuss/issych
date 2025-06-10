@@ -29,8 +29,6 @@ def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
     Notes
     -----
     ``toml`` ファイルには、 :ref:`issych-figure-setting-format` で記入されている必要があります。
-
-    Tested with: prepare_ax(), prepare_axes()
     """
     params = Dynaconf(settings_files=in_path_toml)
 
@@ -71,10 +69,6 @@ def get_current_rcparams() -> Dictm:
         図やオブジェクトのサイズに関する情報です。
     misc: :class:`issych.dataclass.Dictm`
         図の解像度と、図のファイル拡張子についてです。
-
-    Notes
-    -----
-    Tested with: :py:func:`plot_prepost` , :py:func:`plot_raincloud`
     """
     color = Dictm(
         main=plt.rcParams['axes.edgecolor'],
@@ -103,7 +97,6 @@ def calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple[float, float]
     """
     :py:data:`issych.typealias.Figure` に含まれる :py:data:`issych.typealias.Axes` の行数・列数に応じて、適切な :py:data:`issych.typealias.Figure` のサイズを計算します。
 
-
     Parameters
     ----------
     n_row: int
@@ -125,10 +118,6 @@ def calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple[float, float]
     -------
     ratio: tuple
         適切なX方向（横）の長さとY方向（縦）の長さです。
-
-    Notes
-    -----
-    Tested with: :py:func:`prepare_axes`
     """
     figsize = np.array(plt.rcParams['figure.figsize'])
     figsize *= (n_col, n_row)
@@ -139,6 +128,8 @@ def prepare_ax(axsizeratio: Tuple=(1., 1.),
                in_path_toml: Optional[Pathlike]=None) -> Tuple[Figure, Axes]:
     """
     一つの :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
+    :py:func:`matplotlib.pyplot.subplot` とほぼ同一です。
+    ただし、 :py:func:`set_rcparams` が事前に実行されます。
 
     Parameters
     ----------
@@ -148,13 +139,6 @@ def prepare_ax(axsizeratio: Tuple=(1., 1.),
     in_path_toml: 
         ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。
         ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。
-
-    Notes
-    -----
-    :py:func:`matplotlib.pyplot.subplot` とほぼ同一です。
-    ただし、 :py:func:`set_rcparams` が事前に実行されます。
-
-    Tested with: TestMaskArea(), TestPlotPrePost()
     """
     if in_path_toml is None:
         set_rcparams()
@@ -169,7 +153,8 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
                  ) -> Tuple[Figure, np.ndarray]:
     """
     指定した行数・列数の :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
-
+    :py:func:`matplotlib.pyplot.subplots` とほぼ同一ですが、 :py:func:`set_rcparams` が事前に実行されます。
+    また、 ``n_row`` =1, ``n_col`` =1の場合でも、 ``Axes`` は :py:class:`numpy.ndarray` として返されます。
 
     Parameters
     ----------
@@ -185,13 +170,6 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
     in_path_toml: 
         ここで指定された ``toml`` ファイルを読み取り、:py:data:`matplotlib.rcParams` に反映させます。
         ``toml`` ファイルには、 `:ref:`issych-figure-setting-format` で記入されている必要があります。 
-
-    Notes
-    -----
-    :py:func:`matplotlib.pyplot.subplots` とほぼ同一ですが、 :py:func:`set_rcparams` が事前に実行されます。
-    また、 ``n_row`` =1, ``n_col`` =1の場合でも、 ``Axes`` は :py:class:`numpy.ndarray` として返されます。
-
-    Tested with: TestPlotRainCloud()
     """
     if in_path_toml is None:
         set_rcparams()
@@ -209,11 +187,10 @@ def draw_diag(ax, **kwargs) -> Axes:
     """
     図の対角線上に線が引かれます。
 
-    Notes
-    -----
-    ``kwargs`` には、:py:func:matplotlib.pyplot.plot` に渡す引数を指定できます。
-
-    Tested with: plot_prepost()
+    Parameters
+    ----------
+    **kwargs:
+        :py:func:matplotlib.pyplot.plot` に渡す引数を指定できます。
     """
     xlim = ax.get_xlim()
     ylim = ax.get_ylim()
@@ -239,12 +216,11 @@ def mask_area(pos_from: float | pd.Timestamp, pos_to: float | pd.Timestamp,
         'horz'または'h'を指定すると、指定されたX軸範囲を塗りつぶします。
         'vert'または'v'を指定すると、指定されたY軸範囲を塗りつぶします。
     ax: :py:data:`issych.typealias.Axes`
+        描画するAxesです。
     color: str, optional
         塗りつぶすのに用いる色です。
-
-    Notes
-    -----
-    ``kwargs`` には、:py:func:`matplotlib.pyplot.add_patch` に渡す引数を指定できます。
+    **kwargs:
+        :py:func:`matplotlib.pyplot.add_patch` に渡す引数です。
     """
     is_horz = orient.startswith('h')
     lim = ax.get_ylim() if is_horz else ax.get_xlim()
@@ -356,7 +332,7 @@ def plot_raincloud(data: pd.DataFrame | Vector,
     -----
     RainCloud プロットをサポートするパッケージとして、 ``PtitPrince`` が有名です。
     しかし ``PtitPrince`` は（2025年4月14日現在）しばらく更新が止まっています。
-    ``PtitPrince`` を使うには、 :py:module:`pandas` をインストールする必要があります。
+    ``PtitPrince`` を使うには、古い :py:module:`pandas` をインストールする必要があります。
     本関数は ``PtitPrince`` ほど多様な機能はありませんが、最新の ``pandas`` をサポートします。
 
     Reference
@@ -448,6 +424,7 @@ class SigMarker:
                  coef_space_to_line: float=.1):
         """
         棒グラフにマーカーを追加するためのクラスです。
+        棒グラフは縦方向に伸びたものである必要があります。
 
         Parameters
         ----------
@@ -455,12 +432,6 @@ class SigMarker:
             マーカー間の縦方向の距離です。
         coef_space_to_line: float, default .1
             マーカーとそれに対応するラインとの間の距離です。
-
-        Notes
-        -----
-        .. info::
-            棒グラフは縦方向に伸びたものである必要があります。
-
         """
         self.layer: int = 0
         self.drawn_ranges: List[Tuple[float, float]] = []

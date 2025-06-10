@@ -1,0 +1,11 @@
+# ドキュメントアップデート方法
+
+- 0. 手動でdocs/source/api/以下の.rstファイルを編集
+- 1. issych/ に移動
+- 2. rm -r docs/source/api/generated/*
+- 3. conda activate issych（または、sphinxがインストールされた環境をactivate）
+- 4. sphinx-apidoc -o source/api/generated issych
+- 5. cd docs
+- 6. source/conf.pyにあるバージョンを更新
+- 7. make html
+- 8. 生成されたHTMLを確認

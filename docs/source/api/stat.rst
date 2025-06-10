@@ -18,4 +18,5 @@
    convert_to_iqrs
    nanzscore
    nanzscore2value
+   iqr2value
    value2nanzscore

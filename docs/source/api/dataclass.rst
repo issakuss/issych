@@ -15,3 +15,4 @@
    Dictm.__init__
    Dictm.flatten
    Dictm.may
+   Pathm.__init__

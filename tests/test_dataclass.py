@@ -39,6 +39,19 @@ class TestDictm(unittest.TestCase):
         self.assertEqual(dictm.may('abbr'), 'Full')
         self.assertEqual(dictm.may('abbr_not_exist'), 'abbr_not_exist')
 
+    def test_drop(self):
+        dictm = Dictm({'a': 1, 'b': 2, 'c': 3, 'd': 4})
+        dictm1 = dictm.drop('a')
+        self.assertEqual(list(dictm1.keys()), ['b', 'c', 'd'])
+        dictm2 = dictm1.drop(['b', 'c'])
+        self.assertEqual(list(dictm2.keys()), ['d'])
+
+        self.assertEqual(dictm.drop('e', skipnk=True).keys(), dictm.keys())
+        self.assertEqual(list(dictm.drop(['d', 'e'], skipnk=True).keys()),
+                         ['a', 'b', 'c'])
+        with self.assertRaises(RuntimeError):
+            dictm.drop('e')
+
     def test_dynaconf(self):
         dictm = Dictm(Dynaconf(
             settings_files='tests/testdata/config/dataclass.toml'))

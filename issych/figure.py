@@ -63,12 +63,14 @@ def get_current_rcparams() -> Dictm:
 
     Returns
     -------
-    color: :class:`issych.dataclass.Dictm`
-        色に関する情報です。
-    size: :class:`issych.dataclass.Dictm`
-        図やオブジェクトのサイズに関する情報です。
-    misc: :class:`issych.dataclass.Dictm`
-        図の解像度と、図のファイル拡張子についてです。
+    current_rcparams: :class:`issych.dataclass.Dictm`
+        以下の三つのキー・値を持つ :class:`issych.dataclass.Dictm` です。
+        color: :class:`issych.dataclass.Dictm`
+            色に関する情報です。
+        size: :class:`issych.dataclass.Dictm`
+            図やオブジェクトのサイズに関する情報です。
+        misc: :class:`issych.dataclass.Dictm`
+            図の解像度と、図のファイル拡張子についてです。
     """
     color = Dictm(
         main=plt.rcParams['axes.edgecolor'],

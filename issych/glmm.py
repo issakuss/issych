@@ -109,6 +109,12 @@ class GlmmTMB:
             raise RuntimeError('先に .fit() を実行してください。')
         return self._coefs
 
+    def sigma(self) -> float:
+        """
+        モデルの残差標準偏差を返します。
+        """
+        return r('sigma(model)')[0]
+
     def contrast(self, compareby: str, cutoffs: Tuple[float, float]
                  ) -> pd.DataFrame:
         """

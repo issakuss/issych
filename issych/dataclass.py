@@ -56,7 +56,7 @@ class Dictm(Dict):
                             '以下のパスが指定されましたが、ファイルが存在しません:'
                             f'{mypath.resolve()}')
                     loaded_dynaconf = Dynaconf(settings_files=mypath)
-                    print(loaded_dynaconf)  # to except TOMLDecodeError
+                    _ = loaded_dynaconf  # to except TOMLDecodeError
                     mydict = Dictm(loaded_dynaconf)
         else:
             mydict = dict(*args, **kwargs)

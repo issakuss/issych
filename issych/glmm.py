@@ -113,6 +113,8 @@ class GlmmTMB:
         """
         モデルの残差標準偏差を返します。
         """
+        if not self._fitted:
+            raise RuntimeError('先に .fit() を実行してください。')
         return r('sigma(model)')[0]
 
     def contrast(self, compareby: str, cutoffs: Tuple[float, float]

@@ -55,7 +55,7 @@ class GlmmTMB:
             glmmTMB = importr("glmmTMB")  # type: ignore
             r('library(glmmTMB)')
 
-        data = self._prepdata(data)
+        data = self._prepdata(data.copy())
         with localconverter(default_converter + pandas2ri.converter):
             rdata = pandas2ri.py2rpy(data)
         r.assign('data', rdata)
@@ -112,23 +112,23 @@ class GlmmTMB:
     def sigma(self) -> float:
         """
         モデルの残差標準偏差を返します。
+        各項のcoefをこれで割ることで、Cohen's d（に近い値）を計算できます。
         """
         if not self._fitted:
             raise RuntimeError('先に .fit() を実行してください。')
         return r('sigma(model)')[0]
 
-    def contrast(self, compareby: str, cutoffs: Tuple[float, float]
-                 ) -> pd.DataFrame:
+    def contrast(self, on: str, compareby: str) -> pd.Series:
         """
-        R パッケージである ``emmeans`` を用いて、2点における係数の差を検定します。
+        R パッケージである ``emmeans`` を用いて、係数の差を検定します。
         ``emmeans`` が R にインストールされている必要があります。
 
         Parameters
         ----------
+        on : str
+            ここに指定した項の係数について比較を行います
         compareby : str
-            ここに指定した列名について比較を行います。
-        cutoff : tuple of float
-            ここに指定した2点において比較を行います。
+            ここに指定した列の高低において比較を行います。
 
         Returns
         -------
@@ -137,14 +137,14 @@ class GlmmTMB:
         """
         with _suppress_r_console_output(self._verbose):
             r('library(emmeans)')
-            dv = self.formula.split(' ')[0]
-            r.assign('cutoffs', FloatVector(cutoffs))
             r(f'''
-                trends <- emtrends(model, ~ {compareby}, var = {dv},
-                                   at = list({compareby} = cutoffs))
-                result <- as.data.frame(contrast(trends, method = "revpairwise"))
+                trends <- emtrends(model, ~ {on}, var = "{compareby}")
+                result <- as.data.frame(contrast(trends,
+                                                 interaction = "pairwise",
+                                                 method = "revpairwise"))
             ''')
 
         trends = (pd.DataFrame(r['result'])
-                  .set_axis(['coef', 'std', 'df', 'stat', 'p']).T)
+                  .set_axis(['_', '_', 'coef', 'std', 'df', 'stat', 'p'])
+                  .loc['coef':, 0])
         return trends

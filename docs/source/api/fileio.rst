@@ -7,7 +7,7 @@
 
 データやファイルを読みこんだり、書き込むための関数です。
 
-.. _dataframe:
+.. _fileio:
 
 .. autosummary::
    :toctree: generated/

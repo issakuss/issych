@@ -2,10 +2,11 @@ import unittest
 
 import numpy as np
 import pandas as pd
+from rpy2.robjects import r
 
 from issych.stat import (
     convert_to_iqrs, nanzscore, nanzscore2value, iqr2value, value2nanzscore,
-    arcsine_sqrt, fisher_z)
+    arcsine_sqrt, fisher_z, kwargs4r)
 
 
 class TestIQR(unittest.TestCase):
@@ -91,3 +92,19 @@ class TestNanzscore(unittest.TestCase):
         result = nanzscore(seq_zero_std)
         self.assertTrue(len(result) == len(seq_zero_std))
         self.assertTrue(np.all(np.isnan(result)))
+
+
+class TestKwargs4R(unittest.TestCase):
+    def test(self):
+        r('''
+          val1 <- 1
+          myfunc <- function(val1, val2, comment) {
+            paste0(comment, ": ", val1 + val2) }
+          ''')
+
+        kwargs = {'val1': '@val1', 'val2': 2, 'comment': 'test'}
+        self.assertEqual(r(f'myfunc({kwargs4r(kwargs)})')[0], 'test: 3')
+        kwargs = {'key': [1, 2, 'a']}
+        self.assertEqual(kwargs4r(kwargs), 'key = c(1, 2, "a")')
+        kwargs = {'key': {'val1': 1, 'val2': 2}}
+        self.assertEqual(kwargs4r(kwargs), 'key = c("val1" = 1, "val2" = 2)')

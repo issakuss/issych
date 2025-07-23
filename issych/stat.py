@@ -171,3 +171,49 @@ def value2nanzscore(value: float, vec: Sequence[float] | pd.Series) -> float:
     """
     vec = _prep_nanz(vec)
     return (value - np.nanmean(vec)) / np.nanstd(vec)
+
+
+def kwargs4r(kwargs: Dict[str, str]) -> str:
+    """
+    キーワード引数をRのキーワード引数形式に変換します。
+    R 内の変数を指定する場合は頭に @ をつけてください。
+
+    Parameters
+    ----------
+    kwargs : dict
+        キーワード引数の辞書。
+
+    Returns
+    -------
+    str
+        Rのキーワード引数形式の文字列。
+
+    Examples
+    --------
+    >>> r('''
+    >>>    myfunc <- function(val1, val2, comment) {
+    >>>        paste0(comment, ": ", val1 + val2) }
+    >>>    val1 <- 1
+    >>> ''')
+    >>> kwargs = {'val1': '@val1', 'val2': 2, 'comment': 'test'}
+    >>> r(f'myfunc({kwargs4r(kwargs)})')    
+    test: 3
+    """
+    rkwargs = ''
+    for k, v in kwargs.items():
+        if isinstance(v, Number):
+            rkwargs += f'{k} = {v}, '
+        elif isinstance(v, str):
+            if v.startswith('@'):
+                rkwargs += f'{k} = {v[1:]}, '
+            else:
+                rkwargs += f'{k} = "{v}", '
+        elif isinstance(v, Sequence):
+            v = [f'"{v_}"' if isinstance(v_, str) else v_ for v_ in v]
+            rkwargs += f'{k} = c({", ".join(map(str, v))}), '
+        elif isinstance(v, dict):
+            v = [f'"{k_}" = {v_}' for k_, v_ in v.items()]
+            rkwargs += f'{k} = c({", ".join(v)}), '
+        else:
+            raise TypeError(f'引数の値は文字列、数値、またはそれらから成る Sequence でなければなりません: {type(v)}')
+    return rkwargs.rstrip(', ')

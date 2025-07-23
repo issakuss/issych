@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Optional, Tuple, Dict
 import sys
 import os
 import contextlib
@@ -7,6 +7,9 @@ import pandas as pd
 from rpy2.robjects import r, pandas2ri, default_converter, FloatVector
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
+from issych.typealias import Number
+
+from .stat import kwargs4r
 
 
 @contextlib.contextmanager
@@ -70,6 +73,7 @@ class GlmmTMB:
 
         self._verbose = verbose
         self._fitted = False
+        self._fitted_emtrend = False
         self._coefs = pd.DataFrame([])
 
     def _prepdata(self, data: pd.DataFrame) -> pd.DataFrame:
@@ -91,8 +95,8 @@ class GlmmTMB:
                 coef_mat <- as.data.frame(summary(model)$coefficients$cond)
                 coef_rownames <- rownames(coef_mat)
             ''')
-        self._coefs = pd.DataFrame(r['coef_mat'], columns=r['coef_rownames'],
-                                   index=['coef', 'std', 'z', 'p']).T
+        self._coefs = (pandas2ri.rpy2py(r['coef_mat'])
+                       .set_axis(['est', 'std', 'z', 'p'], axis=1))
         self._fitted = True
         return self
 
@@ -112,39 +116,44 @@ class GlmmTMB:
     def sigma(self) -> float:
         """
         モデルの残差標準偏差を返します。
-        各項のcoefをこれで割ることで、Cohen's d（に近い値）を計算できます。
+        各項の係数をこれで割ることで、Cohen's d（に近い値）を計算できます。
         """
         if not self._fitted:
             raise RuntimeError('先に .fit() を実行してください。')
         return r('sigma(model)')[0]
 
-    def contrast(self, on: str, compareby: str) -> pd.Series:
+    def emtrends(self, specs: str,
+                 at: Optional[Dict[str, Dict[str, Number]]]=None, **kwargs
+                 ) -> pd.DataFrame:
         """
-        R パッケージである ``emmeans`` を用いて、係数の差を検定します。
-        ``emmeans`` が R にインストールされている必要があります。
-
-        Parameters
-        ----------
-        on : str
-            ここに指定した項の係数について比較を行います
-        compareby : str
-            ここに指定した列の高低において比較を行います。
-
-        Returns
-        -------
-        trends : :py:class:`pandas.DataFrame`
-            検定結果です。
+        フィットしたモデルを用いて、R パッケージ ``emmeans`` の ``emtrends`` を使用します。
+        詳細は ``emmeans`` のドキュメントを参照してください。
         """
+
+        rkwargs = kwargs4r(kwargs)
+        if at is not None:
+            rkwargs += f', at = list({kwargs4r(at)})'
         with _suppress_r_console_output(self._verbose):
             r('library(emmeans)')
             r(f'''
-                trends <- emtrends(model, ~ {on}, var = "{compareby}")
-                result <- as.data.frame(contrast(trends,
-                                                 interaction = "pairwise",
-                                                 method = "revpairwise"))
+                trends <- emtrends(model, ~ {specs}, {rkwargs})
+                trends_df <- as.data.frame(trends)
             ''')
 
-        trends = (pd.DataFrame(r['result'])
-                  .set_axis(['_', '_', 'coef', 'std', 'df', 'stat', 'p'])
-                  .loc['coef':, 0])
-        return trends
+        self._fitted_emtrend = True
+        columns = {'SE': 'std', 'lower.CL': 'lower', 'upper.CL': 'upper'}
+        return pandas2ri.rpy2py(r['trends_df']).rename(columns, axis=1)
+
+    def contrast(self, **kwargs) -> pd.DataFrame:
+        """
+        フィットしたモデルを用いて、R パッケージ ``emmeans`` の ``contrast`` を使用します。
+        詳細は ``emmeans`` のドキュメントを参照してください。
+        """
+        if not self._fitted_emtrend:
+            raise RuntimeError('先に .emtrends() を実行してください。')
+        with _suppress_r_console_output(self._verbose):
+            r(f'''
+                result <- as.data.frame(contrast(trends, {kwargs4r(kwargs)}))
+            ''')
+        cols = {'estimate': 'est', 'SE': 'std', 't.ratio': 't', 'p.value': 'p'}
+        return (pandas2ri.rpy2py(r['result']).rename(cols, axis=1))

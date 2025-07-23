@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 import string
 from pathlib import Path
 
@@ -56,7 +56,7 @@ class Dictm(Dict):
                             '以下のパスが指定されましたが、ファイルが存在しません:'
                             f'{mypath.resolve()}')
                     loaded_dynaconf = Dynaconf(settings_files=mypath)
-                    print(loaded_dynaconf)  # to except TOMLDecodeError
+                    _ = loaded_dynaconf  # to except TOMLDecodeError
                     mydict = Dictm(loaded_dynaconf)
         else:
             mydict = dict(*args, **kwargs)
@@ -100,6 +100,37 @@ class Dictm(Dict):
         if val is None:
             return key
         return val
+
+    def drop(self, key: str | List[str], skipnk: bool=False):
+        """
+        指定したキーと、それに対応する値のペアを削除した Dictm を返します。
+        該当するキーがないとエラーになりますが、skip_nk が True のときは無視されます。
+
+        Parameters
+        ----------
+        key : str or list of str
+            削除するキー。
+        skipnk : bool
+            skip No Key。
+            True のとき、該当するキーがなくてもエラー返しません。
+
+        Examples
+        --------
+        >>> dictm = Dictm({'a': 1, 'b': 2, 'c': 3, 'd': 4})
+        >>> dictm.drop('a').keys()
+        ['b', 'c', 'd']
+        >>> dictm.drop(['a', 'b']).keys()
+        ['c', 'd']
+        >>> dictm.drop(['d', 'e'], skip_nk=True).keys()
+        ['a', 'b', 'c']
+        """
+        dropkeys = [key] if isinstance(key, str) else list(key)
+        nokeys = set(dropkeys) - set(self.keys())
+        if (not skipnk) and nokeys:
+            raise RuntimeError(f'{nokeys} がキーにありません。'
+                               'skipnk=True にするとこのエラーを抑制できます。')
+        return Dictm({key: self[key]
+                      for key in self.keys() if key not in dropkeys})
 
 
 class Pathm:

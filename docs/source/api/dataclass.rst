@@ -15,4 +15,5 @@
    Dictm.__init__
    Dictm.flatten
    Dictm.may
+   Dictm.drop
    Pathm.__init__

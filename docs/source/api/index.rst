@@ -9,9 +9,11 @@ API Reference
    :maxdepth: 2
 
    monshi
+   glmm
    figure
-   dataclass
    dataframe
-   fileio
    stat
+   typealias
+   dataclass
+   fileio
    misc

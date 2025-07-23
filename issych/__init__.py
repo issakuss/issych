@@ -6,3 +6,4 @@ from .glmm import *
 from .fileio import *
 from .misc import *
 from .monshi import *
+from .glmm import *

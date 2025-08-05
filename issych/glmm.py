@@ -137,11 +137,11 @@ class GlmmTMB:
             r('library(emmeans)')
             r(f'''
                 trends <- emtrends(model, ~ {specs}, {rkwargs})
-                trends_df <- as.data.frame(trends)
+                trends_df <- as.data.frame(test(trends))
             ''')
 
         self._fitted_emtrend = True
-        columns = {'SE': 'std', 'lower.CL': 'lower', 'upper.CL': 'upper'}
+        columns = {'SE': 'std', 't.ratio': 't', 'p.value': 'p'}
         return pandas2ri.rpy2py(r['trends_df']).rename(columns, axis=1)
 
     def contrast(self, **kwargs) -> pd.DataFrame:

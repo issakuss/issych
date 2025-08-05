@@ -1,13 +1,14 @@
-from typing import Optional, Tuple, Dict
+from typing import Optional, Dict, Tuple
 import sys
 import os
 import contextlib
 
 import pandas as pd
-from rpy2.robjects import r, pandas2ri, default_converter, FloatVector
+from rpy2.robjects import r, pandas2ri, default_converter
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 from issych.typealias import Number
+from issych.dataclass import Dictm
 
 from .stat import kwargs4r
 
@@ -27,6 +28,12 @@ def _suppress_r_console_output(verbose: bool):
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
+
+def rver() -> Dictm:
+    return Dictm(
+        major=r('R.version$major')[0],
+        minor=r('R.version$minor')[0],
+        full=r('version$version.string')[0])
 
 class GlmmTMB:
     def __init__(self, data: pd.DataFrame, formula: str,
@@ -137,11 +144,11 @@ class GlmmTMB:
             r('library(emmeans)')
             r(f'''
                 trends <- emtrends(model, ~ {specs}, {rkwargs})
-                trends_df <- as.data.frame(trends)
+                trends_df <- as.data.frame(test(trends))
             ''')
 
         self._fitted_emtrend = True
-        columns = {'SE': 'std', 'lower.CL': 'lower', 'upper.CL': 'upper'}
+        columns = {'SE': 'std', 't.ratio': 't', 'p.value': 'p'}
         return pandas2ri.rpy2py(r['trends_df']).rename(columns, axis=1)
 
     def contrast(self, **kwargs) -> pd.DataFrame:

@@ -1,0 +1,6 @@
+# Update時にやること
+
+1. masterブランチにマージ
+2. setup.py のバージョンを修正
+3. `git push origin master --tags`
+4. ドキュメントを修正（docs/NOTE参照）

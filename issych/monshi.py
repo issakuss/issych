@@ -19,11 +19,12 @@ class CantReverseError(Exception):
 def score_questionnaire(
     answer: pd.DataFrame,
     questname: str,
+    choices: Dict[str, int]={},
     preprocess: str='',
-    idx_reverse: Optional[List[int]]=None,
+    idx_reverse: List[int]=[],
     min_plus_max: Optional[int]=None,
     na_policy: Literal['nan', 'ignore', 'raise']='nan',
-    subscale: Optional[Dict[str, Union[List[int], Literal['all']]]]=None,
+    subscale: Dict[str, Union[List[int], Literal['all']]]={},
     average: bool=False) -> pd.DataFrame:
     """
     一つの質問紙回答データを集計します。
@@ -42,6 +43,15 @@ def score_questionnaire(
             そういった列は事前に除いてください。
             または、:meth:`pandas.DataFrame.set_index()` で ``index`` に指定してください。
 
+    choices: dict, default {}
+        質問紙の選択肢と、それに対応するスコア（数値）です。
+        
+        **Examples**
+
+        >>> choices = {'A': 1, 'B': 2}
+
+        `"A"` という回答は 1、`"B"`は 2 として計算されます。
+            
     questname : str
         質問紙の名前です。
         返り値における列名に用いられます。
@@ -204,9 +214,8 @@ def score_questionnaire(
                                         na_policy, average, *subscale_)
                           for subscale_ in subscale.items()], axis=1)
 
-    if idx_reverse is None:
-        idx_reverse = []
-
+    if len(choices) > 0:
+        answer = answer.replace(choices)
     try:
         answer = answer.copy().astype('Float64')
         answer[np.isnan(answer)] = pd.NA
@@ -222,7 +231,7 @@ def score_questionnaire(
         if min_plus_max is None:
             raise CantReverseError
         answer = reverse(answer, idx_reverse, min_plus_max)
-    if subscale is None:
+    if len(subscale) == 0:
         return total(answer, na_policy, average, questname)
     return total_subscale(
         answer, questname, min_plus_max, na_policy, subscale, average)
@@ -345,6 +354,11 @@ class Monshi:
     def score(self, monfig: Dict[str, Dict]):
         """
         :py:meth:`Monshi.separate` メソッドで分割された質問紙ごとに集計を行います。
+        monfig を参照し、以下の処理を順に行います。
+        1. `choices` をもとに選択肢の置き換え
+        2. `preprocess` をもとに下処理
+        3. `idx_reverse` および `min_plus_max` をもとに逆転項目の処理
+        4. `subscale`, `na_policy` および `average` をもとに、下位尺度ごとの合計点または平均点の算出
         
         Parameters
         ----------

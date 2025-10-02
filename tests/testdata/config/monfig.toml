@@ -13,6 +13,12 @@
     min_plus_max = 6
     na_policy = 'ignore'
     average = true
+    [scale1.choices]
+        "A" = 1
+        "B" = 2
+        "C" = 3
+        "D" = 4
+        "E" = 5
     
 [scale2]
     preprocess = 'q > 3'

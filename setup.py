@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 
 
 INSTALL_REQUIRES = [
+    # rpy2 to use functions using R
     'cycler>=0.12.1',
     'pandas>=2.1.4',
     'pyarrow>=15.0.0',  # To suppress pandas future warning
@@ -14,7 +15,7 @@ INSTALL_REQUIRES = [
 
 setup(
     name='issych',
-    version='0.0.9.0',
+    version='0.0.10.0',
     author='Issaku Kawashima',
     author_email='issakuss@gmail.com',
     description='Convenient tools for psychological studies',

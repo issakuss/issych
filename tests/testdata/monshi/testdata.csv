@@ -1,7 +1,7 @@
 ﻿sub,timestamp,scale1_1,scale1_2,scale1_3,dummy_1,scale1_4,scale1_5,scale2_1,scale2_2,scale2_3,scale2_4,scale2_5,scale2_6,scale2_7,scale2_8,scale2_9,scale2_10,scale3_1,scale3_2,scale3_3
-s001,2023/1/23,1. Strongly disagree,,3. Neither agree nor disagree,1. Checked,4. Agree,5. Strongly agree,,2. Rarely,3. Sometimes,4. Often,5. Almost always,6. Always,1. Never,2. Rarely,3. Sometimes,4. Often,1,2,1
-s002,2023/1/23,1. Strongly disagree,1. Strongly disagree,1. Strongly disagree,1. Checked,1. Strongly disagree,1. Strongly disagree,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,2,1,3
-s003,2023/1/23,5. Strongly agree. Extremely,5. Strongly agree,5. Strongly agree,1. Checked,5. Strongly agree,5. Strongly agree,1. Rarely,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,2,2,2
-s004,2023/1/24,2. Disagree,2. Disagree,3. Neither agree nor disagree,2. Not Cheked,3. Neither agree nor disagree,4. Agree,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,4,3,4
-s005,2023/1/24,5. Strongly agree. Extremely,5. Strongly agree,4. Agree,2. Not Cheked,4. Agree,3. Neither agree nor disagree,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,3,1,2
+s001,2023/1/23,A. Strongly disagree,,C. Neither agree nor disagree,1. Checked,D. Agree,E. Strongly agree,,2. Rarely,3. Sometimes,4. Often,5. Almost always,6. Always,1. Never,2. Rarely,3. Sometimes,4. Often,1,2,1
+s002,2023/1/23,A. Strongly disagree,A. Strongly disagree,A. Strongly disagree,1. Checked,A. Strongly disagree,A. Strongly disagree,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,6. Always,2,1,3
+s003,2023/1/23,E. Strongly agree. Extremely,E. Strongly agree,E. Strongly agree,1. Checked,E. Strongly agree,E. Strongly agree,1. Rarely,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,1. Never,2,2,2
+s004,2023/1/24,B. Disagree,B. Disagree,C. Neither agree nor disagree,2. Not Cheked,C. Neither agree nor disagree,D. Agree,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,2. Rarely,4,3,4
+s005,2023/1/24,E. Strongly agree. Extremely,E. Strongly agree,D. Agree,2. Not Cheked,D. Agree,C. Neither agree nor disagree,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,4. Often,3,1,2
 s006,2023/1/25,,,,1. Checked,,,,2. Rarely,3. Sometimes,4. Often,5. Almost always,6. Always,1. Never,2. Rarely,3. Sometimes,4. Often,,,

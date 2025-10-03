@@ -3,9 +3,13 @@
 .. currentmodule:: issych.monshi
 
 質問紙集計（monshi）
-#################
+##################################################
 
 質問紙を集計するためのモジュールです。
+
+.. warning::
+   このコードが正しく動作することを、作者は保証しません。
+   このコードを用いて集計する際は、必ず別の方法による集計結果と比較してください。
 
 .. _monshi:
 
@@ -13,7 +17,5 @@
    :toctree: generated/
 
    score_as_monfig
-   score_questionnaire
-   Monshi.__init__
-   Monshi.separate
-   Monshi.score
+   Monshi
+   _score_questionnaire

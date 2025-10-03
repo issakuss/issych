@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pingouin as pg
 
-from issych.glmm import rver, GlmmTMB
+from issych.rfunc import rver, GlmmTMB
 
 
 def generate_data_cat_x_cat() -> pd.DataFrame:

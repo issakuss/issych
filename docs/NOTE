@@ -2,7 +2,10 @@
 
 - 0. 手動でdocs/source/api/以下の.rstファイルを編集
 - 1. rm -r docs/source/api/generated/*
-- 2. conda activate issych（または、sphinxがインストールされた環境をactivate）
+- 2. conda activate issych（または、以下がインストールされた環境をactivate）
+  - sphinx
+  - numpydoc
+  - pydata_sphinx_theme
 - 3. sphinx-apidoc -o source/api/generated issych
 - 4. cd docs
 - 5. source/conf.pyにあるバージョンを更新

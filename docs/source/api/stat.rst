@@ -3,7 +3,7 @@
 .. currentmodule:: issych.stat
 
 統計関連（stat）
-#############
+##################################################
 
 統計処理に便利な関数たちです。
 
@@ -12,7 +12,7 @@
 .. autosummary::
    :toctree: generated/
 
-   Pvalues2SigMark
+   Pvalue2SigMark
    arcsine_sqrt
    fisher_z
    convert_to_iqrs

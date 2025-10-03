@@ -9,7 +9,7 @@ API Reference
    :maxdepth: 2
 
    monshi
-   glmm
+   rfunc
    figure
    dataframe
    stat

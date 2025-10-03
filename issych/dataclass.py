@@ -7,33 +7,38 @@ from dynaconf import Dynaconf
 
 
 class Dictm(Dict):
+    """
+    組み込みの辞書型の拡張版です。
+
+    組み込みの辞書型と同じ機能を持っています。
+    組み込みの辞書型にはない、いくつかのメソッドを持っています。
+    加えて、以下の例のように、ドットを使って要素を呼び出すことができます
+    （プログラムをより簡易に書くための機能です）。
+
+    Examples
+    --------
+    >>> foo = Dictm({'a': 1, 'b': 2})
+    >>> foo.a
+    1
+    """
+
     def __init__(self, *args, **kwargs):
         """
-        組み込みの辞書型と同じ機能を持っています。
-        組み込みの辞書型にはない、いくつかのメソッドを持っています。
-        加えて、以下の例のように、ドットを使って要素を呼び出すことができます
-        （プログラムをより簡易に書くための機能です）。
-
-        >>> foo = Dictm({'a': 1, 'b': 2})
-        >>> foo.a
-        1
-
         ４パターンの作り方があります。
 
-        - 1. 辞書を引数に取る方法
+        Examples
+        --------
 
+        >>> # 1. 辞書を引数に取る方法
         >>> foo = Dictm({'a': 1, 'b': 2})
-
-        - 2. キーワードと引数を取る方法
-
+        >>> #
+        >>> # 2. キーワードと引数を取る方法
         >>> foo = Dictm(a=1, b=2)
-
-        - 3. DynaconfのLazySettingsを引数に取る方法
-
+        >>> #
+        >>> # 3. DynaconfのLazySettingsを引数に取る方法
         >>> foo = Dictm(Dynaconf(settings_files='settings.toml'))
-
-        - 4. Dynaconfに対応した設定ファイルのパスを引数に取る方法
-
+        >>> #
+        >>> # 4. Dynaconfに対応した設定ファイルのパスを引数に取る方法
         >>> foo = Dictm('settings.toml')
         """
         def _dictmize_nested(mydict: dict):
@@ -104,14 +109,14 @@ class Dictm(Dict):
     def drop(self, key: str | List[str], skipnk: bool=False):
         """
         指定したキーと、それに対応する値のペアを削除した Dictm を返します。
-        該当するキーがないとエラーになりますが、skip_nk が True のときは無視されます。
+        該当するキーがないとエラーになりますが、skipnk が True のときは無視されます。
 
         Parameters
         ----------
         key : str or list of str
             削除するキー。
         skipnk : bool
-            skip No Key。
+            Skip No Key。
             True のとき、該当するキーがなくてもエラー返しません。
 
         Examples
@@ -129,13 +134,15 @@ class Dictm(Dict):
         if (not skipnk) and nokeys:
             raise RuntimeError(f'{nokeys} がキーにありません。'
                                'skipnk=True にするとこのエラーを抑制できます。')
-        return Dictm({key: self[key]
-                      for key in self.keys() if key not in dropkeys})
+        return Dictm({key: val
+                      for key, val in self.items() if key not in dropkeys})
 
 
 class Pathm:
     def __init__(self, template: str='.'):
         """
+        組み込みのpathlib.Pathの拡張版です。
+
         組み込みのpathlib.Pathとほぼ同じ機能を持っています。
         ただし、テンプレートを用いた流動的なパスの指定機能が加わっています。
 

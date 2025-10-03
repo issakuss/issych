@@ -3,7 +3,7 @@
 .. currentmodule:: issych.figure
 
 作図関連（figure）
-################
+##################################################
 
 作図全般を便利にしたり、作るのに一手間かかる図をすぐ作るための関数です。
 
@@ -14,14 +14,11 @@
 
    set_rcparams
    get_current_rcparams
-   calc_figsize
    prepare_ax
    prepare_axes
    draw_diag
    mask_area
    plot_within
    plot_raincloud
-   SigMarker.__init__
-   SigMarker.mark
-   SigMarker.sigmark
+   SigMarker
    plot_corrmat

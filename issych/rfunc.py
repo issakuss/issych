@@ -29,18 +29,32 @@ def _suppress_r_console_output(verbose: bool):
             sys.stdout = old_stdout
             sys.stderr = old_stderr
 
+
 def rver() -> Dictm:
+    """
+    使用している R のバージョンを取得します。
+
+    Examples
+    --------
+    >>> r_version = rver()
+    >>> r_version.major
+    '4'
+    >>> r_version.minor
+    '5.1'
+    >>> r_version.full
+    'R version 4.5.1 (2026-06-13)'
+    """
     return Dictm(
         major=r('R.version$major')[0],
         minor=r('R.version$minor')[0],
         full=r('version$version.string')[0])
+
 
 class GlmmTMB:
     def __init__(self, data: pd.DataFrame, formula: str,
                  family: str='gaussian', verbose: bool=False):
         """
         R パッケージである ``glmm_tmb`` を Python から使用するためのクラスです。
-        :py:class:`rpy2` を用います。
         R に ``glmm_tmb`` がインストールされている必要があります。
 
         Parameters

@@ -16,7 +16,7 @@ class CantReverseError(Exception):
             'min_plus_maxが指定されていないため、逆転項目の処理ができません')
 
 
-def score_questionnaire(
+def _score_questionnaire(
     answer: pd.DataFrame,
     questname: str,
     choices: Dict[str, int]={},
@@ -24,10 +24,18 @@ def score_questionnaire(
     idx_reverse: List[int]=[],
     min_plus_max: Optional[int]=None,
     na_policy: Literal['nan', 'ignore', 'raise']='nan',
-    subscale: Dict[str, Union[List[int], Literal['all']]]={},
+    subscale: Optional[Dict[str, Union[List[int], Literal['all']]]]=None,
     average: bool=False) -> pd.DataFrame:
     """
-    一つの質問紙回答データを集計します。
+    一つの質問紙回答データを集計する関数です。
+
+    この関数を直接使用するのではなく、 :class:`Monshi` を介して使用されることを想定しています。
+    渡された ``monfig`` をもとに、以下の処理を順に行います。
+    
+    - 1. `choices` をもとに選択肢の置き換え
+    - 2. `preprocess` をもとに下処理
+    - 3. `idx_reverse` および `min_plus_max` をもとに逆転項目の処理
+    - 4. `subscale`, `na_policy` および `average` をもとに、下位尺度ごとの合計点または平均点の算出
 
     Parameters
     ----------
@@ -38,10 +46,12 @@ def score_questionnaire(
         数値に変換できないデータが入っていると、一切処理されずに ``answer`` のまま返されます。
         
         .. warning::
-            回答者IDやタイムスタンプなど、質問紙への回答以外の列は含めないでください。
+            この関数を直接使用する場合、回答者IDやタイムスタンプなど、質問紙への回答以外の列は含めないでください。
             後述の引数で指定する項目番号などにズレが生じる危険があります。
             そういった列は事前に除いてください。
             または、:meth:`pandas.DataFrame.set_index()` で ``index`` に指定してください。
+
+        :py:meth:`Monshi.score` から呼び出された場合、 ``answer`` には :py:meth:`Monshi.separate` で切り出された、質問紙ごとの回答データが入ります。
 
     choices: dict, default {}
         質問紙の選択肢と、それに対応するスコア（数値）です。
@@ -146,12 +156,6 @@ def score_questionnaire(
 
     average: bool, default False
         ``True`` が指定されると、合計得点の代わりに平均点が算出されます。
-
-    Notes
-    -----
-    はじめに ``preprocess`` 引数に記述された処理がなされ、
-    次に ``idx_reverse`` 引数で指定された項目が逆転項目として処理されます。
-    続いて、そのほかの引数に指定された内容に従って、合計または平均得点が算出されます。
     """
     def reverse(answer: pd.DataFrame, idx_reverse: List[int], min_plus_max: int
                 ) -> pd.DataFrame:
@@ -231,16 +235,23 @@ def score_questionnaire(
         if min_plus_max is None:
             raise CantReverseError
         answer = reverse(answer, idx_reverse, min_plus_max)
-    if len(subscale) == 0:
+    if subscale is not None:
         return total(answer, na_policy, average, questname)
     return total_subscale(
         answer, questname, min_plus_max, na_policy, subscale, average)
 
 
 class Monshi:
+    """
+    心理学的な質問紙への回答を集計するためのクラスです。
+
+    回答データを質問紙ごとに分割し、 :py:func:`_score_questionnaire` を使って集計します。
+    実際に使用する際は、:py:func:`score_as_monfig` を用いるほうが簡単です。
+    """
+
     def __init__(self, answer_sheet: pd.DataFrame):
         """
-        Googleフォームなどで収集した、心理学的な質問紙への回答を集計するためのクラスです。
+        monshimonshi
 
         Parameters
         ----------
@@ -354,20 +365,16 @@ class Monshi:
     def score(self, monfig: Dict[str, Dict]):
         """
         :py:meth:`Monshi.separate` メソッドで分割された質問紙ごとに集計を行います。
-        monfig を参照し、以下の処理を順に行います。
-        1. `choices` をもとに選択肢の置き換え
-        2. `preprocess` をもとに下処理
-        3. `idx_reverse` および `min_plus_max` をもとに逆転項目の処理
-        4. `subscale`, `na_policy` および `average` をもとに、下位尺度ごとの合計点または平均点の算出
-        
+        分割された質問紙と monfig を、 :py:func:`_score_questionnaire` に渡して集計します。
+
         Parameters
         ----------
         monfig: dict
             この引数で、集計方法を質問紙ごとに指定してください。
             ``monfig`` のキーには :py:meth:`Monshi.separate` で指定した質問紙名を記入してください。
             指定されていない質問紙名のキーに対応する値は無視されます。
-            ``monfig`` の値は、キーワード引数として :py:func:`score_questionnaire` に与えられます。
-            詳細は :py:func:`score_questionnaire` を確認してください。
+            ``monfig`` の値は、キーワード引数として :py:func:`_score_questionnaire` に与えられます。
+            詳細は :py:func:`_score_questionnaire` を確認してください。
 
             .. tip:: Monshiのconfigなので、monfigです
         """
@@ -379,7 +386,7 @@ class Monshi:
             if label not in monfig:
                 raise RuntimeError(f'{label}についての設定がmonfigにありません。')
             params = monfig[label]
-            scores.append(score_questionnaire(
+            scores.append(_score_questionnaire(
                 getattr(self, label), label, **params))
         self._scores = pd.concat(scores, axis=1)
         return self._scores
@@ -389,12 +396,8 @@ def score_as_monfig(answer_sheet: pd.DataFrame,
                     monfig: Optional[Dict[str, Dict]] | Optional[Pathlike]
                     ) -> pd.DataFrame:
     """
-    Googleフォームなどで収集した、心理学的な質問紙への回答を集計する関数です。
-    :class:`Monshi` を使うより手っ取り早いです。
-
-    .. warning::
-        このコードが正しく動作することを、作者は保証しません。
-        このコードを用いて集計する際は、必ず別の方法による集計結果と比較してください。
+    心理学的な質問紙への回答を集計する関数です。
+    :class:`Monshi` を直接使うより手っ取り早いです。
 
     Parameters
     ----------
@@ -407,7 +410,7 @@ def score_as_monfig(answer_sheet: pd.DataFrame,
         ``_cols_item`` は、質問紙名とその質問紙への回答を含む列の指定から成る辞書です。
         詳細は :meth:`Monshi.separate` ドキュメントの、 ``cols_item`` を参照してください。
         また ``monfig`` は、 ``_cols_item`` で指定したすべての質問紙名をキーとして含む必要があります。
-        詳細は :func:`score_questionnaire` のドキュメントを参照してください。
+        詳細は :func:`_score_questionnaire` のドキュメントを参照してください。
 
     Returns
     -------

@@ -3,7 +3,7 @@
 .. currentmodule:: issych.dataframe
 
 行列・データフレーム関連（dataframe）
-##############################
+##################################################
 
 :py:class:`pandas.DataFrame` や :py:class:`Numpy` 関連の便利関数です。
 

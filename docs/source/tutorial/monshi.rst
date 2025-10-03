@@ -1,5 +1,5 @@
 質問紙の集計（monshi）
-====================
+=================================================
 
 このチュートリアルでは `こちらのCSVファイル <https://github.com/issakuss/issych/blob/master/tests/testdata/monshi/testdata.csv>`_ にある質問紙回答を集計します。
 一列目には被験者のID、２列目にはタイムスタンプが入っています。
@@ -8,7 +8,7 @@
 Monshi を使うことで `こちらのCSVファイル <https://github.com/issakuss/issych/blob/master/tests/testdata/monshi/testdata-manually-scored.csv>`_ にあるような集計結果を得ることができます。
 
 回答の下処理をする
----------------
+-------------------------------------------------
 
 回答を集めた `.csv` ファイルを読み込み、Python で下処理をします。
 Monshi では、回答がすべて数値または数値に変換可能な文字列である必要があります。
@@ -22,7 +22,7 @@ Monshi では、回答がすべて数値または数値に変換可能な文字�
         lambda x: x if pd.isna(x) else x.split('.')[0]))  # 要素が NaN であればそのまま、そうでなければ . で分割して最初の要素を取る
 
 monfig を作る
-------------
+-------------------------------------------------
 
 Monshi 用の config、略して monfig を作ります。
 monfig は、Monshi における集計方法情報を指します。

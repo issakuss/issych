@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 project = 'issych'
 copyright = '2025, Issaku Kawashima'
 author = 'Issaku Kawashima'
-release = '0.0.8.0'
+release = '0.0.10.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -24,11 +24,28 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
     'numpydoc',
     ]
 
+napoleon_preprocess_types = True
+napoleon_type_aliases = {
+    'Pathlike': 'issych.typealias.Pathlike',
+    'Dictm': 'issych.dataclass.Dictm',
+    'Axes': 'issych.typealias.Axes',
+    'Figure': 'issych.typealias.Figure',
+    'pd.DataFrame': 'pandas.DataFrame',
+    'pd.Timestamp': 'pandas.Timestamp'
+}
+
 autosummary_generate = True
-autodoc_class_signature = 'separated'
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": False,
+    "inherited-members": True,
+    "show-inheritance": True,
+}
+autoclass_content = "class"
 numpydoc_show_class_members = True
 templates_path = ['_templates']
 exclude_patterns = []

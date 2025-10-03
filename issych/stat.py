@@ -9,12 +9,10 @@ from .typealias import Number, Vector
 
 class Pvalue2SigMark:
     """
-    Tested with: figure.SigMarker()
+    与えられたp値に基づいて、有意性の程度を表すマークを返します。
     """
     def __init__(self, thresholds: Optional[Dict[float, str]]=None):  # Default {} is dangerous
         """
-        与えられたp値に基づいて、有意性の程度を表すマークを返します。
-
         Parameters
         ----------
         thresholds: dict, optional

@@ -17,7 +17,7 @@ setup(
     name='issych',
     version='0.0.10.0',
     author='Issaku Kawashima',
-    author_email='issakuss@gmail.com',
+    author_email='issaku.k.typica@icloud.com',
     description='Convenient tools for psychological studies',
     url='https://github.com/issakuss/issych',
     packages=find_packages(),

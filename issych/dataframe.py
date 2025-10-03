@@ -10,6 +10,7 @@ def loc_byalphabet(dataframe: pd.DataFrame, locs: str | Sequence[str]
                    ) -> pd.DataFrame:
     """
     :py:class:`pandas.DataFrame` から、アルファベットで指定した列を抽出します。
+
     MS Excelにおける列表示をそのまま利用しつつ列を指定できます。
     27列目を指定する際には、MS Excelと同様 'AA' を使います。
 
@@ -44,6 +45,7 @@ def loc_range_byalphabet(dataframe: pd.DataFrame, range_min: str,
                          range_max: str) -> pd.DataFrame:
     """
     :py:class:`pandas.DataFrame` から、アルファベットで指定した列範囲を抽出します。
+
     MS Excelにおける列表示をそのまま利用しつつ列範囲を指定できます。
 
     .. warning::
@@ -120,6 +122,7 @@ def cast_to_nullable(dataframe: pd.DataFrame,
                      cast_object: bool=False) -> pd.DataFrame:
     """
     :py:class:`pandas.DataFrame` の列の型を `pandas` 拡張型 (nullable dtype) に変換します。
+
     変換により、 `pd.NA` による欠損表現が可能になります。
 
     Parameters

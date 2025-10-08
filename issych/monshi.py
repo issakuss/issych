@@ -219,6 +219,7 @@ def _score_questionnaire(
                           for subscale_ in subscale.items()], axis=1)
 
     if len(choices) > 0:
+        pd.set_option('future.no_silent_downcasting', True)
         answer = answer.replace(choices)
     try:
         answer = answer.copy().astype('Float64')
@@ -235,7 +236,7 @@ def _score_questionnaire(
         if min_plus_max is None:
             raise CantReverseError
         answer = reverse(answer, idx_reverse, min_plus_max)
-    if subscale is not None:
+    if subscale is None:
         return total(answer, na_policy, average, questname)
     return total_subscale(
         answer, questname, min_plus_max, na_policy, subscale, average)
@@ -316,7 +317,7 @@ class Monshi:
 
             >>> 'scale2_'
 
-            とすると、データフレーム列名が 'scale2\_' から始まる列が指定されます。
+            とすると、データフレーム列名が 'scale2_' から始まる列が指定されます。
 
         Examples
         --------

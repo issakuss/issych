@@ -1,4 +1,5 @@
 from typing import Any, Dict, List
+from copy import deepcopy
 import string
 from pathlib import Path
 
@@ -66,9 +67,33 @@ class Dictm(Dict):
         else:
             mydict = dict(*args, **kwargs)
         super().__init__(_dictmize_nested(mydict))
-        self.__dict__ = self
 
-    def __getattr__(self, _: str) -> Any: ...
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError as e:
+            raise AttributeError(name) from e
+
+    def __setattr__(self, name, value):
+        if name.startswith('_') or name in ('__getstate__','__setstate__'):
+            return super().__setattr__(name, value)
+        self[name] = value
+
+    def __delattr__(self, name):
+        try:
+            del self[name]
+        except KeyError as e:
+            raise AttributeError(name) from e
+
+    def __getstate__(self):
+        return dict(self)
+
+    def __setstate__(self, state):
+        self.clear()
+        self.update(state)
+
+    def __deepcopy__(self, memo):
+        return Dictm(deepcopy(dict(self), memo))
 
     def __or__(self, other):
         return Dictm(dict(self) | dict(other))

@@ -252,8 +252,6 @@ class Monshi:
 
     def __init__(self, answer_sheet: pd.DataFrame):
         """
-        monshimonshi
-
         Parameters
         ----------
         answer_sheet : :py:class:`pandas.DataFrame`

@@ -127,7 +127,7 @@ def nanzscore2value(zscore: Number, vec: Vector) -> float:
     >>> vec = np.array([1, 2, 3, 4, 5, np.nan])
     >>> zscore = 0.5
     >>> nanzscore2value(zscore, vec)
-    3.0
+    3.707
     """
     vec = _prep_nanz(vec)
     return (zscore * np.nanstd(vec)) + np.nanmean(vec)
@@ -151,7 +151,7 @@ def iqr2value(iqr: Number, vec: Vector) -> np.ndarray:
     if iqr > 0.:
         return high + ((high - low) * iqr)
     if iqr < 0.:
-        return low + ((high -low) * iqr)
+        return low + ((high - low) * iqr)
     return mid
 
 

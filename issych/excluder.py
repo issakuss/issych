@@ -326,7 +326,7 @@ class DataExcluder:
         return (pd.DataFrame(mat, index=reasons, columns=reasons)
                 .astype('Float64'))
 
-    def rm_as(self, based: 'DataExcluder',
+    def rm_as(self, based: 'DataExcluder | pd.DataFrame',
               based_from: Optional[int | str]=None,
               based_to: Optional[int | str]=None) -> 'DataExcluder':
         def convert_base(base: Optional[int | str], reasons: List[str]
@@ -350,9 +350,13 @@ class DataExcluder:
                 raise RuntimeError('based_fromとbased_to に負数は使用できません')
             return base
 
-        based_from = validate_base(convert_base(based_from, based._reasons))
-        based_to = validate_base(convert_base(based_to, based._reasons))
-        summary = based.get_summary().loc[based_from:based_to, :]
+        if isinstance(based, pd.DataFrame):
+            summary = based.copy()
+        else:
+            based_from = validate_base(
+                convert_base(based_from, based._reasons))
+            based_to = validate_base(convert_base(based_to, based._reasons))
+            summary = based.get_summary().loc[based_from:based_to, :]
 
         ex = self._copy()
         for _, row in summary.iterrows():

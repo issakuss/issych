@@ -40,6 +40,9 @@ issych-figure-setting-format
       'misc'
           dpi = 256.0,               # 解像度を表す数値
           format = 'eps'             # 保存する際のフォーマットを表す文字列；pngなど
+      
+      'kwargs'                    # そのほか、rcParamsに直接渡したい設定項目
+          'svg.fonttype' = 'none'    # 例：svgフォントの種類を指定
   }
 
 ``config/rcparams.toml`` というファイルにまとめておくことを推奨しています。

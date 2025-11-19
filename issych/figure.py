@@ -31,30 +31,37 @@ def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
     ``toml`` ファイルには、 :ref:`issych-figure-setting-format` で記入されている必要があります。
     """
     params = Dynaconf(settings_files=in_path_toml)
+    cur = plt.rcParams
 
     plt.rcParams.update(
         {'axes.spines.right': False,
          'axes.spines.top': False,
-         'errorbar.capsize': params.size.capsize,
-         'figure.dpi': params.misc.dpi,
-         'figure.figsize': params.size.figsize,
-         'font.size': params.size.fontsize,
-         'savefig.format': params.misc.format,
-         'axes.edgecolor': params.color.main,
-         'axes.facecolor': params.color.back,
-         'axes.labelcolor': params.color.main,
-         'axes.prop_cycle': cycler(color=params.color.cycle),
-         'figure.edgecolor': params.color.main,
-         'figure.facecolor': params.color.back,
-         'ytick.color': params.color.main,
-         'xtick.color': params.color.main,
-         'savefig.facecolor': params.color.back,
-         'lines.color': params.color.main,
-         'lines.linewidth': params.size.linewidth,
-         'text.color': params.color.main,
-         'patch.facecolor': params.color.highlight,
-         'patch.edgecolor': params.color.subhighlight,
-         'grid.color': params.color.sub})
+         'errorbar.capsize': params.size.capsize or cur['errorbar.capsize'],
+         'figure.dpi': params.misc.dpi or cur['figure.dpi'],
+         'figure.figsize': params.size.figsize or cur['figure.figsize'],
+         'font.size': params.size.fontsize or cur['font.size'],
+         'savefig.format': params.misc.format or cur['savefig.format'],
+         'axes.edgecolor': params.color.main or cur['axes.edgecolor'],
+         'axes.facecolor': params.color.back or cur['axes.facecolor'],
+         'axes.labelcolor': params.color.main or cur['axes.labelcolor'],
+         'axes.prop_cycle': cycler(color=params.color.cycle) or \
+                            cur['axes.prop_cycle'],
+         'figure.edgecolor': params.color.main or cur['figure.edgecolor'],
+         'figure.facecolor': params.color.back or cur['figure.facecolor'],
+         'ytick.color': params.color.main or cur['ytick.color'],
+         'xtick.color': params.color.main or cur['xtick.color'],
+         'savefig.facecolor': params.color.back or cur['savefig.facecolor'],
+         'lines.color': params.color.main or cur['lines.color'],
+         'lines.linewidth': params.size.linewidth or cur['lines.linewidth'],
+         'text.color': params.color.main or cur['text.color'],
+         'patch.facecolor': params.color.highlight or cur['patch.facecolor'],
+         'patch.edgecolor': params.color.subhighlight or \
+                            cur['patch.edgecolor'],
+         'grid.color': params.color.sub or cur['grid.color'],
+         })
+
+    for k, v in params.kwargs.items():
+        plt.rcParams[k] = v
 
 
 def get_current_rcparams() -> Dictm:

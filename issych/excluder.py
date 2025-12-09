@@ -408,8 +408,12 @@ class DataExcluder:
             df['are_ng'] = OPERATORS[row.rel](df[row.col], row.val_thr)
             plot_raincloud(df[row.col].dropna(), ax=ax,
                            kwargs_strip={'alpha': 0.0})
-            sns.stripplot(df, y=row.col, hue='are_ng', legend=False,
-                          palette=[color.main, color.sub], ax=ax)
+            if df.are_ng.mean() in [0., 1.]:
+                sns.stripplot(
+                    df, y=row.col, legend=False, color=color.main, ax=ax)
+            else:
+                sns.stripplot(df, y=row.col, hue='are_ng', legend=False,
+                            palette=[color.main, color.sub], ax=ax)
             ax.hlines(
                 y=row.val_thr, xmin=ax.get_xlim()[0], xmax=ax.get_xlim()[1])
             if abbr is not None:

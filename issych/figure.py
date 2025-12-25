@@ -36,31 +36,48 @@ def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
     plt.rcParams.update(
         {'axes.spines.right': False,
          'axes.spines.top': False,
-         'errorbar.capsize': params.size.capsize or cur['errorbar.capsize'],
-         'figure.dpi': params.misc.dpi or cur['figure.dpi'],
-         'figure.figsize': params.size.figsize or cur['figure.figsize'],
-         'font.size': params.size.fontsize or cur['font.size'],
-         'savefig.format': params.misc.format or cur['savefig.format'],
-         'axes.edgecolor': params.color.main or cur['axes.edgecolor'],
-         'axes.facecolor': params.color.back or cur['axes.facecolor'],
-         'axes.labelcolor': params.color.main or cur['axes.labelcolor'],
-         'axes.prop_cycle': cycler(color=params.color.cycle) or \
-                            cur['axes.prop_cycle'],
-         'figure.edgecolor': params.color.main or cur['figure.edgecolor'],
-         'figure.facecolor': params.color.back or cur['figure.facecolor'],
-         'ytick.color': params.color.main or cur['ytick.color'],
-         'xtick.color': params.color.main or cur['xtick.color'],
-         'savefig.facecolor': params.color.back or cur['savefig.facecolor'],
-         'lines.color': params.color.main or cur['lines.color'],
-         'lines.linewidth': params.size.linewidth or cur['lines.linewidth'],
-         'text.color': params.color.main or cur['text.color'],
-         'patch.facecolor': params.color.highlight or cur['patch.facecolor'],
-         'patch.edgecolor': params.color.subhighlight or \
+         'errorbar.capsize': params.get('size.capsize') or \
+                             cur['errorbar.capsize'],
+         'figure.dpi': params.get('misc.dpi') or cur['figure.dpi'],
+         'figure.figsize': params.get('size.figsize') or \
+                           cur['figure.figsize'],
+         'font.size': params.get('size.fontsize') or \
+                      cur['font.size'],
+         'savefig.format': params.get('misc.format') or \
+                           cur['savefig.format'],
+         'axes.edgecolor': params.get('color.main') or \
+                           cur['axes.edgecolor'],
+         'axes.facecolor': params.get('color.back') or \
+                           cur['axes.facecolor'],
+         'axes.labelcolor': params.get('color.main') or \
+                            cur['axes.labelcolor'],
+         'axes.prop_cycle': (cycler(color=params.get('color.cycle'))
+                             if params.get('color.cycle') else
+                             cur['axes.prop_cycle']),
+         'figure.edgecolor': params.get('color.main') or \
+                             cur['figure.edgecolor'],
+         'figure.facecolor': params.get('color.back') or \
+                             cur['figure.facecolor'],
+         'ytick.color': params.get('color.main') or \
+                        cur['ytick.color'],
+         'xtick.color': params.get('color.main') or \
+                        cur['xtick.color'],
+         'savefig.facecolor': params.get('color.back') or \
+                              cur['savefig.facecolor'],
+         'lines.color': params.get('color.main') or \
+                        cur['lines.color'],
+         'lines.linewidth': params.get('size.linewidth') or \
+                            cur['lines.linewidth'],
+         'text.color': params.get('color.main') or \
+                       cur['text.color'],
+         'patch.facecolor': params.get('color.highlight') or \
+                            cur['patch.facecolor'],
+         'patch.edgecolor': params.get('color.subhighlight') or \
                             cur['patch.edgecolor'],
-         'grid.color': params.color.sub or cur['grid.color'],
+         'grid.color': params.get('color.sub') or cur['grid.color'],
          })
 
-    for k, v in params.kwargs.items():
+    for k, v in params.get('kwargs', {}).items():
         plt.rcParams[k] = v
 
 

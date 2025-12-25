@@ -1,3 +1,4 @@
+from pathlib import Path
 import unittest
 
 import pandas as pd
@@ -6,10 +7,18 @@ import seaborn as sns
 from issych.dataclass import Dictm
 from issych.figure import (
     prepare_ax, prepare_axes, mask_area, plot_within, plot_raincloud,
-    SigMarker, plot_corrmat)
+    SigMarker, plot_corrmat, set_rcparams)
 
 
 IN_PATH_TOML = 'tests/testdata/config/rcparams.toml'
+
+
+class TestSetrcparams(unittest.TestCase):
+    def test(self):
+        IN_DIR = Path('tests/testdata/config/')
+        set_rcparams(in_path_toml=IN_DIR / 'rcparams-wo-sect1.toml')
+        set_rcparams(in_path_toml=IN_DIR / 'rcparams-wo-sect2.toml')
+
 
 class TestPlotWithin(unittest.TestCase):
     def test(self):

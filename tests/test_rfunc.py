@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pingouin as pg
 
-from issych.rfunc import rver, GlmmTMB
+from issych.rfunc import rver, GlmmTMB, r
 
 
 def generate_data_cat_x_cat() -> pd.DataFrame:
@@ -105,6 +105,7 @@ def generate_data_seq_x_seq() -> pd.DataFrame:
 class TestGlmmTMB(unittest.TestCase):
     def test_misc(self):
         ver = rver()
+        r('foo <- 0')
         self.assertTrue(isinstance(ver.major, str) and ver.major.isdigit())
         self.assertRegex(ver.minor, r'^\d+\.\d+$')
         self.assertTrue(ver.full.startswith('R version'))
@@ -114,10 +115,15 @@ class TestGlmmTMB(unittest.TestCase):
         formula = 'score ~ group * time + (1 | sub_id)'
         model = GlmmTMB(data, formula).fit()
 
-        result = model.summary()
-        self.assertTrue(result.iloc[-1, -1] < .001)
+        model.diagnose()
+        summary = model.get_summary()
+        self.assertIsInstance(summary, str)
+        fitness = model.get_fitness()
+        self.assertTrue(fitness.aic > 26977)
+        coefs = model.get_coefs()
+        self.assertTrue(coefs.iloc[-1, -1] < .001)
 
-        d = abs((result.est / model.sigma()).iloc[-1])
+        d = abs((coefs.est / model.sigma()).iloc[-1])
         self.assertTrue(d > 0.5)
 
         formula = 'score ~ group * time * trait + (1 | sub_id)'

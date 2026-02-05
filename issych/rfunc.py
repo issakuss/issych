@@ -114,21 +114,54 @@ class GlmmTMB:
                     family = {self.family}()
                 )
                 coef_mat <- as.data.frame(summary(model)$coefficients$cond)
-                coef_rownames <- rownames(coef_mat)
+                fitness_mat <- as.data.frame(summary(model)$AICtab)
             ''')
         self._coefs = (pandas2ri.rpy2py(r['coef_mat'])
                        .set_axis(['est', 'std', 'z', 'p'], axis=1))
+        fitness_colnames = ['aic', 'bic', 'loglikeli', 'loglikeli2', 'resid']
+        self._fitness = (pandas2ri.rpy2py(r['fitness_mat'])
+                         .set_axis(fitness_colnames).iloc[:, 0].rename(''))
+
         self._fitted = True
         return self
 
-    def summary(self) -> pd.DataFrame:
+    def diagnose(self):
         """
-        フィッティングの結果を表示します。
+        フィッティングの診断を表示します。
+        """
+        if not self._fitted:
+            raise RuntimeError('先に .fit() を実行してください。')
+        print(r('diagnose(model)'))
+
+    def get_summary(self):
+        """
+        フィッティングの概要をテキストで取得します
+        """
+        if not self._fitted:
+            raise RuntimeError('先に .fit() を実行してください。')
+        return str(r('summary(model)'))
+
+    def get_fitness(self) -> pd.Series:
+        """
+        フィッティングの適合度指標を表示します。
 
         Returns
         -------
-        fitted : :py:class:`pandas.DataFrame`
-            フィッティングの結果です。
+        fitness : :py:class:`pandas.DataFrame`
+            フィッティングの適合度指標です。
+        """
+        if not self._fitted:
+            raise RuntimeError('先に .fit() を実行してください。')
+        return self._fitness
+
+    def get_coefs(self) -> pd.DataFrame:
+        """
+        フィッティングの係数を表示します。
+
+        Returns
+        -------
+        coefs : :py:class:`pandas.DataFrame`
+            フィッティングの係数です。
         """
         if not self._fitted:
             raise RuntimeError('先に .fit() を実行してください。')

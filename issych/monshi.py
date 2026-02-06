@@ -19,13 +19,12 @@ class CantReverseError(Exception):
 def _score_questionnaire(
     answer: pd.DataFrame,
     questname: str,
-    choices: Dict[str, int]={},
     preprocess: str='',
     idx_reverse: List[int]=[],
     min_plus_max: Optional[int]=None,
     na_policy: Literal['nan', 'ignore', 'raise']='nan',
     subscale: Optional[Dict[str, Union[List[int], Literal['all']]]]=None,
-    average: bool=False) -> pd.DataFrame:
+    average: bool=False, **_) -> pd.DataFrame:
     """
     単一の質問紙回答データを集計する関数です。
 
@@ -351,7 +350,7 @@ class Monshi:
 
     def replace_choices(self, monfig: Dict[str, Dict]):
         """
-        分割された質問紙と monfig を渡し、選択肢の置換をします。
+        :py:meth:`Monshi.separate` メソッドで分割された質問紙と monfig を渡し、選択肢の置換をします。
 
         Parameters
         ----------
@@ -389,6 +388,36 @@ class Monshi:
         for label in self._labels:
             sheets.append(getattr(self, label))
         return pd.concat(sheets, axis=1)
+
+    def validate(self, monfig: Dict[str, Dict]):
+        """
+        分割された（またはその後選択肢の置換をした）質問紙と monfig から異常回答検出をします。
+        ``monfig.{質問紙名}.validation`` にある
+        ``min_answer`` より低い得点の回答がある場合、
+        または ``max_answer`` より高い得点の回答がある場合、エラーを返します。
+
+        Parameters
+        ----------
+        monfig: dict
+            この引数で、選択肢の置換方法を質問紙ごとに指定してください。
+            ``monfig`` のキーには :py:meth:`Monshi.separate` で指定した質問紙名を記入してください。
+            指定されていない質問紙名のキーに対応する値は無視されます。
+            ``monfig.{質問紙名}.choices`` にあるマップに基づいて置換が行われます。
+            ``monfig.{質問紙名}.choices`` が設定されていない質問紙は無視されます。
+        """
+        for label in self._labels:
+            if label not in monfig:
+                raise RuntimeError(f'{label}についての設定がmonfigにありません。')
+            if 'validation' not in monfig[label]:
+                continue
+            validation = monfig[label]['validation']
+            mini = getattr(self, label).astype(float).min().min() 
+            maxi = getattr(self, label).astype(float).max().max() 
+            if 'min_answer' in validation and mini < validation['min_answer']:
+                raise ValueError(f'Found value < {validation['min_answer']}')
+            if 'max_answer' in validation and maxi > validation['max_answer']:
+                raise ValueError(f'Found value > {validation['max_answer']}')
+        return self
 
     def score(self, monfig: Dict[str, Dict]):
         """
@@ -465,4 +494,5 @@ def score_as_monfig(answer_sheet: pd.DataFrame,
     return (Monshi(answer_sheet)
             .separate(monfig['_cols_item'])
             .replace_choices(monfig)
+            .validate(monfig)
             .score(monfig))

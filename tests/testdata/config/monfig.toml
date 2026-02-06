@@ -36,7 +36,10 @@
         B = 99
         C = 99
         D = 99
-        E = 99       
+        E = 99
+    [scale2.validation]
+        min_answer = 1
+        max_answer = 6
 
 [scale3]
     na_policy = 'ignore'

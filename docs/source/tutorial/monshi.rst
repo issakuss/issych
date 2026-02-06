@@ -63,6 +63,9 @@ monfig は、Monshi における集計方法情報を指します。
             a = [-1, 3, 5, 7, 9]
             b = [2, 4, 6, 8, 10]
             total = 'all'
+        [scale2.validation]
+            min_answer = 1
+            max_answer = 5
 
     [scale3]
         idx_reverse = []
@@ -85,6 +88,9 @@ monfig は、Monshi における集計方法情報を指します。
 - `subscale`: 下位尺度を指定します
 - `average`: 合計値の代わりに平均値を計算する場合は `true` を指定します
 - `choices`: 文字列のデータを値に変換したい場合は対応関係を指定します
+- `validation`: TOMLの記述ミスに伴う誤った集計を防ぐために指定します。チェック用なので集計結果には影響しません
+  - `min_answer`: ここに指定した数値よりも小さい値が回答にあった場合は、エラーを返します。
+  - `max_answer`: ここに指定した数値よりも大きい値が回答にあった場合は、エラーを返します。
 
 3. Monshi を実行する
 

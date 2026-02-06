@@ -68,6 +68,12 @@ class TestMonshi(unittest.TestCase):
         current_sheet = (self.monshi.get_sheet()
                          .set_index(['sub', 'timestamp'])
                          .astype('float64').reset_index())
+        with self.assertRaises(ValueError):
+            self.monshi.validate(
+                self.monfig | {'scale2': {'validation': {'min_answer': 2}}})
+        with self.assertRaises(ValueError):  # validation failed
+            self.monshi.validate(
+                self.monfig | {'scale2': {'validation': {'max_answer': 4}}})
         self.assertTrue(current_sheet.equals(
             self.manually_replaced.set_index(['sub', 'timestamp'])
             .astype('float64').reset_index()))

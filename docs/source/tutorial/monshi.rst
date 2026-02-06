@@ -48,6 +48,12 @@ monfig は、Monshi における集計方法情報を指します。
         min_plus_max = 6
         na_policy = 'ignore'
         average = true
+        [scale1.choices]
+            A = 1
+            B = 2
+            C = 3
+            D = 4
+            E = 5
         
     [scale2]
         preprocess = 'q > 3'
@@ -78,6 +84,7 @@ monfig は、Monshi における集計方法情報を指します。
 - `na_policy`: 欠損値の扱いを指定します
 - `subscale`: 下位尺度を指定します
 - `average`: 合計値の代わりに平均値を計算する場合は `true` を指定します
+- `choices`: 文字列のデータを値に変換したい場合は対応関係を指定します
 
 3. Monshi を実行する
 

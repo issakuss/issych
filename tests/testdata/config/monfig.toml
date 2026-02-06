@@ -4,6 +4,7 @@
     scale1 = ['C', 'D', 'E', 'G', 'H']
     scale2 = 'scale2_'
     scale3 = 'S:U'
+    # データフレームにある "ignored" 列はここで指定していないので、以後無視される
 
 [info]
     idx_reverse = []
@@ -14,11 +15,12 @@
     na_policy = 'ignore'
     average = true
     [scale1.choices]
-        "A" = 1
-        "B" = 2
-        "C" = 3
-        "D" = 4
-        "E" = 5
+        A = 1
+        B = 2
+        C = 3
+        D = 4
+        E = 5
+        F = 99  # ←のように存在しない選択肢は無視されます
     
 [scale2]
     preprocess = 'q > 3'
@@ -28,6 +30,13 @@
         a = [-1, 3, 5, 7, 9]
         b = [2, 4, 6, 8, 10]
         total = 'all'
+    [scale2.choices]
+        # ↓ Scale2にA〜Eといった選択肢は存在しませんので無視されます。
+        A = 99
+        B = 99
+        C = 99
+        D = 99
+        E = 99       
 
 [scale3]
     na_policy = 'ignore'

@@ -27,15 +27,14 @@ def _score_questionnaire(
     subscale: Optional[Dict[str, Union[List[int], Literal['all']]]]=None,
     average: bool=False) -> pd.DataFrame:
     """
-    一つの質問紙回答データを集計する関数です。
+    単一の質問紙回答データを集計する関数です。
 
     この関数を直接使用するのではなく、 :class:`Monshi` を介して使用されることを想定しています。
     渡された ``monfig`` をもとに、以下の処理を順に行います。
     
-    - 1. `choices` をもとに選択肢の置き換え
-    - 2. `preprocess` をもとに下処理
-    - 3. `idx_reverse` および `min_plus_max` をもとに逆転項目の処理
-    - 4. `subscale`, `na_policy` および `average` をもとに、下位尺度ごとの合計点または平均点の算出
+    - 1. `preprocess` をもとに下処理
+    - 2. `idx_reverse` および `min_plus_max` をもとに逆転項目の処理
+    - 3. `subscale`, `na_policy` および `average` をもとに、下位尺度ごとの合計点または平均点の算出
 
     Parameters
     ----------
@@ -51,17 +50,9 @@ def _score_questionnaire(
             そういった列は事前に除いてください。
             または、:meth:`pandas.DataFrame.set_index()` で ``index`` に指定してください。
 
-        :py:meth:`Monshi.score` から呼び出された場合、 ``answer`` には :py:meth:`Monshi.separate` で切り出された、質問紙ごとの回答データが入ります。
+        :py:meth:`Monshi.score` から呼び出された場合、 ``answer`` には :py:meth:`Monshi.separate`
+        で切り出された、質問紙ごとの回答データが入ります。
 
-    choices: dict, default {}
-        質問紙の選択肢と、それに対応するスコア（数値）です。
-        
-        **Examples**
-
-        >>> choices = {'A': 1, 'B': 2}
-
-        `"A"` という回答は 1、`"B"`は 2 として計算されます。
-            
     questname : str
         質問紙の名前です。
         返り値における列名に用いられます。
@@ -218,9 +209,6 @@ def _score_questionnaire(
                                         na_policy, average, *subscale_)
                           for subscale_ in subscale.items()], axis=1)
 
-    if len(choices) > 0:
-        pd.set_option('future.no_silent_downcasting', True)
-        answer = answer.replace(choices)
     try:
         answer = answer.copy().astype('Float64')
         answer[np.isnan(answer)] = pd.NA
@@ -361,16 +349,58 @@ class Monshi:
             setattr(self, key, separated)
         return self
 
+    def replace_choices(self, monfig: Dict[str, Dict]):
+        """
+        分割された質問紙と monfig を渡し、選択肢の置換をします。
+
+        Parameters
+        ----------
+        monfig: dict
+            この引数で、選択肢の置換方法を質問紙ごとに指定してください。
+            ``monfig`` のキーには :py:meth:`Monshi.separate` で指定した質問紙名を記入してください。
+            指定されていない質問紙名のキーに対応する値は無視されます。
+            ``monfig.{質問紙名}.choices`` にあるマップに基づいて置換が行われます。
+            ``monfig.{質問紙名}.choices`` が設定されていない質問紙は無視されます。
+        """
+        if len(self._labels) == 0:
+            raise RuntimeError('.separate()が先に実行されていません。')
+        for label in self._labels:
+            if label not in monfig:
+                raise RuntimeError(f'{label}についての設定がmonfigにありません。')
+            params = monfig[label]
+            if 'choices' not in params:
+                continue
+            answer = getattr(self, label)
+            # answer.replace(params['choices'], inplace=True)
+            setattr(self, label, answer.replace(params['choices']))
+        return self
+
+    def get_sheet(self) -> pd.DataFrame:
+        """
+        集計前の回答を取得します。
+        :py:meth:`Monshi.separate` 以前の場合は、入力されたシートがそのまま返されます。
+        それ以降の場合は、 ``cols_item`` で指定された質問紙のシートのみが返されます。
+        :py:meth:`Monshi.replace_choices` 以降の場合は、選択肢の置換後の回答が取得されます。
+        主に、:py:meth:`Monshi.replace_choices` 後の素点を得るために用います。
+        """
+        if len(self._labels) == 0:
+            return self.answer_sheet
+        sheets = []
+        for label in self._labels:
+            sheets.append(getattr(self, label))
+        return pd.concat(sheets, axis=1)
+
     def score(self, monfig: Dict[str, Dict]):
         """
         :py:meth:`Monshi.separate` メソッドで分割された質問紙ごとに集計を行います。
-        分割された質問紙と monfig を、 :py:func:`_score_questionnaire` に渡して集計します。
+        分割された（またはその後選択肢の置換をした）質問紙と monfig を、
+        :py:func:`_score_questionnaire` に渡して集計します。
 
         Parameters
         ----------
         monfig: dict
             この引数で、集計方法を質問紙ごとに指定してください。
-            ``monfig`` のキーには :py:meth:`Monshi.separate` で指定した質問紙名を記入してください。
+            ``monfig`` のキーには :py:meth:`Monshi.separate` の ``cols_item`` で指定した質問紙名を記入してください。
             指定されていない質問紙名のキーに対応する値は無視されます。
             ``monfig`` の値は、キーワード引数として :py:func:`_score_questionnaire` に与えられます。
             詳細は :py:func:`_score_questionnaire` を確認してください。
@@ -432,4 +462,7 @@ def score_as_monfig(answer_sheet: pd.DataFrame,
     """
     if isinstance(monfig, Pathlike):
         monfig = Dictm(monfig)
-    return Monshi(answer_sheet).separate(monfig['_cols_item']).score(monfig)
+    return (Monshi(answer_sheet)
+            .separate(monfig['_cols_item'])
+            .replace_choices(monfig)
+            .score(monfig))

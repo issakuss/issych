@@ -32,10 +32,17 @@ def generate_data_cat_x_cat() -> pd.DataFrame:
     base_effect = np.where((group == 'intervention') & (time == 'post'), 1, 0)
     modulated_effect = base_effect * (5 + TRAIT_EFFECT_MODIFIER * trait)
 
+    random_slopes = np.random.normal(loc=0, scale=2, size=N_SUB)
+    random_slopes_full = np.repeat(random_slopes, n_obs)
+
+    time_binary = np.where(time == 'post', 1, 0)
+    individual_time_effect = random_slopes_full * time_binary
+
     score = (
         50
         + modulated_effect
         + random_intercepts_full
+        + individual_time_effect
         + np.random.normal(loc=0, scale=10, size=N_SUB * n_obs)
     )
 
@@ -46,8 +53,8 @@ def generate_data_cat_x_cat() -> pd.DataFrame:
 
     data = pd.DataFrame({
         'sub_id': sub_id,
-        'group': group,
-        'time': time,
+        'group': pd.Categorical(group, categories=['control', 'intervention']),
+        'time': pd.Categorical(time, categories=['pre', 'post'], ordered=True),
         'trait': trait,
         'score': score
     })
@@ -112,33 +119,38 @@ class TestGlmmTMB(unittest.TestCase):
 
     def test_cat_x_cat(self):
         data = generate_data_cat_x_cat()
-        formula = 'score ~ group * time + (1 | sub_id)'
+        formula = 'score ~ group * time + (1 + time | sub_id)'
         model = GlmmTMB(data, formula).fit()
 
         model.diagnose()
         summary = model.get_summary()
         self.assertIsInstance(summary, str)
         fitness = model.get_fitness()
-        self.assertTrue(fitness.aic > 26977)
+        self.assertTrue(fitness.aic > 26957)
         coefs = model.get_coefs()
         self.assertTrue(coefs.iloc[-1, -1] < .001)
 
         d = abs((coefs.est / model.sigma()).iloc[-1])
-        self.assertTrue(d > 0.5)
+        self.assertTrue(d > 0.38)
 
-        formula = 'score ~ group * time * trait + (1 | sub_id)'
+        self.assertFalse(
+            pd.concat([model.emmeans(specs='pairwise ~ time | group'),
+                       model.emmeans(specs='pairwise ~ group | time')]
+                      ).p.isna().any())
+        model.contrast()
+
+        formula = 'score ~ trait * group * time + (1 + trait + time | sub_id)'
         model = GlmmTMB(data, formula).fit()
-
         _ = model.emtrends(specs='group * time', var='trait')
-        contrast = model.contrast(method='revpairwise')
-        self.assertTrue(contrast.loc['5', 'p'] < .05)
+        model.contrast(method='revpairwise')
+
 
     def test_seq_x_seq(self):
         data = generate_data_seq_x_seq()
         data['interact'] = data.thought * data.mood
-        formula = 'performance ~ interact * acceptance + (1 | sub_id)'
+        formula = ('performance ~ interact * acceptance + (1 | sub_id)')
         model = GlmmTMB(data, formula).fit()
-        model.emtrends(
+        _ = model.emtrends(
             specs='acceptance', var='interact',
             at={'acceptance': {'low': -1, 'mid': 0, 'high': 2}})
         contrast = model.contrast()

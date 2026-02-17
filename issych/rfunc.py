@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Tuple
+from typing import Optional, Any, Dict, Tuple
 import sys
 import os
 import contextlib
@@ -79,7 +79,7 @@ class GlmmTMB:
             glmmTMB = importr("glmmTMB")  # type: ignore
             r('library(glmmTMB)')
 
-        data = self._prepdata(data.copy())
+        self.data = self._prepdata(data.copy())
         with localconverter(default_converter + pandas2ri.converter):
             rdata = pandas2ri.py2rpy(data)
         r.assign('data', rdata)
@@ -94,13 +94,17 @@ class GlmmTMB:
 
         self._verbose = verbose
         self._fitted = False
-        self._fitted_emtrend = False
+        self._fitted_ems = False
         self._coefs = pd.DataFrame([])
 
     def _prepdata(self, data: pd.DataFrame) -> pd.DataFrame:
         object_col = data.select_dtypes('object').columns
         data[object_col] = data[object_col].astype(str)
         return data
+
+    def _raise_no_fitting(self):
+        if not self._fitted:
+            raise RuntimeError('先に .fit() を実行してください。')
 
     def fit(self):
         """
@@ -129,16 +133,14 @@ class GlmmTMB:
         """
         フィッティングの診断を表示します。
         """
-        if not self._fitted:
-            raise RuntimeError('先に .fit() を実行してください。')
+        self._raise_no_fitting()
         print(r('diagnose(model)'))
 
     def get_summary(self):
         """
         フィッティングの概要をテキストで取得します
         """
-        if not self._fitted:
-            raise RuntimeError('先に .fit() を実行してください。')
+        self._raise_no_fitting()
         return str(r('summary(model)'))
 
     def get_fitness(self) -> pd.Series:
@@ -150,8 +152,7 @@ class GlmmTMB:
         fitness : :py:class:`pandas.DataFrame`
             フィッティングの適合度指標です。
         """
-        if not self._fitted:
-            raise RuntimeError('先に .fit() を実行してください。')
+        self._raise_no_fitting()
         return self._fitness
 
     def get_coefs(self) -> pd.DataFrame:
@@ -176,7 +177,26 @@ class GlmmTMB:
             raise RuntimeError('先に .fit() を実行してください。')
         return r('sigma(model)')[0]
 
-    def emtrends(self, specs: str,
+    def emmeans(self, specs: str, **kwargs) -> pd.DataFrame:
+        """
+        フィットしたモデルを用いて、R パッケージ ``emmeans`` の ``emmeans`` を使用します。
+        詳細は ``emmeans`` のドキュメントを参照してください。
+        """
+        self._raise_no_fitting()
+        rkwargs = kwargs4r(kwargs)
+        with _suppress_r_console_output(self._verbose):
+            r('library(emmeans)')
+            r(f'''
+                ems <- emmeans(model, ~ {specs}, {rkwargs})
+                ems_df <- as.data.frame(test(ems))
+                ems_df[] <- lapply(ems_df, function(x) 
+                    if(is.factor(x)) as.character(x) else x)
+            ''')
+        self._fitted_ems = True
+        columns = {'SE': 'std', 'z.ratio': 'z', 'p.value': 'p'}
+        return pandas2ri.rpy2py(r['ems_df']).rename(columns, axis=1)
+
+    def emtrends(self, specs: str, var: str,
                  at: Optional[Dict[str, Dict[str, Number]]]=None, **kwargs
                  ) -> pd.DataFrame:
         """
@@ -184,30 +204,34 @@ class GlmmTMB:
         詳細は ``emmeans`` のドキュメントを参照してください。
         """
 
+        self._raise_no_fitting()
         rkwargs = kwargs4r(kwargs)
         if at is not None:
             rkwargs += f', at = list({kwargs4r(at)})'
         with _suppress_r_console_output(self._verbose):
             r('library(emmeans)')
             r(f'''
-                trends <- emtrends(model, ~ {specs}, {rkwargs})
-                trends_df <- as.data.frame(test(trends))
+                ems <- emtrends(model, ~ {specs}, var="{var}", {rkwargs})
+                ems_df <- as.data.frame(test(ems))
+                ems_df[] <- lapply(ems_df, function(x) 
+                    if(is.factor(x)) as.character(x) else x)
             ''')
 
-        self._fitted_emtrend = True
-        columns = {'SE': 'std', 't.ratio': 't', 'p.value': 'p'}
-        return pandas2ri.rpy2py(r['trends_df']).rename(columns, axis=1)
+        self._fitted_ems = True
+        columns = {'SE': 'std', 't.ratio': 't', 'z.ratio': 'z', 'p.value': 'p'}
+        return pandas2ri.rpy2py(r['ems_df']).rename(columns, axis=1)
 
     def contrast(self, **kwargs) -> pd.DataFrame:
         """
         フィットしたモデルを用いて、R パッケージ ``emmeans`` の ``contrast`` を使用します。
         詳細は ``emmeans`` のドキュメントを参照してください。
         """
-        if not self._fitted_emtrend:
-            raise RuntimeError('先に .emtrends() を実行してください。')
+        if not self._fitted_ems:
+            raise RuntimeError(
+                '先に .emtrends() か .emmeans() を実行してください。')
         with _suppress_r_console_output(self._verbose):
             r(f'''
-                result <- as.data.frame(contrast(trends, {kwargs4r(kwargs)}))
+                result <- as.data.frame(contrast(ems, {kwargs4r(kwargs)}))
             ''')
         cols = {'estimate': 'est', 'SE': 'std', 't.ratio': 't', 'p.value': 'p'}
         return (pandas2ri.rpy2py(r['result']).rename(cols, axis=1))

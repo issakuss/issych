@@ -15,7 +15,7 @@ INSTALL_REQUIRES = [
 
 setup(
     name='issych',
-    version='0.0.15.0',
+    version='0.0.15.1',
     author='Issaku Kawashima',
     author_email='issaku.k.typica@icloud.com',
     description='Convenient tools for psychological studies',

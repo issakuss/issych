@@ -120,7 +120,7 @@ class TestGlmmTMB(unittest.TestCase):
     def test_cat_x_cat(self):
         data = generate_data_cat_x_cat()
         formula = 'score ~ group * time + (1 + time | sub_id)'
-        model = GlmmTMB(data, formula).fit()
+        model = GlmmTMB(data, formula, family='gaussian()').fit()
 
         model.diagnose()
         summary = model.get_summary()
@@ -143,6 +143,8 @@ class TestGlmmTMB(unittest.TestCase):
         model = GlmmTMB(data, formula).fit()
         _ = model.emtrends(specs='group * time', var='trait')
         model.contrast(method='revpairwise')
+
+        model = GlmmTMB(data, formula, family='Gamma(link = "log")').fit()
 
 
     def test_seq_x_seq(self):

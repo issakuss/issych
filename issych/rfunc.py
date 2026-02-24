@@ -10,7 +10,7 @@ from rpy2.robjects.packages import importr
 from issych.typealias import Number
 from issych.dataclass import Dictm
 
-from .stat import kwargs4r
+from issych.stat import kwargs4r
 
 
 @contextlib.contextmanager
@@ -52,7 +52,7 @@ def rver() -> Dictm:
 
 class GlmmTMB:
     def __init__(self, data: pd.DataFrame, formula: str,
-                 family: str='gaussian', verbose: bool=False):
+                 family: str='gaussian()', verbose: bool=False):
         """
         R パッケージである ``glmm_tmb`` を Python から使用するためのクラスです。
         R に ``glmm_tmb`` がインストールされている必要があります。
@@ -115,7 +115,7 @@ class GlmmTMB:
                 model <- glmmTMB(
                     formula = {self.formula},
                     data = data,
-                    family = {self.family}()
+                    family = {self.family}
                 )
                 coef_mat <- as.data.frame(summary(model)$coefficients$cond)
                 fitness_mat <- as.data.frame(summary(model)$AICtab)
@@ -200,7 +200,7 @@ class GlmmTMB:
                     if(is.factor(x)) as.character(x) else x)
             ''')
         self._fitted_ems = True
-        columns = {'SE': 'std', 'z.ratio': 'z', 'p.value': 'p',
+        columns = {'SE': 'std', 'z.ratio': 'z', 't.ratio': 't', 'p.value': 'p',
                    'estimate': 'est'}
         return pandas2ri.rpy2py(r['ems_df']).rename(columns, axis=1)
 
@@ -221,13 +221,6 @@ class GlmmTMB:
             r(f'''
                 ems <- emtrends(model, ~ {specs}, var="{var}", {rkwargs})
                 ems_df <- as.data.frame(test(ems))
-                effsize <-as.data.frame(
-                    eff_size(ems, sigma=sigma(model), edf=df.residual(model)))
-                ems_df$effsize <- effsize$effect.size
-                low <- intersect(names(effsize), c("asymp.LCL", "lower.CL"))[1]
-                up <- intersect(names(effsize), c("asymp.UCL", "upper.CL"))[1]
-                ems_df$lower <- effsize[[low]]
-                ems_df$upper <- effsize[[up]]
                 ems_df[] <- lapply(ems_df, function(x) 
                     if(is.factor(x)) as.character(x) else x)
             ''')

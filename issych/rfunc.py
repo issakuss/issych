@@ -4,7 +4,7 @@ import os
 import contextlib
 
 import pandas as pd
-from rpy2.robjects import r, pandas2ri, default_converter
+from rpy2.robjects import r, pandas2ri, default_converter, Environment
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
 from issych.typealias import Number
@@ -73,6 +73,8 @@ class GlmmTMB:
         >>> formula = 'score ~ group * time + (1 | sub_id)'
         >>> result = GlmmTMB(data, formula).fit().summary()
         """
+        self.env = Environment()
+
         with _suppress_r_console_output(verbose):
             base = importr("base")  # type: ignore
             utils = importr("utils")  # type: ignore
@@ -81,13 +83,15 @@ class GlmmTMB:
 
         self.data = self._prepdata(data.copy())
         with localconverter(default_converter + pandas2ri.converter):
-            rdata = pandas2ri.py2rpy(data)
-        r.assign('data', rdata)
-        r('''
+            rdata = pandas2ri.py2rpy(self.data)
+
+        self.env['data'] = rdata
+
+        self.r('''
             data[] <- lapply(data, function(col) {
             if (is.character(col)) as.factor(col) else col
             })
-          ''')
+        ''')
 
         self.formula = formula
         self.family = family
@@ -96,6 +100,12 @@ class GlmmTMB:
         self._fitted = False
         self._fitted_ems = False
         self._coefs = pd.DataFrame([])
+
+    def r(self, code: str) -> Any:
+        """
+        R のコードをインスタンス専用の環境 (self.env) 内で評価するためのヘルパー。
+        """
+        return r.eval(r.parse(text=code), envir=self.env)
 
     def _prepdata(self, data: pd.DataFrame) -> pd.DataFrame:
         object_col = data.select_dtypes('object').columns
@@ -111,7 +121,7 @@ class GlmmTMB:
         フィッティングを実施します。
         """
         with _suppress_r_console_output(self._verbose):
-            r(f'''
+            self.r(f'''
                 model <- glmmTMB(
                     formula = {self.formula},
                     data = data,
@@ -120,10 +130,10 @@ class GlmmTMB:
                 coef_mat <- as.data.frame(summary(model)$coefficients$cond)
                 fitness_mat <- as.data.frame(summary(model)$AICtab)
             ''')
-        self._coefs = (pandas2ri.rpy2py(r['coef_mat'])
+        self._coefs = (pandas2ri.rpy2py(self.env['coef_mat'])
                        .set_axis(['est', 'std', 'z', 'p'], axis=1))
         fitness_colnames = ['aic', 'bic', 'loglikeli', 'loglikeli2', 'resid']
-        self._fitness = (pandas2ri.rpy2py(r['fitness_mat'])
+        self._fitness = (pandas2ri.rpy2py(self.env['fitness_mat'])
                          .set_axis(fitness_colnames).iloc[:, 0].rename(''))
 
         self._fitted = True
@@ -134,14 +144,14 @@ class GlmmTMB:
         フィッティングの診断を表示します。
         """
         self._raise_no_fitting()
-        print(r('diagnose(model)'))
+        print(self.r('diagnose(model)'))
 
     def get_summary(self):
         """
         フィッティングの概要をテキストで取得します
         """
         self._raise_no_fitting()
-        return str(r('summary(model)'))
+        return str(self.r('summary(model)'))
 
     def get_fitness(self) -> pd.Series:
         """
@@ -164,8 +174,7 @@ class GlmmTMB:
         coefs : :py:class:`pandas.DataFrame`
             フィッティングの係数です。
         """
-        if not self._fitted:
-            raise RuntimeError('先に .fit() を実行してください。')
+        self._raise_no_fitting()
         return self._coefs
 
     def sigma(self) -> float:
@@ -173,20 +182,18 @@ class GlmmTMB:
         モデルの残差標準偏差を返します。
         各項の係数をこれで割ることで、Cohen's d（に近い値）を計算できます。
         """
-        if not self._fitted:
-            raise RuntimeError('先に .fit() を実行してください。')
-        return r('sigma(model)')[0]
+        self._raise_no_fitting()
+        return self.r('sigma(model)')[0]
 
     def emmeans(self, specs: str, **kwargs) -> pd.DataFrame:
         """
         フィットしたモデルを用いて、R パッケージ ``emmeans`` の ``emmeans`` を使用します。
-        詳細は ``emmeans`` のドキュメントを参照してください。
         """
         self._raise_no_fitting()
         rkwargs = kwargs4r(kwargs)
         with _suppress_r_console_output(self._verbose):
             r('library(emmeans)')
-            r(f'''
+            self.r(f'''
                 ems <- emmeans(model, ~ {specs}, {rkwargs})
                 ems_df <- as.data.frame(test(ems))
                 effsize <-as.data.frame(
@@ -202,7 +209,7 @@ class GlmmTMB:
         self._fitted_ems = True
         columns = {'SE': 'std', 'z.ratio': 'z', 't.ratio': 't', 'p.value': 'p',
                    'estimate': 'est'}
-        return pandas2ri.rpy2py(r['ems_df']).rename(columns, axis=1)
+        return pandas2ri.rpy2py(self.env['ems_df']).rename(columns, axis=1)
 
     def emtrends(self, specs: str, var: str,
                  at: Optional[Dict[str, Dict[str, Number]]]=None, **kwargs
@@ -218,7 +225,7 @@ class GlmmTMB:
             rkwargs += f', at = list({kwargs4r(at)})'
         with _suppress_r_console_output(self._verbose):
             r('library(emmeans)')
-            r(f'''
+            self.r(f'''
                 ems <- emtrends(model, ~ {specs}, var="{var}", {rkwargs})
                 ems_df <- as.data.frame(test(ems))
                 ems_df[] <- lapply(ems_df, function(x) 
@@ -227,7 +234,7 @@ class GlmmTMB:
 
         self._fitted_ems = True
         columns = {'SE': 'std', 't.ratio': 't', 'z.ratio': 'z', 'p.value': 'p'}
-        return pandas2ri.rpy2py(r['ems_df']).rename(columns, axis=1)
+        return pandas2ri.rpy2py(self.env['ems_df']).rename(columns, axis=1)
 
     def contrast(self, **kwargs) -> pd.DataFrame:
         """
@@ -238,11 +245,12 @@ class GlmmTMB:
             raise RuntimeError(
                 '先に .emtrends() か .emmeans() を実行してください。')
         with _suppress_r_console_output(self._verbose):
-            r(f'''
+            self.r(f'''
                 contrast <- contrast(ems, {kwargs4r(kwargs)})
                 result <- as.data.frame(contrast)
                 effsize <-as.data.frame(eff_size(
-                    contrast, sigma=sigma(model), edf=df.residual(model)))
+                    ems, sigma=sigma(model), edf=df.residual(model),
+                    {kwargs4r(kwargs)}))
                 result$effsize <- effsize$effect.size
                 low <- intersect(names(effsize), c("asymp.LCL", "lower.CL"))[1]
                 up <- intersect(names(effsize), c("asymp.UCL", "upper.CL"))[1]
@@ -251,5 +259,6 @@ class GlmmTMB:
                 result[] <- lapply(result, function(x) 
                     if(is.factor(x)) as.character(x) else x)
             ''')
-        cols = {'estimate': 'est', 'SE': 'std', 't.ratio': 't', 'p.value': 'p'}
-        return (pandas2ri.rpy2py(r['result']).rename(cols, axis=1))
+        cols = {'estimate': 'est', 'SE': 'std', 't.ratio': 't', 'z.ratio': 'z',
+                'p.value': 'p'}
+        return (pandas2ri.rpy2py(self.env['result']).rename(cols, axis=1))

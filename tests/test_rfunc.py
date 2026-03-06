@@ -121,6 +121,9 @@ class TestGlmmTMB(unittest.TestCase):
         data = generate_data_cat_x_cat()
         formula = 'score ~ group * time + (1 + time | sub_id)'
         model = GlmmTMB(data, formula, family='gaussian()').fit()
+        dummy = GlmmTMB(data, 'score ~ time', family='gaussian()').fit()
+        self.assertTrue(len(model.get_coefs()) == 4)
+        self.assertTrue(len(dummy.get_coefs()) == 2)
 
         model.diagnose()
         summary = model.get_summary()
@@ -150,7 +153,7 @@ class TestGlmmTMB(unittest.TestCase):
     def test_seq_x_seq(self):
         data = generate_data_seq_x_seq()
         data['interact'] = data.thought * data.mood
-        formula = ('performance ~ interact * acceptance + (1 | sub_id)')
+        formula = 'performance ~ interact * acceptance + (1 | sub_id)'
         model = GlmmTMB(data, formula).fit()
         _ = model.emtrends(
             specs='acceptance', var='interact',

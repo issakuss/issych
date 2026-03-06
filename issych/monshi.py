@@ -370,8 +370,9 @@ class Monshi:
             if 'choices' not in params:
                 continue
             answer = getattr(self, label)
-            # answer.replace(params['choices'], inplace=True)
-            setattr(self, label, answer.replace(params['choices']))
+            replaced_answer = (answer.replace(params['choices'])
+                               .infer_objects(copy=False))
+            setattr(self, label, replaced_answer)
         return self
 
     def get_sheet(self) -> pd.DataFrame:

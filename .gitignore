@@ -4,3 +4,4 @@ __pycache__
 launch.json
 *.png
 docs/build/*
+docs/api/generated/*

@@ -1,9 +1,9 @@
-from typing import Sequence
+from typing import Sequence, Mapping
 
 import numpy as np
 import pandas as pd
 
-from .misc import alphabet2num
+from .misc import alphabet2num, IssychQuartoTag
 
 
 def loc_byalphabet(dataframe: pd.DataFrame, locs: str | Sequence[str]
@@ -118,3 +118,35 @@ def vec2sqmatrix(vec: Sequence) -> np.ndarray:
             f'ベクトルの長さが{length}のため、正方行列に変換できません。')
     length = int(length)
     return np.array(vec).reshape(length, length)
+
+
+def add_tag(dataframe: pd.DataFrame, tags: Mapping[str, type[IssychQuartoTag]]
+            ) -> pd.DataFrame:
+    """
+    `issych-quarto-template` で利用できる、タグ付きデータフレームを出力します。
+
+    Parameters
+    ----------
+    dataframe: :py:class:`pandas.DataFrame`
+        このデータフレームを出力します。
+    tags: Mapping[str, type[IssychQuartoTag]]
+        キーには `dataframe` の列名を指定します。
+        値には表示したい、`issych-quarto-template` 用の型を指定します。
+        
+    Examples
+    --------
+    >>> dataframe.columns
+    Index(['col1', 'col2', 'col3'], dtype='object')
+    >>> tags = {'col1': Int, 'col2': Float, 'col3': IntMean}
+    >>> add_tag(dataframe, tags)
+    col1!Int, col2!Float, col3!IntMean
+    ---
+    1, 1.023, 1.2
+    2, 2.034, 2.4
+    ... 
+    """
+
+    dataframe_ = dataframe.copy()
+    new_cols = {col: f'{col}!{tag.__name__}'
+                for col, tag in tags.items() if col in dataframe_.columns}
+    return dataframe_.rename(columns=new_cols)

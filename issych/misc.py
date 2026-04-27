@@ -96,28 +96,26 @@ def tqdm_joblib(tqdm_object):
         tqdm_object.close()
 
 
-class Int(int):
-    """YAML出力時に !Int タグを付与するためのラッパークラス"""
+class IssychQuartoTag:
+    """`issych-quarto-template` 用のタグをYAML出力に付与するクラスです。"""
     pass
 
-class Float(float):
-    """YAML出力時に !Float タグを付与するためのラッパークラス"""
+class Int(int, IssychQuartoTag):
     pass
 
-class IntMean(float):
-    """YAML出力時に !IntMean タグを付与するためのラッパークラス"""
+class Float(float, IssychQuartoTag):
     pass
 
-class NGTO(float):
-    """YAML出力時に !NGTO タグを付与するためのラッパークラス"""
+class IntMean(float, IssychQuartoTag):
     pass
 
-class Pval(float):
-    """YAML出力時に !Pval タグを付与するためのラッパークラス"""
+class NGTO(float, IssychQuartoTag):
     pass
 
-class Str(str):
-    """YAML出力時に !Str タグを付与するためのラッパークラス"""
+class Pval(float, IssychQuartoTag):
+    pass
+
+class Str(str, IssychQuartoTag):
     pass
 
 

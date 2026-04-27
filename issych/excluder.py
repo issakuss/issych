@@ -1,9 +1,11 @@
+from __future__ import annotations
 from typing import Optional, Any, Literal, List
 from pathlib import Path
 from copy import deepcopy
 import operator
 import math
 import pickle
+import re
 
 import numpy as np
 import pandas as pd
@@ -26,7 +28,7 @@ class DataExcluder:
     データセットからデータを除外し、その過程を記録するためのクラスです。
     """
 
-    def __init__(self, df: Optional[pd.DataFrame]=None,
+    def __init__(self, df: pd.DataFrame,
                  cols_to_track: str | Optional[List[str]]=None):
         """
         Parameteres
@@ -38,12 +40,13 @@ class DataExcluder:
             数値の列については平均値と標準偏差を記録します。
             カテゴリカルな列についてはその数を記録します。
         """
-        if df is None:
-            return # Only for read_pickle()
-
         self.original_df = df.copy()
         self.df = df.copy()
-        self.cols_to_track = cols_to_track if cols_to_track else []
+
+        if isinstance(cols_to_track, str):
+            self.cols_to_track = [cols_to_track]
+        else:
+            self.cols_to_track = cols_to_track if cols_to_track else []
 
         self._validate()
 
@@ -110,20 +113,27 @@ class DataExcluder:
 
     def _calc_sd_threshold(self, col: str, thr: str,
                            calc_on: str | int=-1) -> float:
-        val = float(thr.split(' SD')[0])
+        match = re.search(r'([-+]?\d*\.?\d+)\s*SD', thr, re.IGNORECASE)
+        if not match:
+            raise ValueError(f"SDの書式が不正です: {thr}")
+        val = float(match.group(1))
         return nanzscore2value(val, self.get_df(calc_on)[col])
 
     def _calc_iqr_threshold(self, col: str, thr: str,
                             calc_on: str | int=-1) -> float:
-        val = float(thr.split(' IQR')[0])
+        match = re.search(r'([-+]?\d*\.?\d+)\s*IQR', thr, re.IGNORECASE)
+        if not match:
+            raise ValueError(f"IQRの書式が不正です: {thr}")
+        val = float(match.group(1))
         return iqr2value(val, self.get_df(calc_on)[col])
 
     def to_pickle(self, ot_path: str | Path, **kwargs: dict):
         with open(ot_path, 'wb') as f:
             pickle.dump(self, f, **kwargs)
 
-    def read_pickle(self, in_path: str | Path, **kwargs: dict
-                    ) -> 'DataExcluder':
+    @classmethod
+    def read_pickle(cls, in_path: str | Path, **kwargs: dict
+                    ) -> DataExcluder:
         with open(in_path, 'rb') as f:
             return pickle.load(f, **kwargs)
 
@@ -177,8 +187,9 @@ class DataExcluder:
             thr = f'{thr} (@{calc_on})'
 
         rel_include = INVERSE[rel]
-        na_is_ok = f'| ({col}.isnull())'
-        ex.df = ex.df.query(f'({col} {rel_include} @val_thr)' + na_is_ok)
+        mask_keep = OPERATORS[rel_include](ex.df[col], val_thr)
+        mask_na = ex.df[col].isna()
+        ex.df = ex.df[mask_keep | mask_na]
 
         ng_index = ex.get_df(-1).index.difference(ex.df.index)
 
@@ -403,7 +414,7 @@ class DataExcluder:
             図の見た目を決めるための設定を記入した .toml ファイルへのパスを指定してください。
             詳細は :ref:`issych-figure-setting-format` を確認してください。
         """
-        target = self.get_summary().query('val_thr.notnull()') # type: ignore
+        target = self.get_summary().query('val_thr.notna()') # type: ignore
         n_row = math.ceil(len(target) / n_col)
         fig, axes = prepare_axes(n_row=n_row, n_col=n_col,
                                  axsizeratio=(coef_xsize, 1.),
@@ -417,9 +428,9 @@ class DataExcluder:
                            kwargs_strip={'alpha': 0.0})
             if df.are_ng.mean() in [0., 1.]:
                 sns.stripplot(
-                    df, y=row.col, legend=False, color=color.main, ax=ax)
+                    data=df, y=row.col, legend=False, color=color.main, ax=ax)
             else:
-                sns.stripplot(df, y=row.col, hue='are_ng', legend=False,
+                sns.stripplot(data=df, y=row.col, hue='are_ng', legend=False,
                               palette=[color.main, color.sub], ax=ax)
             ax.hlines(
                 y=row.val_thr, xmin=ax.get_xlim()[0], xmax=ax.get_xlim()[1])

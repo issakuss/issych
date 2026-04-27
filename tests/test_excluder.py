@@ -1,4 +1,5 @@
 import unittest
+import tempfile
 from pathlib import Path
 
 import pandas as pd
@@ -20,21 +21,21 @@ class TestDataExcluder(unittest.TestCase):
         index_duplicated = pd.DataFrame(
             [[1, 2, 3, 4], [5, 6, 7, 8]],
             columns=['row1', 'row1', 'row2', 'row3']).T
-        with self.assertRaises(RuntimeError):
+        with self.assertRaisesRegex(RuntimeError, 'データセットのindexに重複があります'):
             DataExcluder(index_duplicated)
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaisesRegex(RuntimeError, 'データセットのindexがRangeIndexです'):
             range_indexed = pd.DataFrame([[1, 2, 3, 4], [5, 6, 7, 8]])
             DataExcluder(range_indexed)
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaisesRegex(RuntimeError, '"reason"は重複させないでください'):
             (self.exc.rm_byvalue('same_reason', 'bill_length_mm', '>', 59)
                      .rm_byvalue('same_reason', 'bill_length_mm', '<', 32.2,
                                  tags=['tag1', 'tag2']))
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaisesRegex(RuntimeError, 'based_fromとbased_to に負数は使用できません'):
             exc = self.exc.rm_byvalue('reason', 'bill_length_mm', '>', 59)
-            exc2 = DataExcluder(pg.read_dataset('penguins')).rm_as(exc, -1, -5)
+            exc2 = self.exc.rm_as(exc, -1, -5)
 
     def test_success(self):
         exc = (self.exc
@@ -63,10 +64,10 @@ class TestDataExcluder(unittest.TestCase):
                .rm_index_except('ok_indiv', ['s003', 's004', 's005', 's006'],
                                    tags=['tag1', 'tag2', 'tag3']))
 
-        io_path_temp = Path('excluder_temp.pkl')
-        exc.to_pickle(io_path_temp)
-        exc = DataExcluder().read_pickle(io_path_temp)
-        io_path_temp.unlink()
+        with tempfile.TemporaryDirectory() as tempdir:
+            io_path_temp = Path(tempdir) / 'excluder_temp.pkl'
+            exc.to_pickle(io_path_temp)
+            exc = DataExcluder.read_pickle(io_path_temp)
 
         summary = exc.get_summary()
         self.assertEqual(

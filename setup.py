@@ -11,6 +11,7 @@ INSTALL_REQUIRES = [
     'seaborn>=0.13.1',
     'tqdm>=4.65.0',
     'dynaconf>=3.2.10',
+    'ruamel.yaml>=0.17.0',
 ]
 
 setup(

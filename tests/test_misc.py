@@ -1,18 +1,17 @@
 import unittest
 from time import sleep
+import tempfile
+from pathlib import Path
 
 from dynaconf.vendor.tomllib import TOMLDecodeError
 from dynaconf import Dynaconf
 
-import numpy as np
-import pandas as pd
-import pingouin as pg
-import matplotlib.pyplot as plt
-import seaborn as sns
 from tqdm import tqdm
 from joblib import Parallel, delayed
 
-from issych.misc import Dictm, alphabet2num, meas_exectime, tqdm_joblib
+from issych.misc import (
+    Pval, Float, Dictm, alphabet2num, meas_exectime, tqdm_joblib)
+
 
 
 class TestAlphabet2Num(unittest.TestCase):
@@ -114,3 +113,28 @@ class TestDictm(unittest.TestCase):
             Dictm('path_not_exists.toml')
         with self.assertRaises(TOMLDecodeError):
             Dictm('tests/testdata/config/corrupted_toml.toml')
+
+    def test_to_yaml(self):
+        dictm = Dictm(pval=Pval(0.024), tval=Float(1.23))
+        
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_path = Path(tmpdir) / "output.yaml"
+            dictm.to_yaml(out_path)
+            
+            with open(out_path, "r", encoding="utf-8") as f:
+                yaml_str = f.read()
+                
+            self.assertIn("pval: !Pval 0.024", yaml_str)
+            self.assertIn("tval: !Float 1.23", yaml_str)
+        
+        # Test nested dictm
+        nested_dictm = Dictm(level1=Dictm(pval=Pval(0.05)))
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_path_nested = Path(tmpdir) / "output_nested.yaml"
+            nested_dictm.to_yaml(out_path_nested)
+            
+            with open(out_path_nested, "r", encoding="utf-8") as f:
+                yaml_str_nested = f.read()
+                
+            self.assertIn("level1:", yaml_str_nested)
+            self.assertIn("pval: !Pval 0.05", yaml_str_nested)

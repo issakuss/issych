@@ -2,19 +2,14 @@ from typing import Any, Callable, Dict, List
 import contextlib
 from functools import wraps
 import time
-
-from copy import deepcopy
 from pathlib import Path
+from copy import deepcopy
 
+from ruamel.yaml import YAML
+from ruamel.yaml.representer import Representer
 from dynaconf.base import LazySettings
 from dynaconf import Dynaconf
-
 import joblib
-import numpy as np
-import pandas as pd
-from scipy.optimize import minimize
-from sklearn.preprocessing import MinMaxScaler
-
 
 
 def alphabet2num(alphabet: str) -> int:
@@ -99,6 +94,31 @@ def tqdm_joblib(tqdm_object):
     finally:
         joblib.parallel.BatchCompletionCallBack = old_batch_callback
         tqdm_object.close()
+
+
+class Int(int):
+    """YAML出力時に !Int タグを付与するためのラッパークラス"""
+    pass
+
+class Float(float):
+    """YAML出力時に !Float タグを付与するためのラッパークラス"""
+    pass
+
+class IntMean(float):
+    """YAML出力時に !IntMean タグを付与するためのラッパークラス"""
+    pass
+
+class NGTO(float):
+    """YAML出力時に !NGTO タグを付与するためのラッパークラス"""
+    pass
+
+class Pval(float):
+    """YAML出力時に !Pval タグを付与するためのラッパークラス"""
+    pass
+
+class Str(str):
+    """YAML出力時に !Str タグを付与するためのラッパークラス"""
+    pass
 
 
 class Dictm(Dict):
@@ -264,5 +284,26 @@ class Dictm(Dict):
         return Dictm({key: val
                       for key, val in self.items() if key not in dropkeys})
 
+    def to_yaml(self, out_path_yaml: str | Path):
+        """
+        Yamlファイルとして出力します。
+        値がカスタムクラスの場合は、クラス名がカスタムタグとして付与されます。
 
+        Parameters
+        ----------
+        out_path_yaml : str or Path
+            出力先のファイルパス。
+        """
 
+        yaml = YAML()
+        yaml.default_flow_style = False
+
+        def represent_custom(representer, data):
+            tag = f"!{data.__class__.__name__}"
+            return representer.represent_scalar(tag, str(data))
+
+        yaml.representer.add_representer(Dictm, Representer.represent_dict)
+        yaml.representer.add_multi_representer(object, represent_custom)
+
+        with open(out_path_yaml, 'w', encoding='utf-8') as f:
+            yaml.dump(self, f)

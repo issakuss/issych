@@ -13,6 +13,4 @@ API Reference
    figure
    dataframe
    stat
-   typealias
-   fileio
    misc

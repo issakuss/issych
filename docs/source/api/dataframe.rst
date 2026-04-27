@@ -14,6 +14,6 @@
 
    loc_byalphabet
    loc_range_byalphabet
-   loc_cols_name_startswith
+   cols_startswith
    vec2sqmatrix
-   cast_to_nullable
+   add_tag

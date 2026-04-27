@@ -12,9 +12,9 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 project = 'issych'
-copyright = '2025, Issaku Kawashima'
+copyright = '2026, Issaku Kawashima'
 author = 'Issaku Kawashima'
-release = '0.0.10.0'
+release = '0.0.17.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

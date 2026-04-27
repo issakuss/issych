@@ -20,3 +20,5 @@
    Dictm.flatten
    Dictm.may
    Dictm.drop
+   Dictm.to_yaml
+   IssychQuartoTag

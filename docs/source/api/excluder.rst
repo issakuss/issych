@@ -13,16 +13,16 @@
    :toctree: generated/
 
    DataExcluder
-   to_pickle
-   read_pickle
-   rm_byvalue
-   rm_na
-   rm_index
-   rm_index_except
-   rm_as
-   get_summary
-   get_ok_index
-   get_ng_index
-   get_df
-   retention_matrix
-   plot_summaries
+   DataExcluder.to_pickle
+   DataExcluder.read_pickle
+   DataExcluder.rm_byvalue
+   DataExcluder.rm_na
+   DataExcluder.rm_index
+   DataExcluder.rm_index_except
+   DataExcluder.rm_as
+   DataExcluder.get_summary
+   DataExcluder.get_ok_index
+   DataExcluder.get_ng_index
+   DataExcluder.get_df
+   DataExcluder.retention_matrix
+   DataExcluder.plot_summaries

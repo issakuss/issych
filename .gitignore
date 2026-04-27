@@ -3,5 +3,5 @@ __pycache__
 .DS_Store
 launch.json
 *.png
-docs/build/*
-docs/api/generated/*
+docs/build/
+docs/source/api/generated/

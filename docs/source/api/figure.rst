@@ -16,9 +16,6 @@
    get_current_rcparams
    prepare_ax
    prepare_axes
-   draw_diag
-   mask_area
    plot_within
    plot_raincloud
-   SigMarker
    plot_corrmat

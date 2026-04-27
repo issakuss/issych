@@ -1,4 +1,4 @@
-from typing import Optional, Any, Literal, Tuple, List
+from typing import Optional, Any, Literal
 from pathlib import Path
 
 from cycler import cycler
@@ -119,8 +119,8 @@ def get_current_rcparams() -> Dictm:
 
 # Figure preparation
 
-def _calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple[float, float]
-                 ) -> Tuple[float]:
+def _calc_figsize(n_row: int, n_col: int, axsizeratio: tuple[float, float]
+                 ) -> tuple[float]:
     """
     :py:data:`issych.typealias.Figure` に含まれる :py:data:`issych.typealias.Axes` の行数・列数に応じて、適切な :py:data:`issych.typealias.Figure` のサイズを計算します。
 
@@ -151,8 +151,8 @@ def _calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple[float, float]
     return tuple(figsize * axsizeratio)
 
 
-def prepare_ax(axsizeratio: Tuple=(1., 1.),
-               in_path_toml: Optional[str | Path]=None) -> Tuple[Figure, Axes]:
+def prepare_ax(axsizeratio: tuple=(1., 1.),
+               in_path_toml: Optional[str | Path]=None) -> tuple[Figure, Axes]:
     """
     一つの :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
 
@@ -176,9 +176,9 @@ def prepare_ax(axsizeratio: Tuple=(1., 1.),
     return plt.subplots(figsize=figsize)
 
 
-def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
+def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: tuple=(1., 1.),
                  in_path_toml: Optional[str | Path]=None
-                 ) -> Tuple[Figure, np.ndarray]:
+                 ) -> tuple[Figure, np.ndarray]:
     """
     指定した行数・列数の :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
 
@@ -210,71 +210,6 @@ def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
     if not isinstance(axes, np.ndarray):
         return fig, np.array([axes])
     return fig, axes
-
-# Low-level plotting
-
-def draw_diag(ax, **kwargs) -> Axes:
-    """
-    図の対角線上に線が引かれます。
-
-    Parameters
-    ----------
-    **kwargs:
-        :py:func:`matplotlib.pyplot.plot` に渡す引数を指定できます。
-    """
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
-    ax.plot(xlim, ylim, **kwargs)
-    ax.set_xlim(xlim)
-    ax.set_ylim(ylim)
-    return ax
-
-
-def mask_area(pos_from: float | pd.Timestamp, pos_to: float | pd.Timestamp,
-              orient: Literal['horz', 'vert', 'h', 'v'], ax: Axes,
-              color: Optional[str]=None, **kwargs) -> Axes:
-    """
-    指定した範囲を塗りつぶします。
-
-    Parameters
-    ----------
-    pos_from: float or pd.Timestamp
-        この位置以降の範囲を塗りつぶします。
-    pos_to: float or pd.Timestamp
-        この位置以前の範囲を塗りつぶします。
-    orient: {'horz', 'vert', 'h', 'v'}
-        'horz'または'h'を指定すると、指定されたX軸範囲を塗りつぶします。
-        'vert'または'v'を指定すると、指定されたY軸範囲を塗りつぶします。
-    ax: Axes
-        描画する Axes です。
-    color: str, optional
-        塗りつぶすのに用いる色です。
-    **kwargs:
-        :py:func:`matplotlib.pyplot.add_patch` に渡す引数です。
-
-    Examples
-    --------
-    >>> data = sns.load_dataset('fmri')
-    >>> fig, ax = prepare_ax(in_path_toml=IN_PATH_TOML)
-    >>> sns.lineplot(x="timepoint", y="signal", data=data, ax=ax)
-    >>> mask_area(3.5, 7.5, orient='h', color='gray', ax=ax, zorder=-1)
-    >>> mask_area(12.5, 12.5, orient='h', ax=ax, ec='white')
-    >>> mask_area(0.08, 0.12, orient='vert', ax=ax, color='red')
-
-    .. image:: /_static/test_mask_area.png
-       :align: center
-    """
-    is_horz = orient.startswith('h')
-    lim = ax.get_ylim() if is_horz else ax.get_xlim()
-    xy = (pos_from, lim[0]) if is_horz else (lim[0], pos_from)
-    size = pos_to - pos_from
-    fulllength = lim[1] - lim[0]
-    width = size if is_horz else fulllength
-    height = fulllength if is_horz else size
-
-    rect = Rectangle(xy=xy, width=width, height=height, fc=color, **kwargs)
-    ax.add_patch(rect)
-    return ax
 
 # High-level plotting
 
@@ -339,13 +274,8 @@ def plot_within(dataset: pd.DataFrame,
     color = get_current_rcparams().color
     sns.scatterplot(data=dataset, x=x, y=y, ax=ax,
                     fc=fc, ec=ec, **kwargs_scatter)
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
-    newlim = (min(xlim[0], ylim[0]), max(xlim[1], ylim[1]))
-    ax.plot(newlim, newlim, **kwargs_diagline, ls=ls, color=color_line)
+    ax.axline((0, 0), slope=1, **kwargs_diagline, ls=ls, color=color_line)
     ax.set_aspect('equal')
-    ax.set_xlim(newlim)
-    ax.set_ylim(newlim)
 
     return ax
 
@@ -492,170 +422,10 @@ def plot_raincloud(data: pd.DataFrame | npt.ArrayLike,
     return ax
 
 
-class SigMarker:
-    """
-    棒グラフにマーカーを追加するためのクラスです。
-    棒グラフは縦方向に伸びたものである必要があります。
-
-    Examples
-    --------
-    >>> data = sns.load_dataset('tips')
-    >>> fig, axes = prepare_axes(n_col=2, axsizeratio=(.5, 1.),
-    >>>                          in_path_toml=IN_PATH_TOML)
-    >>> sns.barplot(data=data, x='day', y='total_bill', hue='sex', ax=axes[0])
-    >>> marker = SigMarker(axes[0])
-    >>> marker.mark('patches', 0, 4, comment='1')
-    >>> marker.mark('xticks', 0, 1, comment='2')
-    >>> marker.mark('xticks', 0, 3, comment='3')
-    >>> axes[0].legend_.remove()
-    >>> custom_thrs = {1.1: 'n.s.', 0.01: '<0.01'}
-    >>> sns.barplot(data=data, x='day', y='total_bill', hue='sex', ax=axes[1])
-    >>> marker = SigMarker(axes[1], coef_interval_btw_layer=0.3)
-    >>> marker.sigmark('xticks', 0, 2, p_value=0.50)
-    >>> marker.sigmark('xticks', 1, 3, p_value=0.05)
-    >>> marker.sigmark('patches', 3, 5, p_value=0.009)
-    >>> marker.sigmark('patches', 6, 7, p_value=0.2, thresholds=custom_thrs)
-    >>> marker.sigmark('patches', 5, 7, p_value=0.001, thresholds=custom_thrs)
-    >>> axes[1].legend_.remove()
-
-    .. image:: /_static/test_sigmarker.png
-       :align: center
-    """
-
-    def __init__(self, ax: Axes,
-                 coef_interval_btw_layer: float=.1,
-                 coef_space_to_line: float=.1):
-        """
-        Parameters
-        ----------
-        ax: Axes
-            描画する Axes です。
-        coef_interval_btw_layer: float, default .1
-            マーカー間の縦方向の距離です。
-        coef_space_to_line: float, default .1
-            マーカーとそれに対応するラインとの間の距離です。
-        """
-        self.layer: int = 0
-        self.drawn_ranges: List[Tuple[float, float]] = []
-        self.coef_interval = coef_interval_btw_layer
-        self.coef_space_to_line = coef_space_to_line
-
-        self.ax = ax
-        self.ymax = ax.get_ylim()[1]
-        containers = [container for container in ax.containers]  # type: ignore
-        self.patches = [
-            [contained] if isinstance(contained, Rectangle) else [*contained]
-            for contained in containers]
-        self.patches = sum([list(p) for p in np.array(self.patches).T], [])
-
-    def _judge_conflict(self, x_pos: Tuple[float, float], drawn_ranges
-                        ) -> bool:
-        for rn in drawn_ranges:
-            if (rn[0] <= x_pos[0] <= rn[1]) or (rn[0] <= x_pos[1] <= rn[1]):
-                return True
-        return False
-
-    def mark(self, between: Literal['patches', 'xticks'],
-             pos_from: int, pos_to: int, comment: str):
-        """
-        :py:class:`matplotlib.patches.Patch` （棒グラフの棒）または X軸目盛りの間にマーカーを描画します。
-
-        Parameters
-        ----------
-        between: {'patches', 'xticks'}
-            ``patches`` を指定した場合、あるバーの中心から別バーの中心の間に描画されます。
-            ``xticks`` を指定した場合、X軸目盛りの間に描画されます。
-        pos_from: int
-            左から何番目（0始まり）の ``patch`` またはX軸目盛りからマーカー表示を始めるかです。
-        pos_to: int
-            左から何番目（0始まり）の ``patch`` またはX軸目盛りにまでマーカーを表示させるかです。
-        comment: str
-            表示させるマーカーの内容です。
-
-        See also
-        --------
-        :py:meth:`sigmark`
-        """
-        def find_pos_bw_patches(patch_from: Rectangle, patch_to: Rectangle,
-                                xpos: Tuple[Literal['c', 'r', 'l'],
-                                            Literal['c', 'r', 'l']]=('c', 'c')
-                                ) -> Tuple[float, float]:
-            def find_xpos(patch, xpos):
-                match xpos:
-                    case 'l':
-                        return patch.get_x()
-                    case 'r':
-                        return patch.get_x() + patch.get_width()
-                    case 'c':
-                        return patch.get_x() + (patch.get_width() / 2)
-
-            xmin = find_xpos(patch_from, xpos[0])
-            xmax = find_xpos(patch_to, xpos[1])
-
-            return xmin, xmax
-
-        def find_pos_bw_xticks(pos_from: int, pos_to: int, ax: Axes
-                               ) -> Tuple[float, float]:
-            xticks = ax.get_xticks()
-            xmin = xticks[pos_from]
-            xmax = xticks[pos_to]
-            return xmin, xmax
-
-        interval = self.coef_interval * (self.ymax - self.ax.get_ylim()[0])
-
-        match between:
-            case 'patches':
-                x_from, x_to = find_pos_bw_patches(
-                    self.patches[pos_from], self.patches[pos_to],  # type: ignore
-                    xpos=('c', 'c'))
-            case 'xticks':
-                x_from, x_to = find_pos_bw_xticks(pos_from, pos_to, self.ax)
-
-        if self._judge_conflict((x_from, x_to), self.drawn_ranges):
-            self.layer += 1
-            self.drawn_ranges = []
-        self.drawn_ranges.append((x_from, x_to))
-
-        ypos = self.ymax + (interval * self.layer)
-        self.ax.hlines(y=ypos, xmin=x_from, xmax=x_to)
-        self.ax.text((x_from + x_to) / 2,
-                     ypos + (interval * self.coef_space_to_line),
-                     comment, horizontalalignment='center')
-
-    def sigmark(self, between: Literal['patches', 'xticks'],
-                pos_from: int, pos_to: int, p_value: float,
-                thresholds: Optional[dict]=None):
-        """
-        :py:meth:`SigMarker.mark` とほぼ同じですが、p値から自動的にマークを決定します。
-
-        Parameters
-        ----------
-        thresholds: dict, optional
-            p値の閾値と、その閾値を下回った際に表示すべき文字列を示す辞書です。
-            デフォルトは、
-
-            >>> {0.01: '**', 0.05: '*', 0.10: '†'}
-
-            いずれの閾値も下回らない場合のマークを指定したい場合は、
-
-            >>> {0.05: '*', 1.1: 'n.s.'}
-
-            としてください。
-            そういった指定がない場合は、''が返ります。
-        
-        See also
-        --------
-        :py:meth:`mark`
-        """
-        mark = Pvalue2SigMark(thresholds)(p_value)
-        if len(mark) > 0:
-            self.mark(between, pos_from, pos_to, mark)
-
-
 def plot_corrmat(dataset: pd.DataFrame,
                  method: str='pearson',
                  in_path_toml: str | Path='config/rcparams.toml',
-                 thrs_p: Optional[Tuple[float, float, float]]=None,
+                 thrs_p: Optional[tuple[float, float, float]]=None,
                  sdgt: int=3,
                  rotation: int=30,
                  each_height: float=2.0,
@@ -725,12 +495,12 @@ def plot_corrmat(dataset: pd.DataFrame,
     """
     def plot_corr(x: np.ndarray, y: np.ndarray, method: str, colors: Dictm,
                   color_posi: Optional[str], color_nega: Optional[str],
-                  thrs_p: Optional[Tuple[float, float, float]],
+                  thrs_p: Optional[tuple[float, float, float]],
                   sdgt: int, **_):
-        def select_circle_color(p: float, thrs_p: Tuple[float, float],
+        def select_circle_color(p: float, thrs_p: tuple[float, float],
                                 coef: float, color_posi: Optional[str],
                                 color_nega: Optional[str]
-                                ) -> Tuple[str, float]:
+                                ) -> tuple[str, float]:
             if p >= thrs_p[0]:
                 return colors.sub, 0.2
             color_posi = color_posi or colors.highlight

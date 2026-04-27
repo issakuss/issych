@@ -1,4 +1,5 @@
 from typing import Optional, Any, Literal, List
+from pathlib import Path
 from copy import deepcopy
 import operator
 import math
@@ -7,8 +8,10 @@ import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+
 import seaborn as sns
-from issych import Dictm, Figure, Pathlike
+from issych.misc import Dictm
 from issych.stat import nanzscore2value, iqr2value
 from issych.figure import prepare_axes, plot_raincloud, get_current_rcparams
 
@@ -115,11 +118,11 @@ class DataExcluder:
         val = float(thr.split(' IQR')[0])
         return iqr2value(val, self.get_df(calc_on)[col])
 
-    def to_pickle(self, ot_path: Pathlike, **kwargs: dict):
+    def to_pickle(self, ot_path: str | Path, **kwargs: dict):
         with open(ot_path, 'wb') as f:
             pickle.dump(self, f, **kwargs)
 
-    def read_pickle(self, in_path: Pathlike, **kwargs: dict
+    def read_pickle(self, in_path: str | Path, **kwargs: dict
                     ) -> 'DataExcluder':
         with open(in_path, 'rb') as f:
             return pickle.load(f, **kwargs)
@@ -380,7 +383,7 @@ class DataExcluder:
 
     def plot_summaries(self, n_col: int=1, abbr: Optional[Dictm]=None,
                        coef_xsize: float=0.4,
-                       rcparams_toml: Optional[Pathlike]=None) -> Figure:
+                       rcparams_toml: Optional[str | Path]=None) -> Figure:
         """
         :py:func:`rm_byvalue` による各除外過程について、プロットします。
 
@@ -396,7 +399,7 @@ class DataExcluder:
             これを指定すると、プロット中のラベルが正式名に置き換わります。
         coef_xsize : float, default=0.4
             生成される図の横幅を決める係数です。
-        rcparams_toml : `Pathlike` 
+        rcparams_toml : `str | Path`
             図の見た目を決めるための設定を記入した .toml ファイルへのパスを指定してください。
             詳細は :ref:`issych-figure-setting-format` を確認してください。
         """

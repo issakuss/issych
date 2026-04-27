@@ -1,10 +1,10 @@
 from typing import Dict
 import configparser
 
-from .typealias import Pathlike
+from pathlib import Path
 
 
-def save_ini(data: Dict[str, Dict], out_path_ini: Pathlike):
+def save_ini(data: Dict[str, Dict], out_path_ini: str | Path):
     """
     辞書を値に持つ、ネストされた辞書をINIファイルに保存します。
 
@@ -12,7 +12,7 @@ def save_ini(data: Dict[str, Dict], out_path_ini: Pathlike):
     ----------
     data: dict
         INIファイルに保存する辞書です。
-    out_path_ini: :py:data:`issych.typealias.Pathlike`
+    out_path_ini: str | Path
         INIファイルの保存先となるパスです。
     """
 

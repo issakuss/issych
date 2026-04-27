@@ -4,7 +4,7 @@ import unittest
 import pandas as pd
 import seaborn as sns
 
-from issych.dataclass import Dictm
+from issych.misc import Dictm
 from issych.figure import (
     prepare_ax, prepare_axes, mask_area, plot_within, plot_raincloud,
     SigMarker, plot_corrmat, set_rcparams)

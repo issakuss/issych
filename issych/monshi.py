@@ -4,8 +4,8 @@ from copy import deepcopy
 import numpy as np
 import pandas as pd
 
-from .typealias import Pathlike
-from .dataclass import Dictm
+from pathlib import Path
+from .misc import Dictm
 from .dataframe import (
     loc_byalphabet, loc_range_byalphabet, loc_cols_name_startswith)
 
@@ -452,7 +452,7 @@ class Monshi:
 
 
 def score_as_monfig(answer_sheet: pd.DataFrame,
-                    monfig: Optional[Dict[str, Dict]] | Optional[Pathlike]
+                    monfig: Optional[Dict[str, Dict]] | Optional[str | Path]
                     ) -> pd.DataFrame:
     """
     心理学的な質問紙への回答を集計する関数です。
@@ -463,7 +463,7 @@ def score_as_monfig(answer_sheet: pd.DataFrame,
     answer_sheet : :py:class:`pandas.DataFrame`
         集計対象となる全回答者の全回答を含んだデータフレームです。 
         詳細は、 :meth:`Monshi.__init__` のドキュメントを参照してください。
-    monfig : dict or :py:data:`issych.typealias.Pathlike`
+    monfig : dict or str | Path
         集計方法を示した、 ``.toml`` ファイルへのパスまたは辞書です。
         ``monfig`` には、 ``_cols_item`` というキーが含まれている必要があります。
         ``_cols_item`` は、質問紙名とその質問紙への回答を含む列の指定から成る辞書です。
@@ -490,7 +490,7 @@ def score_as_monfig(answer_sheet: pd.DataFrame,
     --------
     Monshi: このショートカット関数が使用しているクラス
     """
-    if isinstance(monfig, Pathlike):
+    if isinstance(monfig, (str, Path)):
         monfig = Dictm(monfig)
     return (Monshi(answer_sheet)
             .separate(monfig['_cols_item'])

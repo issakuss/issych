@@ -4,7 +4,7 @@ from math import floor
 import numpy as np
 import pandas as pd
 
-from .typealias import Number, Vector
+import numpy.typing as npt
 
 
 class Pvalue2SigMark:
@@ -39,7 +39,7 @@ class Pvalue2SigMark:
         return ''
 
 
-def arcsine_sqrt(value: Number) -> float:
+def arcsine_sqrt(value: float) -> float:
     """
     アークサイン平方根変換を行います。
 
@@ -54,7 +54,7 @@ def arcsine_sqrt(value: Number) -> float:
     return np.arcsin(np.sqrt(value))
 
 
-def fisher_z(r: Number) -> float:
+def fisher_z(r: float) -> float:
     """
     FisherのZ変換を行います。
 
@@ -71,7 +71,7 @@ def fisher_z(r: Number) -> float:
     return 0.5 * np.log((1 + r) / (1 - r))
 
 
-def convert_to_iqrs(vec_origin: Vector) -> np.ndarray:
+def convert_to_iqrs(vec_origin: npt.ArrayLike) -> np.ndarray:
     """
     数値のベクトルを IQR に基づいてスケーリングします。
 
@@ -98,7 +98,7 @@ def convert_to_iqrs(vec_origin: Vector) -> np.ndarray:
     return vec_to_ret.values
 
 
-def _prep_nanz(vec: Vector) -> np.ndarray:
+def _prep_nanz(vec: npt.ArrayLike) -> np.ndarray:
     if isinstance(vec, pd.DataFrame):
         raise ValueError('pd.DataFrameはサポートされていません。')
     if isinstance(vec, pd.Series):
@@ -107,7 +107,7 @@ def _prep_nanz(vec: Vector) -> np.ndarray:
     return vec
 
 
-def nanzscore(vec: Vector) -> np.ndarray:
+def nanzscore(vec: npt.ArrayLike) -> np.ndarray:
     """
     NaN を含むベクトルに対して、NaN を無視してZスコア変換を行います。
     """
@@ -117,7 +117,7 @@ def nanzscore(vec: Vector) -> np.ndarray:
     return ((vec - np.nanmean(vec)) / nanstd).values
 
 
-def nanzscore2value(zscore: Number, vec: Vector) -> float:
+def nanzscore2value(zscore: float, vec: npt.ArrayLike) -> float:
     """
     指定したZスコアを、指定したベクトルにおける元の値に変換します。
     ベクトルにおいて NaN は無視されます。
@@ -133,7 +133,7 @@ def nanzscore2value(zscore: Number, vec: Vector) -> float:
     return (zscore * np.nanstd(vec)) + np.nanmean(vec)
 
 
-def iqr2value(iqr: Number, vec: Vector) -> np.ndarray:
+def iqr2value(iqr: float, vec: npt.ArrayLike) -> np.ndarray:
     """
     指定したIQRを、指定したベクトルにおける元の値に変換します。
 
@@ -199,7 +199,7 @@ def kwargs4r(kwargs: Dict[str, str]) -> str:
     """
     rkwargs = ''
     for k, v in kwargs.items():
-        if isinstance(v, Number):
+        if isinstance(v, (int, float)):
             rkwargs += f'{k} = {v}, '
         elif isinstance(v, str):
             if v.startswith('@'):

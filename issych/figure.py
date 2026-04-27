@@ -1,28 +1,31 @@
 from typing import Optional, Any, Literal, Tuple, List
+from pathlib import Path
 
 from cycler import cycler
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import pingouin as pg
 import matplotlib.pyplot as plt
 from matplotlib.collections import PathCollection
 from matplotlib.patches import Rectangle, Ellipse
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 import seaborn as sns
 from dynaconf import Dynaconf
 
-from .dataclass import Dictm
-from .typealias import Pathlike, Figure, Axes, Vector
+from .misc import Dictm
 from .stat import Pvalue2SigMark
 
 # Settings
 
-def set_rcparams(in_path_toml: Pathlike='config/rcparams.toml'):
+def set_rcparams(in_path_toml: str | Path='config/rcparams.toml'):
     """
     ``in_path_toml`` に指定されたファイルにある設定を反映させます。
 
     Parameters
     ----------
-    in_path_toml: Pathlike
+    in_path_toml: str | Path
         ここに指定されたパスにあるファイルを :py:func:`Dynaconf.dynaconf` で読み取ります。
         読み取った設定を、 :py:data:`matplotlib.rcParams` に反映させます。
 
@@ -88,7 +91,7 @@ def get_current_rcparams() -> Dictm:
     Returns
     -------
     current_rcparams: Dictm
-        以下の三つのキー・値を持つ、ネストされた :class:`issych.dataclass.Dictm` です。
+        以下の三つのキー・値を持つ、ネストされた :class:`issych.misc.Dictm` です。
 
         - ``color``: 色に関する情報です。  
         - ``size``: 図やオブジェクトのサイズに関する情報です。  
@@ -149,7 +152,7 @@ def _calc_figsize(n_row: int, n_col: int, axsizeratio: Tuple[float, float]
 
 
 def prepare_ax(axsizeratio: Tuple=(1., 1.),
-               in_path_toml: Optional[Pathlike]=None) -> Tuple[Figure, Axes]:
+               in_path_toml: Optional[str | Path]=None) -> Tuple[Figure, Axes]:
     """
     一つの :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
 
@@ -174,7 +177,7 @@ def prepare_ax(axsizeratio: Tuple=(1., 1.),
 
 
 def prepare_axes(n_row: int=1, n_col: int=1, axsizeratio: Tuple=(1., 1.),
-                 in_path_toml: Optional[Pathlike]=None
+                 in_path_toml: Optional[str | Path]=None
                  ) -> Tuple[Figure, np.ndarray]:
     """
     指定した行数・列数の :py:data:`issych.typealias.Axes` を含む :py:data:`issych.typealias.Figure` を生成します。
@@ -346,10 +349,10 @@ def plot_within(dataset: pd.DataFrame,
 
     return ax
 
-def plot_raincloud(data: pd.DataFrame | Vector,
+def plot_raincloud(data: pd.DataFrame | npt.ArrayLike,
                    ax: Axes,
-                   x: Optional[str | Vector]=None,
-                   y: Optional[str | Vector]=None,
+                   x: Optional[str | npt.ArrayLike]=None,
+                   y: Optional[str | npt.ArrayLike]=None,
                    orient: Literal['h', 'v']='v',
                    strip: bool=True, box: bool=True, cloud: bool=True,
                    kwargs_strip: Optional[dict[str, Any]]=None,
@@ -651,7 +654,7 @@ class SigMarker:
 
 def plot_corrmat(dataset: pd.DataFrame,
                  method: str='pearson',
-                 in_path_toml: Pathlike='config/rcparams.toml',
+                 in_path_toml: str | Path='config/rcparams.toml',
                  thrs_p: Optional[Tuple[float, float, float]]=None,
                  sdgt: int=3,
                  rotation: int=30,

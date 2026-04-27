@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import pingouin as pg
 
-from issych.dataclass import Dictm
+from issych.misc import Dictm
 from issych.excluder import DataExcluder
 
 

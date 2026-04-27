@@ -31,7 +31,7 @@ extensions = [
 napoleon_preprocess_types = True
 napoleon_type_aliases = {
     'Pathlike': 'issych.typealias.Pathlike',
-    'Dictm': 'issych.dataclass.Dictm',
+    'Dictm': 'issych.misc.Dictm',
     'Axes': 'issych.typealias.Axes',
     'Figure': 'issych.typealias.Figure',
     'pd.DataFrame': 'pandas.DataFrame',

@@ -7,8 +7,8 @@ import pandas as pd
 from rpy2.robjects import r, pandas2ri, default_converter, Environment
 from rpy2.robjects.conversion import localconverter
 from rpy2.robjects.packages import importr
-from issych.typealias import Number
-from issych.dataclass import Dictm
+
+from issych.misc import Dictm
 
 from issych.stat import kwargs4r
 
@@ -212,7 +212,7 @@ class GlmmTMB:
         return pandas2ri.rpy2py(self.env['ems_df']).rename(columns, axis=1)
 
     def emtrends(self, specs: str, var: str,
-                 at: Optional[Dict[str, Dict[str, Number]]]=None, **kwargs
+                 at: Optional[Dict[str, Dict[str, float]]]=None, **kwargs
                  ) -> pd.DataFrame:
         """
         フィットしたモデルを用いて、R パッケージ ``emmeans`` の ``emtrends`` を使用します。

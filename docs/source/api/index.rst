@@ -14,6 +14,5 @@ API Reference
    dataframe
    stat
    typealias
-   dataclass
    fileio
    misc

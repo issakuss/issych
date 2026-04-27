@@ -95,7 +95,7 @@ class TestDictm(unittest.TestCase):
 
     def test_dynaconf(self):
         dictm = Dictm(Dynaconf(
-            settings_files='tests/testdata/config/dataclass.toml'))
+            settings_files='tests/testdata/config/misc.toml'))
         self.assertEqual(dictm.level1.key1, 'value1')
         self.assertEqual(dictm.level1.key2, ['value2', 'value3'])
         self.assertEqual(dictm.level1.key3, 3)
@@ -103,7 +103,7 @@ class TestDictm(unittest.TestCase):
         self.assertEqual(dictm.level1.level2.level3.key111, 'valuelevel3')
 
     def test_dynacof_path(self):
-        dictm = Dictm('tests/testdata/config/dataclass.toml')
+        dictm = Dictm('tests/testdata/config/misc.toml')
         self.assertEqual(dictm.level1.key1, 'value1')
         self.assertEqual(dictm.level1.key2, ['value2', 'value3'])
         self.assertEqual(dictm.level1.key3, 3)

@@ -20,7 +20,7 @@ def _score_questionnaire(
     answer: pd.DataFrame,
     questname: str,
     preprocess: str='',
-    idx_reverse: List[int]=[],
+    idx_reverse: Optional[List[int]]=None,
     min_plus_max: Optional[int]=None,
     na_policy: Literal['nan', 'ignore', 'raise']='nan',
     subscale: Optional[Dict[str, Union[List[int], Literal['all']]]]=None,
@@ -216,9 +216,10 @@ def _score_questionnaire(
 
     if preprocess != '':
         are_na = pd.isna(answer)
-        answer = (answer.map(lambda q: eval(preprocess), na_action='ignore')
-                  .astype('Float64'))
+        func = eval(f"lambda q: {preprocess}")
+        answer = answer.map(func, na_action='ignore').astype('Float64')
         answer[are_na] = pd.NA  # .map() sometimes convert pd.NA to np.nan
+    idx_reverse = idx_reverse or []
     if len(idx_reverse) > 0:
         if min_plus_max is None:
             raise CantReverseError
@@ -323,24 +324,22 @@ class Monshi:
         cols_item = deepcopy(dict(cols_item))
         self._labels = cols_item.keys()
 
-        for key, value in cols_item.items():
-            val_is_all_int = all(isinstance(x, int) for x in value)
-            val_is_all_str = all(isinstance(x, str) for x in value)
-            match value:
-                case list() | tuple() if val_is_all_int:
+        for key, val in cols_item.items():
+            match val:
+                case list() | tuple() if all(isinstance(x, int) for x in val):
                 # Example: [1, 2, 3, 4, 5]
-                    value_ = [v - 1 for v in value]
+                    value_ = [v - 1 for v in val]
                     separated = self.answer_sheet.iloc[:, value_]
-                case list() | tuple() if val_is_all_str:
+                case list() | tuple() if all(isinstance(x, str) for x in val):
                 # Example: ['H', 'J']
-                    separated = loc_byalphabet(self.answer_sheet, value)
-                case str() if ':' in value:
+                    separated = loc_byalphabet(self.answer_sheet, val)
+                case str() if ':' in val:
                 # Example 'H:J'
                     separated = loc_range_byalphabet(
-                        self.answer_sheet, *value.split(':'))
+                        self.answer_sheet, *val.split(':'))
                 case str():
                 # Example 'scale2_'
-                    separated = cols_startswith(self.answer_sheet, value)
+                    separated = cols_startswith(self.answer_sheet, val)
                 case _:
                     raise RuntimeError('範囲の指定方法が不正です')
 
@@ -451,7 +450,7 @@ class Monshi:
 
 
 def score_as_monfig(answer_sheet: pd.DataFrame,
-                    monfig: Optional[Dict[str, Dict]] | Optional[str | Path]
+                    monfig: Union[Dict[str, Dict], str, Path]
                     ) -> pd.DataFrame:
     """
     心理学的な質問紙への回答を集計する関数です。

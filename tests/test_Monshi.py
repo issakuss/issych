@@ -43,12 +43,12 @@ class TestMonshi(unittest.TestCase):
         tester(self.monshi.scale2, self.answer_sheet.iloc[:, 8:18])
         tester(self.monshi.scale3, self.answer_sheet.iloc[:, 18:21])
 
-    def test_score(self):
-        self.assertTrue(self.answer_sheet.equals(self.monshi.get_sheet()))
+    def test_score_basic(self):
+        pd.testing.assert_frame_equal(self.answer_sheet, self.monshi.get_sheet())
         with self.assertRaises(RuntimeError):  # Run .score() before .separate() run
             self.monshi.score(self.monfig)
-        self.monshi.separate(self.monfig._cols_item)
 
+    def test_score_invalid_config_errors(self):
         invalid_monfig = Dictm('tests/testdata/config/invalid_monfig.toml')
         with self.assertRaises(CantReverseError):  # idx_reverse without min_plus_max
             self.monshi.separate({'dummy_scale1': [9, 10]})
@@ -60,28 +60,33 @@ class TestMonshi(unittest.TestCase):
             self.monshi.separate({'dummy_scale3': [9, 10]})
             self.monshi.score({'dummy_scale1': invalid_monfig['dummy_scale1']})
 
+    def test_score_success(self):
         self.monshi.separate(self.monfig._cols_item)
-        self.assertTrue(self.answer_sheet.drop(['ignored'], axis=1)
-                        .equals(self.monshi.get_sheet()))
+        pd.testing.assert_frame_equal(self.answer_sheet.drop(['ignored'], axis=1),
+                                      self.monshi.get_sheet())
         self.monshi.replace_choices(self.monfig)
         current_sheet = (self.monshi.get_sheet()
                          .set_index(['sub', 'timestamp'])
                          .astype('float64').reset_index())
+        pd.testing.assert_frame_equal(current_sheet,
+                                      self.manually_replaced.set_index(['sub', 'timestamp'])
+                                      .astype('float64').reset_index())
+        scores = self.monshi.score(self.monfig)
+        pd.testing.assert_frame_equal(scores, self.manually_scored)
+
+    def test_validation(self):
+        self.monshi.separate(self.monfig._cols_item)
+        self.monshi.replace_choices(self.monfig)
         with self.assertRaises(ValueError):
             self.monshi.validate(
                 self.monfig | {'scale2': {'validation': {'min_answer': 2}}})
         with self.assertRaises(ValueError):  # validation failed
             self.monshi.validate(
                 self.monfig | {'scale2': {'validation': {'max_answer': 4}}})
-        self.assertTrue(current_sheet.equals(
-            self.manually_replaced.set_index(['sub', 'timestamp'])
-            .astype('float64').reset_index()))
-        scores = self.monshi.score(self.monfig)
-        self.assertTrue(scores.equals(self.manually_scored))
 
     def test_score_as_monfig(self):
         scores = score_as_monfig(self.answer_sheet, self.monfig)
-        self.assertTrue(scores.equals(self.manually_scored))
+        pd.testing.assert_frame_equal(scores, self.manually_scored)
 
         scores = score_as_monfig(self.answer_sheet, self.in_path_monfig)
-        self.assertTrue(scores.equals(self.manually_scored))
+        pd.testing.assert_frame_equal(scores, self.manually_scored)

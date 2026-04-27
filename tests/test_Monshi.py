@@ -4,7 +4,6 @@ from pathlib import Path
 import pandas as pd
 
 from issych.misc import Dictm
-from issych.dataframe import cast_to_nullable
 from issych.monshi import Monshi, CantReverseError, score_as_monfig
 
 

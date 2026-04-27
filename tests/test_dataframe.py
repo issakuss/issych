@@ -3,7 +3,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from issych.dataframe import vec2sqmatrix, cast_to_nullable
+from issych.dataframe import vec2sqmatrix
+from numpy.testing import assert_array_equal
 
 
 class TestVec2Sqmatrix(unittest.TestCase):
@@ -13,8 +14,8 @@ class TestVec2Sqmatrix(unittest.TestCase):
         seq2 = [-1.4, 0.78, -112.4, 111.5]
         mat2 = [[-1.4, 0.78], [-112.4, 111.5]]
         seq3 = [1, 2, 3, 4, 5]
-        self.assertTrue(np.array_equal(vec2sqmatrix(seq1), np.array(mat1)))
-        self.assertTrue(np.array_equal(vec2sqmatrix(seq2), np.array(mat2)))
+        assert_array_equal(vec2sqmatrix(seq1), np.array(mat1))
+        assert_array_equal(vec2sqmatrix(seq2), np.array(mat2))
         with self.assertRaises(RuntimeError):
             vec2sqmatrix(seq3)
 
@@ -40,13 +41,3 @@ class TestCastToNullable(unittest.TestCase):
         self.assertEqual(str(result['float_col'].dtype), 'Float64')
         self.assertEqual(str(result['bool_col'].dtype), 'boolean')
         self.assertTrue(np.issubdtype(result['unchanged'].dtype, np.datetime64))
-
-    def test_nocast_object(self):
-        result = cast_to_nullable(self.df)
-        self._test_cast(result)
-        self.assertEqual(str(result['obj_col'].dtype), 'object')
-
-    def test_cast_object(self):
-        result = cast_to_nullable(self.df, cast_object=True)
-        self._test_cast(result)
-        self.assertEqual(str(result['obj_col'].dtype), 'string')

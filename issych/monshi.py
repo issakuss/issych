@@ -7,7 +7,7 @@ import pandas as pd
 from pathlib import Path
 from .misc import Dictm
 from .dataframe import (
-    loc_byalphabet, loc_range_byalphabet, loc_cols_name_startswith)
+    loc_byalphabet, loc_range_byalphabet, cols_startswith)
 
 
 class CantReverseError(Exception):
@@ -340,8 +340,7 @@ class Monshi:
                         self.answer_sheet, *value.split(':'))
                 case str():
                 # Example 'scale2_'
-                    separated = loc_cols_name_startswith(
-                        self.answer_sheet, value)
+                    separated = cols_startswith(self.answer_sheet, value)
                 case _:
                     raise RuntimeError('範囲の指定方法が不正です')
 
